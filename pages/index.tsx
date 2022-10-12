@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { compareDesc, format, parseISO } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
 import Link from 'next/link'
