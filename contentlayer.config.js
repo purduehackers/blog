@@ -20,6 +20,12 @@ const Post = defineDocumentType(() => ({
       type: 'string',
       description: 'The author(s) of the post',
       required: true
+    },
+    visible: {
+      type: 'boolean',
+      description: 'Whether this post should appear on the homepage',
+      required: false,
+      default: true
     }
   },
   computedFields: {
