@@ -6,7 +6,7 @@ import Cal from 'components/cal'
 
 const PostCard = (post: Post) => {
   return (
-    <h2 className="text-3xl font-bold">
+    <h2 className="text-xl sm:text-2xl font-bold">
       <Link href={post.url}>
         <a className="text-amber-500 hover:text-amber-400 transition">
           {post.title}
@@ -32,16 +32,15 @@ const Home = ({ posts }: { posts: Post[] }) => {
           </h2>
         </div>
       </div>
-      <div className="w-11/12 sm:max-w-xl mx-auto rounded border-2 border-black shadow-blocks shadow-gray-800 p-4 mt-8 flex flex-col align-center gap-y-4">
+      <div className="w-11/12 sm:max-w-md mx-auto rounded border-2 border-black shadow-blocks shadow-gray-800 p-4 mt-8 flex flex-col align-center gap-y-4">
         {posts.map((post, idx) => (
-          <div className="grid grid-cols-2 gap-x-4">
-            {/* <time
+          <div className="grid grid-cols-2">
+            <time
               dateTime={post.date}
-              className="block text-base text-right text-gray-600"
+              className="text-base flex items-center text-gray-600 font-bold"
             >
               {format(parseISO(post.date), 'LLL d, yyyy')}
-            </time> */}
-            <Cal date={parseISO(post.date)} />
+            </time>
             <PostCard key={idx} {...post} />
           </div>
         ))}
