@@ -41,7 +41,7 @@ const Home = ({ posts }: { posts: Post[] }) => {
           </h2>
         </div>
       </div>
-      <div className="w-11/12 sm:max-w-xl mx-auto rounded border-2 border-black shadow-blocks shadow-gray-800 p-4 mt-8 flex flex-col items-center justify-center">
+      <div className="w-11/12 sm:max-w-xl mx-auto rounded border-2 border-black shadow-blocks shadow-gray-800 p-4 mt-8 flex flex-col items-center justify-center gap-y-4">
         {posts.map(
           (post, idx) => post.visible && <PostCard key={idx} {...post} />
         )}
