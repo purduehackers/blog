@@ -7,7 +7,7 @@ import Nav from 'components/nav'
 const PostCard = (post: Post) => {
   return (
     <div>
-      <h2 className="text-xl font-bold text-center">
+      <h2 className="text-3xl font-bold text-center">
         <Link href={post.url}>
           <a className="text-amber-500 hover:text-amber-400 transition">
             {post.title}
@@ -16,7 +16,7 @@ const PostCard = (post: Post) => {
       </h2>
       <time
         dateTime={post.date}
-        className="block text-xs text-center text-gray-600"
+        className="block text-base text-center text-gray-600"
       >
         {format(parseISO(post.date), 'LLLL d, yyyy')}
       </time>
