@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { compareDesc, format, parseISO } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
 import Link from 'next/link'
-import Date from 'components/date'
+import Cal from 'components/cal'
 
 const PostCard = (post: Post) => {
   return (
@@ -41,7 +41,7 @@ const Home = ({ posts }: { posts: Post[] }) => {
             >
               {format(parseISO(post.date), 'LLL d, yyyy')}
             </time> */}
-            <Date date={parseISO(post.date)} />
+            <Cal date={parseISO(post.date)} />
             <PostCard key={idx} {...post} />
           </div>
         ))}
