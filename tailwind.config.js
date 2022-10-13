@@ -10,7 +10,11 @@ module.exports = {
       serif: '"IBM Plex Serif"',
       mono: '"IBM Plex Mono"'
     },
-    extend: {}
+    extend: {
+      boxShadow: {
+        blocks: '2px 2px'
+      }
+    }
   },
   plugins: []
 }
