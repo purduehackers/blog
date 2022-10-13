@@ -22,8 +22,8 @@ const Home = ({ posts }: { posts: Post[] }) => (
     </Head>
     <div className="bg-cyan-100 border-b-4 border-black">
       <div className="text-center py-16 sm:py-20 flex flex-col gap-y-4 items-center">
-        <h1 className="text-5xl sm:text-7xl font-bold">Purdue Hackers Blog</h1>
-        <h2 className="text-2xl text-gray-600">
+        <h1 className="text-4xl sm:text-7xl font-bold">Purdue Hackers Blog</h1>
+        <h2 className="text-xl text-gray-600">
           Where we share our magic with the world ✨💛⚡️
         </h2>
       </div>
