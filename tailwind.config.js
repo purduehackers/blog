@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     fontFamily: {
       main: '"Space Grotesk", system-ui, Roboto, sans-serif',
-      serif: '"IBM Plex Serif"'
+      serif: '"IBM Plex Serif"',
+      mono: '"IBM Plex Mono"'
     },
     extend: {}
   },

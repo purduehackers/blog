@@ -12,3 +12,18 @@ Check out my React component:
 <Test name="MDX Post test" />
 
 Here I'm going to write a bunch of stuff that fills a couple of lines to see how a real actual blog posts looks like and see if there are any better ways in which I can style it.
+
+Here's the code of the above React component:
+
+```jsx
+const Test = ({ name }: { name: string }) => (
+  <>
+    <h1>
+      This is a React component. This post's name is{' '}
+      <span className="text-amber-500">{name}</span>.
+    </h1>
+  </>
+)
+
+export default Test
+```
