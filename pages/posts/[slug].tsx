@@ -27,6 +27,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 const PostLayout = ({ post }: { post: Post }) => {
   const Content = useMDXComponent(post.body.code)
   const authors: string[] = post.authors.split(',') || [post.authors]
+  const date = post.date.substring(0, post.date.length - 14)
   return (
     <>
       <Head>
@@ -44,8 +45,8 @@ const PostLayout = ({ post }: { post: Post }) => {
             </div>
           </div>
           <div className="bg-gray-200 rounded-full px-1 mx-2 mb-2 border-2 border-black inline-block">
-            <time dateTime={post.date} className="text-sm mx-2">
-              {format(parseISO(post.date), 'LLLL d, yyyy')}
+            <time dateTime={date} className="text-sm mx-2">
+              {format(parseISO(date), 'LLLL d, yyyy')}
             </time>
           </div>
         </div>
