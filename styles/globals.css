@@ -14,4 +14,7 @@
   pre {
     @apply bg-gray-100 w-full mx-auto rounded-lg p-2 text-base overflow-x-auto max-w-xl font-mono;
   }
+  ::selection {
+    background: #fcd34d;
+  }
 }
