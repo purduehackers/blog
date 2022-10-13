@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { compareDesc, format, parseISO } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
 import Link from 'next/link'
-import Cal from 'components/cal'
 
 const PostCard = (post: Post) => {
   return (
@@ -34,6 +33,7 @@ const Home = ({ posts }: { posts: Post[] }) => (
         <div className="grid grid-cols-2">
           <time
             dateTime={post.date}
+            key={idx}
             className="text-base flex items-center text-gray-600 font-bold"
           >
             {format(
