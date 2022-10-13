@@ -28,7 +28,7 @@ const PostLayout = ({ post }: { post: Post }) => {
   return (
     <>
       <Head>
-        <title>{post.title}</title>
+        <title>{post.title} — Purdue Hackers</title>
       </Head>
       <article className="w-screen">
         <div className="bg-amber-100">

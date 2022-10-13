@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import BackButton from './back-button'
 
-const Nav = ({ noSticky = false }: { noSticky?: boolean }) => {
+const Nav = () => {
   const { pathname } = useRouter()
 
   return (
