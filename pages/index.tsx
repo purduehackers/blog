@@ -32,8 +32,10 @@ const Home = ({ posts }: { posts: Post[] }) => {
       </Head>
       <div className="bg-cyan-100 border-b-4 border-black">
         <Nav />
-        <div className="text-center pb-16 pt-8 sm:pt-12 flex flex-col gap-y-4 items-center">
-          <h1 className="text-7xl font-bold">Purdue Hackers Blog</h1>
+        <div className="text-center pb-16 pt-12 sm:pt-16 flex flex-col gap-y-4 items-center">
+          <h1 className="text-5xl sm:text-7xl font-bold">
+            Purdue Hackers Blog
+          </h1>
           <h2 className="text-2xl text-gray-600">
             Where we share our magic with the world ✨💛⚡️
           </h2>
