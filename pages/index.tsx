@@ -39,7 +39,10 @@ const Home = ({ posts }: { posts: Post[] }) => {
               dateTime={post.date}
               className="text-base flex items-center text-gray-600 font-bold"
             >
-              {format(parseISO(post.date), 'LLL d, yyyy')}
+              {format(
+                parseISO(post.date.substring(0, post.date.length - 14)),
+                'LLL d, yyyy'
+              )}
             </time>
             <PostCard key={idx} {...post} />
           </div>
