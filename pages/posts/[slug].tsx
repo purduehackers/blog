@@ -35,9 +35,9 @@ const PostLayout = ({ post }: { post: Post }) => {
       <article className="w-screen">
         <div className="bg-amber-100 border-b-4 border-black">
           <Nav />
-          <div className="text-center pb-16 pt-8 sm:pt-12 flex flex-col gap-y-4">
+          <div className="text-center pb-16 pt-8 sm:pt-12 flex flex-col gap-y-4 items-center">
             <h1 className="text-5xl sm:text-7xl font-bold">{post.title}</h1>
-            <div className="flex flex-row gap-x-2 justify-center">
+            <div className="flex flex-row gap-2 justify-center flex-wrap max-w-2xl">
               {authors.map((author: string) => (
                 <Author authorString={author} />
               ))}
