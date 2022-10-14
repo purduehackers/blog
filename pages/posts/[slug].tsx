@@ -5,6 +5,7 @@ import { useMDXComponent } from 'next-contentlayer/hooks'
 import { GetStaticProps } from 'next'
 import Nav from 'components/nav'
 import Author from 'components/author'
+import components from '../../lib/components'
 
 export const getStaticPaths = async () => {
   const paths: string[] = allPosts.map((post) => post.url)
@@ -40,7 +41,7 @@ const PostLayout = ({ post }: { post: Post }) => {
             <h1 className="text-5xl sm:text-7xl font-bold">{post.title}</h1>
             <div className="flex flex-row gap-2 justify-center flex-wrap max-w-2xl">
               {authors.map((author: string) => (
-                <Author authorString={author} />
+                <Author key={author} authorString={author} />
               ))}
             </div>
           </div>
@@ -51,7 +52,7 @@ const PostLayout = ({ post }: { post: Post }) => {
           </div>
         </div>
         <div className="mt-4 sm:mt-8 text-lg font-serif flex flex-col items-start gap-y-3 justify-center w-11/12 sm:w-full max-w-2xl mx-auto mb-12">
-          <Content />
+          <Content components={components} />
         </div>
       </article>
     </>
