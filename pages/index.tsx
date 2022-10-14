@@ -5,13 +5,24 @@ import Link from 'next/link'
 
 const PostCard = (post: Post) => {
   return (
-    <h2 className="text-xl sm:text-2xl font-bold">
-      <Link href={post.url}>
-        <a className="text-amber-500 hover:text-amber-400 transition">
-          {post.title}
-        </a>
-      </Link>
-    </h2>
+    <div className="flex flex-col gap-x-2 flex-1 pt-4">
+      <time
+        dateTime={post.date}
+        className="text-sm flex items-center text-gray-600"
+      >
+        {format(
+          parseISO(post.date.substring(0, post.date.length - 14)),
+          'LLL d, yyyy'
+        )}
+      </time>
+      <h2 className="text-3xl sm:text-4xl font-bold">
+        <Link href={post.url}>
+          <a className="text-amber-500 hover:text-amber-400 transition">
+            {post.title}
+          </a>
+        </Link>
+      </h2>
+    </div>
   )
 }
 
@@ -28,22 +39,12 @@ const Home = ({ posts }: { posts: Post[] }) => (
         </h2>
       </div>
     </div>
-    <div className="w-11/12 sm:max-w-md mx-auto rounded border-2 border-black shadow-blocks shadow-gray-800 p-4 mt-8 flex flex-col align-center gap-y-4">
-      {posts.map((post, idx) => (
-        <div className="grid grid-cols-2">
-          <time
-            dateTime={post.date}
-            key={idx}
-            className="text-base flex items-center text-gray-600 font-bold"
-          >
-            {format(
-              parseISO(post.date.substring(0, post.date.length - 14)),
-              'LLL d, yyyy'
-            )}
-          </time>
+    <div className="container flex flex-col py-4 sm:pt-14 px-5 sm:px-20 text-left mx-auto items-center">
+      <div className="divide-y space-y-4 divide-black">
+        {posts.map((post, idx) => (
           <PostCard key={idx} {...post} />
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </div>
 )
