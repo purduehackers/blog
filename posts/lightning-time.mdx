@@ -4,6 +4,10 @@ date: 2022-10-14
 authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png)'
 ---
 
+import Clock from '../components/posts/lightning-time/clock'
+
+<Clock />
+
 Two weeks ago, we created Lightning Time ⚡️, a new way to measure time. Today, we want to share Lightning Time with you.
 
 # How Lightning Time was created
@@ -16,3 +20,13 @@ new ways to think about time. We typically divide time into 24 hours, 60 minutes
 to break a day up. After a couple of hours of brainstorming together, we landed on Lightning Time.
 
 ![Image test](/lightning-time/IMG_0265.jpeg)
+
+Lightning Time wasn't created by one person; it was created by _all of us_, truly in the best possible way.
+
+# How Lightning Time works
+
+At its core, Lightning Time is just hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again. The first and largest
+unit of Lightning Time is called a **bolt**; the second unit is called a **zap**; the third is called a **spark**; and the fourth is
+called a **charge**.
+
+A typical lightning time string looks like this: `8~0~0|e`
