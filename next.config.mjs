@@ -5,7 +5,10 @@ import { withContentlayer } from 'next-contentlayer'
  */
 const config = withContentlayer({
   swcMinify: true,
-  pageExtensions: ['js', 'ts', 'tsx', 'mdx']
+  pageExtensions: ['js', 'ts', 'tsx', 'mdx'],
+  images: {
+    domains: ['github.com', 'cdn.discordapp.com']
+  }
 })
 
 export default config
