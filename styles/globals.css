@@ -1,11 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 @import url('./highlight.css');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --boltColor: #000000;
+  --zapColor: #000000;
+  --sparkColor: #000000;
+}
 
 @layer base {
   body {
@@ -22,12 +28,6 @@
   }
 }
 
-:root {
-  --boltColor: #000000;
-  --zapColor: #000000;
-  --sparkColor: #000000;
-}
-
 @layer components {
   .lightning-gradient {
     background: linear-gradient(
@@ -39,4 +39,20 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+}
+
+.bolt {
+  font-family: 'Space Mono';
+  font-weight: 700;
+  color: var(--boltColor);
+}
+.zap {
+  font-family: 'Space Mono';
+  font-weight: 700;
+  color: var(--zapColor);
+}
+.spark {
+  font-family: 'Space Mono';
+  font-weight: 700;
+  color: var(--sparkColor);
 }

@@ -505,10 +505,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@purduehackers/time@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@purduehackers/time/-/time-0.4.2.tgz#abbeea9c5b9ca21797b43af5786b0fb0778f5392"
-  integrity sha512-Oa0Ejlg+KtBPBHzibuUtgF+98d9KGx3v9pxy0RpDjBPujDviO66c77oE+dDEMPjrozAXCuw16+iZ4t/fpIH/4A==
+"@purduehackers/time@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@purduehackers/time/-/time-0.5.0.tgz#9ec0da8c71fd8b66e1068921880bbfae644dd2b9"
+  integrity sha512-pVrbZFUEzpmlM1nCxG1hdsjQYCRtrv0eD2wM/LDoNqWWiVXX64WJ2q3liX+b0/Wln/CfB8dv+e76ZFeCfLpo5g==
   dependencies:
     rgb-hex "3.0.0"
 

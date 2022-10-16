@@ -7,6 +7,9 @@ authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png)'
 import Clock from '../components/posts/lightning-time/clock'
 import LightningGradient from '../components/posts/lightning-time/lightning-gradient'
 import LightningTimeProvider from '../components/posts/lightning-time/lightning-time-context'
+import LightningText, {
+  LightningPart
+} from '../components/posts/lightning-time/lightning-text'
 
 <LightningTimeProvider>
 
@@ -21,6 +24,12 @@ unit of Lightning Time is called a **bolt**; the second unit is called a **zap**
 called a **charge**.
 
 A typical lightning time string looks like this: `8~0~0|e`.
+
+Here's the current time made up of all the parts: <LightningText part={LightningPart.Bolt} />~<LightningText
+  part={LightningPart.Zap}
+/>~<LightningText part={LightningPart.Spark} />|<LightningText
+  part={LightningPart.Charge}
+/>
 
 # How Lightning Time was created
 

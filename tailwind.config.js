@@ -8,7 +8,7 @@ module.exports = {
     fontFamily: {
       main: '"Space Grotesk", system-ui, Roboto, sans-serif',
       serif: '"IBM Plex Serif"',
-      mono: '"IBM Plex Mono"'
+      mono: '"Space Mono"'
     },
     extend: {
       boxShadow: {
