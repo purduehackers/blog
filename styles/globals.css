@@ -14,7 +14,7 @@
   pre {
     @apply bg-gray-100 w-full mx-auto rounded-lg p-2 text-base overflow-x-auto max-w-xl font-mono;
   }
-  code {
+  :not(pre) > code {
     @apply bg-gray-200 rounded-lg p-1 text-base font-mono;
   }
   ::selection {
