@@ -39,18 +39,17 @@
   background-clip: text;
 }
 
-.bolt {
-  font-family: 'Space Mono';
-  font-weight: 700;
-  color: var(--boltColor);
-}
-.zap {
-  font-family: 'Space Mono';
-  font-weight: 700;
-  color: var(--zapColor);
-}
-.spark {
-  font-family: 'Space Mono';
-  font-weight: 700;
-  color: var(--sparkColor);
+@layer components {
+  .bolt {
+    @apply font-mono font-bold;
+    color: var(--boltColor);
+  }
+  .zap {
+    @apply font-mono font-bold;
+    color: var(--zapColor);
+  }
+  .spark {
+    @apply font-mono font-bold;
+    color: var(--sparkColor);
+  }
 }
