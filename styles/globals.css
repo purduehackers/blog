@@ -28,17 +28,15 @@
   }
 }
 
-@layer components {
-  .lightning-gradient {
-    background: linear-gradient(
-      to right,
-      var(--boltColor),
-      var(--zapColor),
-      var(--sparkColor)
-    );
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+.lightning-gradient {
+  background: linear-gradient(
+    to right,
+    var(--boltColor),
+    var(--zapColor),
+    var(--sparkColor)
+  );
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .bolt {
