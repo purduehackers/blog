@@ -6,10 +6,21 @@ authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png)'
 
 import Clock from '../components/posts/lightning-time/clock'
 import LightningGradient from '../components/posts/lightning-time/lightning-gradient'
+import LightningTimeProvider from '../components/posts/lightning-time/lightning-time-context'
+
+<LightningTimeProvider>
 
 <Clock />
 
-Two weeks ago, we created <LightningGradient>Lightning Time</LightningGradient> ⚡️, a new way to measure time. Today, we want to share Lightning Time with you.
+Two weeks ago, we created <span className="font-bold lightning-gradient">Lightning Time</span> ⚡️, a new way to measure time. Today, we want to share Lightning Time with you.
+
+# What is Lightning Time?
+
+At its core, Lightning Time is just hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again. The first and largest
+unit of Lightning Time is called a **bolt**; the second unit is called a **zap**; the third is called a **spark**; and the fourth is
+called a **charge**.
+
+A typical lightning time string looks like this: `8~0~0|e`.
 
 # How Lightning Time was created
 
@@ -24,10 +35,4 @@ to break a day up. After a couple of hours of brainstorming together, we landed 
 
 Lightning Time wasn't created by one person; it was created by _all of us_, truly in the best possible way.
 
-# How Lightning Time works
-
-At its core, Lightning Time is just hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again. The first and largest
-unit of Lightning Time is called a **bolt**; the second unit is called a **zap**; the third is called a **spark**; and the fourth is
-called a **charge**.
-
-A typical lightning time string looks like this: `8~0~0|e`.
+</LightningTimeProvider>

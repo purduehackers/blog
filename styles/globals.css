@@ -23,9 +23,9 @@
 }
 
 :root {
-  --boltColor: #030303;
-  --zapColor: #ffaffa;
-  --sparkColor: #4af3bb;
+  --boltColor: #000000;
+  --zapColor: #000000;
+  --sparkColor: #000000;
 }
 
 @layer components {
