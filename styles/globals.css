@@ -21,3 +21,22 @@
     background: #fcd34d;
   }
 }
+
+:root {
+  --boltColor: #030303;
+  --zapColor: #ffaffa;
+  --sparkColor: #4af3bb;
+}
+
+@layer components {
+  .lightning-gradient {
+    background: linear-gradient(
+      to right,
+      var(--boltColor),
+      var(--zapColor),
+      var(--sparkColor)
+    );
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
