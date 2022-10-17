@@ -9,6 +9,8 @@ import LightningTimeProvider from '../components/posts/lightning-time/lightning-
 import LightningText, {
   LightningPart
 } from '../components/posts/lightning-time/lightning-text'
+import ColoredLightningString from '../components/posts/lightning-time/colored-lightning-string'
+import ColorsDemo from '../components/posts/lightning-time/colors-demo'
 
 <LightningTimeProvider>
 
@@ -22,11 +24,7 @@ Lightning Time is a variation of hexadecimal time: the day is split into 16 part
 unit of Lightning Time is called a <span className="bolt">bolt</span>; the second unit is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
 called a **charge**.
 
-To illustrate: the current time in your timezone is <span className="font-mono"><LightningText part={LightningPart.Bolt} />~<LightningText
-  part={LightningPart.Zap}
-/>~<LightningText part={LightningPart.Spark} />|<LightningText
-  part={LightningPart.Charge}
-/></span>.
+To illustrate: the current time in your timezone is <ColoredLightningString />.
 
 Charges are kind of like seconds: you can include them (and smaller units beyond them) if you want to be more precise, but most of the time you can omit them.
 
@@ -58,14 +56,20 @@ each colors in with these four values. It looks something like this:
 In this example, the red value of the first color is `8e`; the green value of the second color is `e2`; and the blue value
 of the third color is `2f`.
 
-This leaves the other two RGB values of each color open. So what are those filled in with? Whatever you want!
+This leaves the other two RGB values of each color open. So what are those filled in with? **Whatever you want!** The values you
+fill in will remain static, while the respective red, green, and blue values of each color will change from `00` to `ff` according
+to the current time.
 
 ![](/posts/lightning-time/colors-filled.jpg)
 
-This is where Lightning Time gets _really_ magical: represent time not just as any three colors, but as _your_ favorite three colors! 🤯✨
+Here's a demo of how the colors work, using your local time:
 
-(You don't have to choose your own colors in order to use Lightning Time, though—we provide a set of default values that we expect
-most people will use.)
+<ColorsDemo />
+
+The static colors in this demo are the values we've picked for Purdue Hackers, and the default across the Lightning Time tooling
+we've built. But you could replace them with anything!
+
+This is where Lightning Time gets _really_ magical: represent time not just as any three colors, but as _your_ favorite three colors! 🤯✨
 
 ## Play with Lightning Time 🪁⚡️
 

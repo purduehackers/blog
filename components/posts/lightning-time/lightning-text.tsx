@@ -13,7 +13,7 @@ const LightningText = ({
   color = true
 }: {
   part: LightningPart
-  color: boolean
+  color?: boolean
 }) => {
   const { bolts, zaps, sparks, charges } = useContext(LightningTimeContext)
   switch (part) {
