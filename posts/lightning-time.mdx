@@ -19,10 +19,12 @@ Two weeks ago, we created <span className="font-bold lightning-gradient">Lightni
 # What is Lightning Time?
 
 At its core, Lightning Time is just hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again. The first and largest
-unit of Lightning Time is called a **bolt**; the second unit is called a **zap**; the third is called a **spark**; and the fourth is
+unit of Lightning Time is called a <span className="bolt">bolt</span>; the second unit is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
 called a **charge**.
 
-A typical lightning time string looks like this: `8~0~0|e`.
+Charges are kind of like seconds: you can include them (and smaller units beyond them) if you want to be more precise, but most of the time you can omit them.
+
+A typical lightning time string looks like this: `8~0~0|e`—or `8~0~0` without charges.
 
 Here's the current time made up of all the parts: <LightningText part={LightningPart.Bolt} />~<LightningText
   part={LightningPart.Zap}

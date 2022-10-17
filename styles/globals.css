@@ -41,15 +41,15 @@
 
 @layer components {
   .bolt {
-    @apply font-mono font-bold;
+    @apply font-bold;
     color: var(--boltColor);
   }
   .zap {
-    @apply font-mono font-bold;
+    @apply font-bold;
     color: var(--zapColor);
   }
   .spark {
-    @apply font-mono font-bold;
+    @apply font-bold;
     color: var(--sparkColor);
   }
 }

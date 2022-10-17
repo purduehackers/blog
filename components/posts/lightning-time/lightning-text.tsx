@@ -8,22 +8,38 @@ export enum LightningPart {
   Charge
 }
 
-const LightningText = ({ part }: { part: LightningPart }) => {
+const LightningText = ({
+  part,
+  color = true
+}: {
+  part: LightningPart
+  color: boolean
+}) => {
   const { bolts, zaps, sparks, charges } = useContext(LightningTimeContext)
   switch (part) {
     case LightningPart.Bolt: {
-      return <span className="bolt">{bolts}</span>
+      return (
+        <span className={`${color ? 'bolt' : 'font-bold'} font-mono`}>
+          {bolts}
+        </span>
+      )
     }
     case LightningPart.Zap: {
-      return <span className="zap">{zaps}</span>
+      return (
+        <span className={`${color ? 'zap' : 'font-bold'} font-mono`}>
+          {zaps}
+        </span>
+      )
     }
     case LightningPart.Spark: {
-      return <span className="spark">{sparks}</span>
+      return (
+        <span className={`${color ? 'spark' : 'font-bold'} font-mono`}>
+          {sparks}
+        </span>
+      )
     }
     case LightningPart.Charge: {
-      return (
-        <span className="text-amber-500 font-bold font-mono">{charges}</span>
-      )
+      return <span className="font-bold font-mono">{charges}</span>
     }
     default: {
       return <span></span>
