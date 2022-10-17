@@ -18,7 +18,7 @@ Two weeks ago, we created <span className="font-bold lightning-gradient">Lightni
 
 # What is Lightning Time?
 
-At its core, Lightning Time is just hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again. The first and largest
+Lightning Time is a variation of hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again, and so on. The first and largest
 unit of Lightning Time is called a <span className="bolt">bolt</span>; the second unit is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
 called a **charge**.
 
@@ -38,8 +38,8 @@ Like "normal" time, Lightning Time is timezone-specific; it is not intended to b
 
 The super fun part about Lightning Time is that you can represent it with colors! 🌈 (Did you notice all of the colors above are changing?)
 
-Because Lightning Time is just a variation on hexadecimal time, we can represent the current time as a color,
-since any 6-digit hexadecimal string is also an HTML color. We don't want to represent the time as one color, though—if we did,
+Because Lightning Time is a variation of hexadecimal time, we can represent the current time as a color,
+since any 6-digit hexadecimal string is also a color. We don't want to represent the time as one color, though—if we did,
 the color would often look bad. Instead, **Lightning Time represents time as three colors.**
 
 A typical hexadecimal color looks something like <span className="font-bold color-demo">#5c10e8</span>. Many people see hexadecimal colors as some kind of magic color-producing code—but,
@@ -70,7 +70,7 @@ most people will use.
 ## Play with Lightning Time 🪁⚡️
 
 That said, if you want to play around with Lightning Time colors & find a good color combination, check out
-this tool 👇
+this tool:
 
 \[embed color player here\]
 
@@ -84,9 +84,7 @@ If you use Raycast, we also made a Raycast extension for converting to/from Ligh
 getting colors. You can [install it here](https://github.com/MatthewStanciu/raycast-lightning-time).
 
 Finally: **we published an npm package**, `@purduehackers/time`, which allows you to use Lightning Time in your code.
-This post is using that package! 😎 [Check it out on npm.](https://www.npmjs.com/package/@purduehackers/time)
-
-More languages coming soon 👀
+This post is using that package! 😎 [Check it out on npm.](https://www.npmjs.com/package/@purduehackers/time) More languages coming soon 👀
 
 # How we made Lightning Time
 
@@ -97,7 +95,7 @@ At [our third Hack Night](https://events.purduehackers.com/hack-night-03), a cou
 new ways to think about time. We typically divide time into 24 hours, 60 minutes, 60 seconds, etc—but there are countless ways
 to break a day up. After a couple of hours of brainstorming together, we landed on Lightning Time.
 
-![Image test](/posts/lightning-time/hack-night-brainstorming.jpeg)
+![Three people huddled around a table. The person in the middle is at a computer, everyone else is looking at what they are doing.](/posts/lightning-time/hack-night-brainstorming.jpeg)
 
 Lightning Time wasn't created by one person; it was created by _all of us_, truly in the best possible way.
 
