@@ -34,21 +34,17 @@
   }
 }
 
-.lightning-gradient {
-  background: linear-gradient(
-    to right,
-    var(--boltColor),
-    var(--zapColor),
-    var(--sparkColor)
-  );
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.color-demo {
-  color: #5c10e8;
-}
-
 @layer components {
+  .lightning-gradient {
+    background: linear-gradient(
+      to right,
+      var(--boltColor),
+      var(--zapColor),
+      var(--sparkColor)
+    );
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
   .bolt {
     @apply font-bold;
     color: var(--boltColor);
