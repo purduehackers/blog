@@ -44,6 +44,9 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+.color-demo {
+  color: #5c10e8;
+}
 
 @layer components {
   .bolt {
