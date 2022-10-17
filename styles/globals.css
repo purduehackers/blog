@@ -23,6 +23,12 @@
   :not(pre) > code {
     @apply bg-gray-200 rounded-lg p-1 text-base font-mono;
   }
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
   ::selection {
     background: #fcd34d;
   }

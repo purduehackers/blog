@@ -22,15 +22,21 @@ At its core, Lightning Time is just hexadecimal time: the day is split into 16 p
 unit of Lightning Time is called a <span className="bolt">bolt</span>; the second unit is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
 called a **charge**.
 
+To illustrate, the current time in your timezone is <span className="font-mono"><LightningText part={LightningPart.Bolt} />~<LightningText
+  part={LightningPart.Zap}
+/>~<LightningText part={LightningPart.Spark} />|<LightningText
+  part={LightningPart.Charge}
+/></span>.
+
 Charges are kind of like seconds: you can include them (and smaller units beyond them) if you want to be more precise, but most of the time you can omit them.
 
 A typical lightning time string looks like this: `8~0~0|e`—or `8~0~0` without charges.
 
-Here's the current time made up of all the parts: <LightningText part={LightningPart.Bolt} />~<LightningText
-  part={LightningPart.Zap}
-/>~<LightningText part={LightningPart.Spark} />|<LightningText
-  part={LightningPart.Charge}
-/>
+Like "normal" time, Lightning Time is timezone-specific; it is not intended to be a replacement for UTC. `8~0~0` eastern time is `6~0~0` pacific time.
+
+## Colors
+
+Something about colors
 
 # How Lightning Time was created
 
