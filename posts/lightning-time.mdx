@@ -11,6 +11,7 @@ import LightningText, {
 } from '../components/posts/lightning-time/lightning-text'
 import ColoredLightningString from '../components/posts/lightning-time/colored-lightning-string'
 import ColorsDemo from '../components/posts/lightning-time/colors-demo'
+import ColorToy from '../components/posts/lightning-time/color-toy'
 
 <LightningTimeProvider>
 
@@ -73,10 +74,15 @@ This is where Lightning Time gets _really_ magical: represent time not just as a
 
 ## Play with Lightning Time 🪁⚡️
 
-That said, if you want to play around with Lightning Time colors & find a good color combination, check out
-this tool:
+If you want to get more of a feel for how Lightning Time colors work, try playing around with them! Below are the static color values
+we picked for the color representation of Lightning Time in this post represented as RGB values, along with the full color when the dynamic value is
+`00`, `40`, `80`, `c0`, and `f0`. Try changing all the numbers and see if you can find a color combination that looks good for you. 🌈
 
-\[embed color player here\]
+<div className="flex flex-col w-8/12 md:w-auto md:flex-row gap-4 font-main mx-auto">
+  <ColorToy part={LightningPart.Bolt} defaultValues={[161, 0]} />
+  <ColorToy part={LightningPart.Zap} defaultValues={[50, 214]} />
+  <ColorToy part={LightningPart.Spark} defaultValues={[246, 133]} />
+</div>
 
 We also built a tool to convert to & from Lightning Time if you want to play around with it some more.
 Some fun facts: one bolt lasts exactly 90 minutes (because Lightning Time splits the day into 16 parts instead of 24, and 24/16 = 1.5),

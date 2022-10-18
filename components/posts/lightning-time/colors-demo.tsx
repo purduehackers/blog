@@ -3,8 +3,7 @@ import ColoredLightningString from './colored-lightning-string'
 import { LightningTimeContext } from './lightning-time-context'
 
 const ColorsDemo = () => {
-  const { bolts, zaps, sparks, charges, boltColor, zapColor, sparkColor } =
-    useContext(LightningTimeContext)
+  const { boltColor, zapColor, sparkColor } = useContext(LightningTimeContext)
 
   const [changingBolt, staticBolt] = [
     boltColor.substring(1, 3),
