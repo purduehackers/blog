@@ -39,7 +39,7 @@ Like "normal" time, Lightning Time is timezone-specific; it is not intended to b
 
 The super fun part about Lightning Time is that you can represent it with colors! 🌈 (Did you notice all of the colors above are changing?)
 
-Because Lightning Time is a variation of hexadecimal time, we can represent the current time as a color,
+Because Lightning Time is just hexadecimal time, we can represent the current time as a color,
 since any 6-digit hexadecimal string is also a color. We don't want to represent the time as one color, though—if we did,
 the color would often look bad. Instead, **Lightning Time represents time as three colors.**
 
@@ -59,7 +59,7 @@ each colors in with these four values. It looks something like this:
 In this example, the red value of the first color is `8e`; the green value of the second color is `e2`; and the blue value
 of the third color is `2f`.
 
-This leaves the other two RGB values of each color open. So what are those filled in with? **Whatever you want!** The values you
+This leaves the other two RGB values of each color open, **which you can fill in with whatever you want!** The values you
 fill in will remain static, while the respective red, green, and blue values of each color will change from `00` to `ff` according
 to the current time.
 
@@ -102,15 +102,17 @@ Some fun facts while you're playing with that:
 - One charge lasts about one second and a half.
 - 12:00 PM is **8~0~0** because it's midday, and 8 is half of 16.
 
-If you use Raycast, we also made a Raycast extension for converting to/from Lightning Time &
-getting colors. You can [install it here](https://github.com/MatthewStanciu/raycast-lightning-time).
+## Tools
+
+If you use Raycast, we made a Raycast extension for converting to/from Lightning Time &
+working with colors. You can [install it here](https://github.com/MatthewStanciu/raycast-lightning-time).
 
 Finally: if you want to use Lightning Time in your own projects, **we published an npm package**: `@purduehackers/time`.
-This post is using that package! 😎 [Check it out on npm.](https://www.npmjs.com/package/@purduehackers/time) More languages coming soon 👀
+(This post is using that package! 😎) [Check it out on npm.](https://www.npmjs.com/package/@purduehackers/time) More languages coming soon 👀
 
 # How we made Lightning Time
 
-Purdue Hackers is a student organization at Purdue full of weirdo creatives who build projects together. Every Friday night,
+Purdue Hackers is a student organization at Purdue University full of weirdo creatives who build projects together. Every Friday night,
 we run an event called **Hack Night** 🌙, during which we build projects, contribute to open source, and let our imaginations
 run wild. 🧠
 
