@@ -53,10 +53,10 @@ const PostLayout = ({ post }: { post: Post }) => {
   return (
     <>
       <Head>
-        <title>{post.title} — Purdue Hackers</title>
+        <title>{post.title} | Purdue Hackers</title>
         <meta property="og:site_name" content="Purdue Hackers" />
-        <meta property="og:name" content={`${post.title} — Purdue Hackers`} />
-        <meta property="og:title" />
+        <meta property="og:name" content={`${post.title} | Purdue Hackers`} />
+        <meta property="og:title" content={`${post.title} | Purdue Hackers`} />
         <meta property="og:image" content={ogImage} />
         <meta property="og:description" content={post.ogDescription} />
         <meta name="twitter:card" content="summary_large_image" />
