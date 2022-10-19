@@ -17,12 +17,12 @@ const convertFromLightning = () => {
   const [valid, setValid] = useState(true)
   return (
     <div
-      className="p-1 rounded mx-auto font-main w-full"
+      className="p-1 rounded-lg mx-auto font-main w-full"
       style={{
         background: `linear-gradient(to right, ${colors[0]}, ${colors[1]}, ${colors[2]})`
       }}
     >
-      <div className="rounded p-4 flex flex-col justify-center bg-white h-full">
+      <div className="rounded-lg p-4 flex flex-col justify-center bg-white h-full">
         <p className="text-2xl text-center font-bold">
           Convert from Lightning Time
         </p>

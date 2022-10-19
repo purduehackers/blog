@@ -20,20 +20,20 @@ const ColorsDemo = () => {
   ]
 
   return (
-    <div className="mx-auto flex flex-col gap-2 border-2 border-black rounded-lg text-center w-full md:w-1/2">
-      <p className="text-2xl border-b-black border-b">
+    <div className="mx-auto flex flex-col gap-1 border-4 border-black rounded-lg text-center w-full md:w-1/2">
+      <p className="text-2xl border-b-black border-b-2">
         <ColoredLightningString />
       </p>
-      <p className="font-bold font-mono text-xl">
+      <p className="font-mono text-xl">
         #<span className="bolt">{changingBolt}</span>
         {staticBolt}
       </p>
-      <p className="font-bold font-mono text-xl">
+      <p className="font-mono text-xl">
         #{staticZap1}
         <span className="zap">{changingZap}</span>
         {staticZap2}
       </p>
-      <p className="font-bold font-mono text-xl">
+      <p className="font-mono text-xl">
         #{staticSpark}
         <span className="spark">{changingSpark}</span>
       </p>

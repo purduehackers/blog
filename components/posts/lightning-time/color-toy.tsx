@@ -19,7 +19,7 @@ const ColorToy = ({
   const [staticValues, setStaticValues] = useState(defaultValues)
   const [valid, setValid] = useState([true, true])
   return (
-    <div className="p-4 rounded border-2 border-black flex flex-col gap-4 justify-center">
+    <div className="p-4 rounded-lg border-4 border-black flex flex-col gap-4 justify-center">
       <p className="text-2xl md:text-xl font-bold text-center">
         {LightningPart[part]} Colors
       </p>

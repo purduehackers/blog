@@ -8,12 +8,12 @@ const ConvertToLightning = () => {
   const [colors, setColors] = useState(['#80a100', '#3200d6', '#f68500'])
   return (
     <div
-      className="p-1 rounded mx-auto font-main w-full"
+      className="p-1 rounded-lg mx-auto font-main w-full"
       style={{
         background: `linear-gradient(to right, ${colors[0]}, ${colors[1]}, ${colors[2]})`
       }}
     >
-      <div className="rounded p-4 flex flex-col justify-center bg-white">
+      <div className="rounded-lg p-4 flex flex-col justify-center bg-white">
         <p className="text-2xl text-center font-bold">
           Convert to Lightning
           <br />
