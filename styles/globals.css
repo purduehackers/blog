@@ -39,6 +39,7 @@
 
 @layer components {
   .lightning-gradient {
+    @apply font-bold;
     background: linear-gradient(
       to right,
       var(--boltColor),
