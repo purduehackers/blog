@@ -8,6 +8,7 @@ import Author from 'components/author'
 import components from '../../lib/components'
 import Footer from 'components/footer'
 import FooterLinks from 'components/footer-links'
+import parseMarkdownLink from 'lib/parse-markdown-link'
 
 export const getStaticPaths = async () => {
   const paths: string[] = allPosts.map((post) => post.url)
@@ -27,14 +28,39 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 }
 
+const getOgImage = ({
+  title,
+  authors
+}: {
+  title: string
+  authors: string[]
+}) => {
+  let authorImages = ''
+  for (const author of authors) {
+    const { avatarUrl } = parseMarkdownLink(author)
+    authorImages += `&images=${encodeURIComponent(avatarUrl)}`
+  }
+  return `https://og.purduehackers.com/${encodeURIComponent(
+    title
+  )}.png?theme=light&md=1&fontSize=200px&caption=${authorImages}`
+}
+
 const PostLayout = ({ post }: { post: Post }) => {
   const Content = useMDXComponent(post.body.code)
   const authors: string[] = post.authors.split(',') || [post.authors]
   const date = post.date.substring(0, post.date.length - 14)
+  const ogImage = getOgImage({ title: post.title, authors })
   return (
     <>
       <Head>
         <title>{post.title} — Purdue Hackers</title>
+        <meta property="og:site_name" content="Purdue Hackers" />
+        <meta property="og:name" content={`${post.title} — Purdue Hackers`} />
+        <meta property="og:title" />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:description" content={post.ogDescription} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="og:type" content="website" />
       </Head>
       <article className="w-screen">
         <div className="bg-amber-100 border-b-4 border-black">
