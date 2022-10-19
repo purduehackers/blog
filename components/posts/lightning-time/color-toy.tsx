@@ -34,7 +34,7 @@ const ColorToy = ({
               setValid([true, valid[1]])
             } else setValid([false, valid[1]])
           }}
-          className={`border-2 border-black rounded pl-1 w-1/4 md:w-1/3 text-center outline-none ${
+          className={`border-2 border-black rounded w-1/4 md:w-1/3 text-center outline-none ${
             !valid[0] ? 'bg-red-100' : ''
           }`}
         ></input>
@@ -48,7 +48,7 @@ const ColorToy = ({
               setValid([valid[0], true])
             } else setValid([valid[0], false])
           }}
-          className={`border-2 border-black rounded pl-1 w-1/4 md:w-1/3 text-center outline-none ${
+          className={`border-2 border-black rounded w-1/4 md:w-1/3 text-center outline-none ${
             !valid[1] ? 'bg-red-100' : ''
           }`}
         ></input>
