@@ -58,7 +58,7 @@ const LightningTimeProvider = ({ ...props }) => {
   }
   return (
     <LightningTimeContext.Provider value={value}>
-      {...props.children}
+      {props.children}
     </LightningTimeContext.Provider>
   )
 }
