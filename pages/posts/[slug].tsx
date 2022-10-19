@@ -48,7 +48,7 @@ const PostLayout = ({ post }: { post: Post }) => {
             </div>
           </div>
           <div className="bg-gray-200 rounded-full px-1 mx-2 mb-2 border-2 border-black inline-block">
-            <time dateTime={date} className="text-sm mx-2">
+            <time dateTime={date} className="text-base mx-2">
               {format(parseISO(date), 'LLLL d, yyyy')}
             </time>
           </div>
