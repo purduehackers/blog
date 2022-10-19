@@ -30,7 +30,7 @@ const ColorToy = ({
             const val = parseInt(e.target.value)
             if (val >= 0 && val <= 255) setStaticValues([val, staticValues[1]])
           }}
-          className="border-2 border-black rounded pl-1 w-1/4 md:w-1/3"
+          className="border-2 border-black rounded pl-1 w-1/4 md:w-1/3 text-center"
         ></input>
         <input
           type="number"
@@ -39,7 +39,7 @@ const ColorToy = ({
             const val = parseInt(e.target.value)
             if (val >= 0 && val <= 255) setStaticValues([staticValues[0], val])
           }}
-          className="border-2 border-black rounded pl-1 w-1/4 md:w-1/3"
+          className="border-2 border-black rounded pl-1 w-1/4 md:w-1/3 text-center"
         ></input>
       </div>
       <div className="flex flex-row justify-center gap-2 md:gap-0 md:justify-between">

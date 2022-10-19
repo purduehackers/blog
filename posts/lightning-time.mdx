@@ -13,6 +13,7 @@ import ColoredLightningString from '../components/posts/lightning-time/colored-l
 import ColorsDemo from '../components/posts/lightning-time/colors-demo'
 import ColorToy from '../components/posts/lightning-time/color-toy'
 import ConvertToLightning from '../components/posts/lightning-time/convert-to-lightning'
+import ConvertFromLightning from '../components/posts/lightning-time/convert-from-lightning'
 
 <LightningTimeProvider>
 
@@ -89,7 +90,10 @@ We also built a tool to convert to & from Lightning Time if you want to play aro
 Some fun facts: one bolt lasts exactly 90 minutes (because Lightning Time splits the day into 16 parts instead of 24, and 24/16 = 1.5),
 and 12:00 PM is **8~0~0**, because it's midday and 8 is half of 16.
 
-<ConvertToLightning />
+<div className="flex flex-col md:flex-row gap-4 mx-auto">
+  <ConvertToLightning />
+  <ConvertFromLightning />
+</div>
 
 If you use Raycast, we also made a Raycast extension for converting to/from Lightning Time &
 getting colors. You can [install it here](https://github.com/MatthewStanciu/raycast-lightning-time).
