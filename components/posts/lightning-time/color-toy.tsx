@@ -17,6 +17,7 @@ const ColorToy = ({
   const midpoints = ['0', '64', '128', '192', '240']
 
   const [staticValues, setStaticValues] = useState(defaultValues)
+  const [valid, setValid] = useState([true, true])
   return (
     <div className="p-4 rounded border-2 border-black flex flex-col gap-4 justify-center">
       <p className="text-2xl md:text-xl font-bold text-center">
@@ -28,18 +29,28 @@ const ColorToy = ({
           defaultValue={staticValues[0]}
           onChange={(e) => {
             const val = parseInt(e.target.value)
-            if (val >= 0 && val <= 255) setStaticValues([val, staticValues[1]])
+            if (val >= 0 && val <= 255) {
+              setStaticValues([val, staticValues[1]])
+              setValid([true, valid[1]])
+            } else setValid([false, valid[1]])
           }}
-          className="border-2 border-black rounded pl-1 w-1/4 md:w-1/3 text-center"
+          className={`border-2 border-black rounded pl-1 w-1/4 md:w-1/3 text-center outline-none ${
+            !valid[0] ? 'bg-red-100' : ''
+          }`}
         ></input>
         <input
           type="number"
           defaultValue={staticValues[1]}
           onChange={(e) => {
             const val = parseInt(e.target.value)
-            if (val >= 0 && val <= 255) setStaticValues([staticValues[0], val])
+            if (val >= 0 && val <= 255) {
+              setStaticValues([staticValues[0], val])
+              setValid([valid[0], true])
+            } else setValid([valid[0], false])
           }}
-          className="border-2 border-black rounded pl-1 w-1/4 md:w-1/3 text-center"
+          className={`border-2 border-black rounded pl-1 w-1/4 md:w-1/3 text-center outline-none ${
+            !valid[1] ? 'bg-red-100' : ''
+          }`}
         ></input>
       </div>
       <div className="flex flex-row justify-center gap-2 md:gap-0 md:justify-between">
