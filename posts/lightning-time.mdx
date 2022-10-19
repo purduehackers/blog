@@ -30,7 +30,7 @@ called a **charge**.
 
 To illustrate: the current time in your timezone is <ColoredLightningString />.
 
-A typical Lightning Time string looks like this: **8~0~0|e**, or **8~0~0** without charges.
+A typical Lightning Time string looks like **8~0~0|e**, or **8~0~0** without charges.
 
 The three major units—bolts, zaps, and sparks—are each delimited by a tilde `~`. Smaller units are delimited by a single pipe `|`.
 The charge is the only named unit after the pipe, but you can go down as far as you want. For example, **8~0~0|ef4** is a
@@ -44,7 +44,7 @@ Lightning Time is timezone-specific; it's not like UTC, where one timezone is th
 
 ## Colors
 
-Where we think Lightning Time really stands out is that you can represent it with colors! 🌈
+Where Lightning Time really stands out is that you can represent it with colors! 🌈
 (Did you notice all of the colors above are changing?)
 
 Because Lightning Time is just hexadecimal time, we can represent the current time as a color,
@@ -56,11 +56,11 @@ in reality, a hexadecimal color is just the hexadecimal representation of a colo
 because RGB goes from 0-255 (AKA 256 possible combinations), hexadecimal goes from 0-15 (AKA 16 possible combinations),
 and 16\*16 = 256.
 
-Try it yourself! Convert `5c`, `10`, and `e8` [from hexadecimal to decimal](https://www.rapidtables.com/convert/number/hex-to-decimal.html), and you'll get the RGB values of the color! In this case,
-it's `(R:92, G:16, B:232)`.
+Try it yourself! Convert `5c`, `10`, and `e8` [from hexadecimal to decimal](https://www.rapidtables.com/convert/number/hex-to-decimal.html),
+and you'll get the RGB values of the color. In this case, it's `(R:92, G:16, B:232)`.
 
 Let's say the current time is **8~e~2|f**. Lightning Time begins by filling in the red, green, and blue respective values of
-each color with the four units. It looks something like this:
+each color with the four time units. It looks something like this:
 
 ![a screenshot of handwriting in a digital notebook, showing three rows with six spaces for values. the first two (red value) of the
 first one are filled in by 8e, the middle two (green value) of the second one are filled in by e2, and the last two (blue value)
@@ -133,11 +133,11 @@ new ways to think about time. We typically divide time into 24 hours, 60 minutes
 to break a day up.
 
 We considered a handful of theories: What if we XOR the Unix epoch and normal time? What if time were circular, AKA goes up to
-a certain point, then goes back down? What if time were multidimensional (AKA rode a sine wave or something of an even higher dimension)?
+a certain point, then goes back down? What if time were multidimensional, AKA rode a sine wave or something of an even higher dimension?
 
-Eventually, we settled on hexadecimal time, primarily because of the countless ways you can manipulate hexadecimal numbers
-to end up with a color (<span className="lightning-gradient">or three</span>). We considered a few different ways to represent
-time as a color before eventually landing on Lightning Time's three-color system.
+Eventually, we settled on hexadecimal time, because the countless ways you can manipulate hexadecimal numbers
+to end up with a color (<span className="lightning-gradient">or three</span>) were really appealing to us.
+We considered a few different ways to represent time as a color before eventually landing on Lightning Time's three-color system.
 
 Finally, we settled on the tilde `~` and pipe `|` delimeters, and decided our new time system would be called Lightning Time.
 
@@ -165,13 +165,15 @@ Lightning Time wasn't created by one person; it was created by _all of us_, in a
 ---
 
 Many of us grew up never having found our people until we were united by our shared love for making things. But finding the time and
-energy to actually make things is often really difficult. We want being part of Purdue Hackers to feel like being part of a
-magical universe where you carve out real time in your day to build and ship creative and technical projects with friendly and
-interesting people. Coming together at Hack Night to build a new time system is one of the ways in which this guiding philosophy
+energy to actually make things is often really difficult. We want Purdue Hackers to feel like a
+magical universe full of wonderful & friendly people who help you carve out time to build creative projects.
+Coming together at Hack Night to build a new time system is one of the ways in which this guiding philosophy
 manifested.
 
 We don't expect Lightning Time to be used by anyone outside our universe, but we think it's really cool, and it's here for you
-if you want to use it. And if you go to Purdue and have stumbled across this post, we hope you'll check out Purdue Hackers :)
+if you want to use it. ⚡️
+
+If you go to Purdue, we hope you'll check out Purdue Hackers :)
 [Find out when our next event is happening](https://events.purduehackers.com).
 
 </LightningTimeProvider>
