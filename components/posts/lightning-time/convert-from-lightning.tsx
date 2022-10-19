@@ -30,6 +30,10 @@ const convertFromLightning = () => {
           type="text"
           defaultValue="8~0~0"
           placeholder={randomTime}
+          spellCheck={false}
+          autoCapitalize="off"
+          autoComplete="off"
+          autoCorrect="off"
           className={`border-2 border-black rounded mt-4 w-7/12 mx-auto outline-none text-center ${
             !valid ? 'bg-red-100' : ''
           }`}
