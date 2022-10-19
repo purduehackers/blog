@@ -19,7 +19,7 @@ const ColorToy = ({
   const [staticValues, setStaticValues] = useState(defaultValues)
   return (
     <div className="p-4 rounded border-2 border-black flex flex-col gap-4 justify-center">
-      <p className="text-xl font-bold text-center">
+      <p className="text-2xl md:text-xl font-bold text-center">
         {LightningPart[part]} Colors
       </p>
       <div className="flex flex-row gap-x-4 justify-center">
@@ -30,7 +30,7 @@ const ColorToy = ({
             const val = parseInt(e.target.value)
             if (val >= 0 && val <= 255) setStaticValues([val, staticValues[1]])
           }}
-          className="border-2 border-black rounded pl-1 w-5/12 md:w-1/3"
+          className="border-2 border-black rounded pl-1 w-1/4 md:w-1/3"
         ></input>
         <input
           type="number"
@@ -39,13 +39,13 @@ const ColorToy = ({
             const val = parseInt(e.target.value)
             if (val >= 0 && val <= 255) setStaticValues([staticValues[0], val])
           }}
-          className="border-2 border-black rounded pl-1 w-5/12 md:w-1/3"
+          className="border-2 border-black rounded pl-1 w-1/4 md:w-1/3"
         ></input>
       </div>
       <div className="flex flex-row justify-center gap-2 md:gap-0 md:justify-between">
         {midpoints.map((midpoint) => (
           <div
-            className="rounded-full w-5 h-5 md:w-8 md:h-8"
+            className="rounded-full w-8 h-8"
             key={midpoint}
             style={{
               backgroundColor:
