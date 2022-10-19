@@ -29,13 +29,14 @@ called a **charge**.
 
 To illustrate: the current time in your timezone is <ColoredLightningString />.
 
-Charges are kind of like seconds: you can include them (and smaller units beyond them) if you want to be more precise, but most of the time you can omit them.
-
 A typical Lightning Time string looks like this: **8~0~0|e**, or **8~0~0** without charges.
 
 The three major units—bolts, zaps, and sparks—are each delimited by a tilde `~`. Smaller units are delimited by a single pipe `|`.
 The charge is the only named unit after the pipe, but you can go down as far as you want. For example, **8~0~0|ef4** is a
 valid Lightning Time string.
+
+Charges are kind of like seconds: you can include them (and smaller units beyond them) if you want to be more precise,
+but most of the time you can omit them.
 
 Like "normal" time, Lightning Time is timezone-specific; it is not intended to be a replacement for UTC. **8~0~0** eastern time is **6~0~0** pacific time.
 
@@ -46,7 +47,7 @@ Where we think Lightning Time really stands out is that you can represent it wit
 
 Because Lightning Time is just hexadecimal time, we can represent the current time as a color,
 since any 6-digit hexadecimal string is also a color. We don't want to represent the time as one color, though—if we did,
-the color would often look bad. Instead, **Lightning Time represents time as three colors.**
+the color would often look ugly. Instead, **Lightning Time represents time as three colors.**
 
 A typical hexadecimal color looks something like <span className="font-bold text-[#5c10e8]">#5c10e8</span>. Many people see hexadecimal colors as some kind of magic color-producing code—but,
 in reality, a hexadecimal color is just the hexadecimal representation of a color's RGB values! Each RGB value gets two hexadecimal digits,
@@ -57,7 +58,7 @@ Try it yourself! Convert `5c`, `10`, and `e8` [from hexadecimal to decimal](http
 it's `(R:92, G:16, B:232)`.
 
 Let's say the current time is **8~e~2|f**. Lightning Time begins by filling in the red, green, and blue respective values of
-each color with these four parts. It looks something like this:
+each color with the four units. It looks something like this:
 
 ![](/posts/lightning-time/colors-unfilled.jpeg)
 
@@ -75,8 +76,8 @@ Here's a demo of how the colors work, using your local time:
 <ColorsDemo />
 
 The static values in this demo are the same as the values highlighted in teal in the screenshot above—they're the values
-we've picked for Purdue Hackers, and the default across the Lightning Time tooling we've built. (AKA, you don't have to think
-about colors when you use Lightning Time; you can just use our default colors.) But you can replace them with anything!
+we've picked for Purdue Hackers, and the default across the Lightning Time tooling we've built. (AKA, you don't have to come up
+with your own colors when you use Lightning Time; you can just use our default colors.) But you can replace them with anything!
 
 This is where Lightning Time gets _really_ magical: represent time not just as any three colors, but as _your_ favorite three colors! 🤯✨
 
@@ -130,11 +131,11 @@ We considered a handful of theories: What if we XOR the Unix epoch and normal ti
 a certain point, then goes back down? What if time were multidimensional (AKA rode a sine wave or something of an even higher dimension)?
 
 Eventually, we settled on hexadecimal time, primarily because of the countless ways you can manipulate hexadecimal numbers
-to end up with a color (<span className="lightning-gradient">or three</span>). We considered a few different ways to represent time as a color, before eventually landing
-on Lightning Time's three-color system.
+to end up with a color (<span className="lightning-gradient">or three</span>). We considered a few different ways to represent
+time as a color before eventually landing on Lightning Time's three-color system.
 
 Finally, we settled on the tilde `~` as a delimeter for major units and the pipe `|` to separate the three main units from
-smaller units, and came up with Lightning Time as a name for our new time system.
+smaller units, and decided our new time system would be called Lightning Time.
 
 While we were brainstorming all of this, one of us built a clock. That clock (with some minor styling & color changes) is what's
 inside the iframe at the top of this post, and lives at [lightning-time.vercel.app](https://lightning-time.vercel.app).
