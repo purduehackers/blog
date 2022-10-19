@@ -23,7 +23,7 @@ Two weeks ago, we created <span className="font-bold lightning-gradient">Lightni
 
 # What is Lightning Time?
 
-Lightning Time is a variation of hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again, and so on. The first and largest
+Lightning Time is a spin on hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again, and so on. The first and largest
 unit of Lightning Time is called a <span className="bolt">bolt</span>; the second unit is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
 called a **charge**.
 
@@ -86,6 +86,9 @@ values for Lightning Time represented as RGB values, along with the full color w
   <ColorToy part={LightningPart.Spark} defaultValues={[246, 133]} />
 </div>
 
+Below is also a tool to help you convert between "normal" time and Lightning Time. Pick some of your favorite times and convert
+between them 😎 Bonus points: pay attention to the gradient border to get even more of a feel for how the colors work.
+
 We also built a tool to convert to & from Lightning Time if you want to play around with it some more.
 Some fun facts: one bolt lasts exactly 90 minutes (because Lightning Time splits the day into 16 parts instead of 24, and 24/16 = 1.5),
 and 12:00 PM is **8~0~0**, because it's midday and 8 is half of 16.
@@ -94,6 +97,13 @@ and 12:00 PM is **8~0~0**, because it's midday and 8 is half of 16.
   <ConvertToLightning />
   <ConvertFromLightning />
 </div>
+
+Some fun facts while you're playing with that:
+
+- One bolt lasts exactly 90 minutes, because instead of splitting the day into 24 parts, Lightning Time splits it into 16 parts, and 24/16 = 1.5.
+- Zaps and sparks don't map very well to "normal" time; one zap lasts a little over 5 minutes, and one spark lasts about 21 seconds.
+- One charge lasts about one second and a half.
+- 12:00 PM is **8~0~0** because it's midday, and 8 is half of 16.
 
 If you use Raycast, we also made a Raycast extension for converting to/from Lightning Time &
 getting colors. You can [install it here](https://github.com/MatthewStanciu/raycast-lightning-time).

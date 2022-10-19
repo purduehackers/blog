@@ -29,6 +29,9 @@
   h2 {
     @apply text-2xl;
   }
+  ul {
+    @apply marker:text-amber-500;
+  }
   ::selection {
     background: #fcd34d;
   }
