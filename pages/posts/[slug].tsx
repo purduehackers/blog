@@ -40,15 +40,17 @@ const PostLayout = ({ post }: { post: Post }) => {
         <div className="bg-amber-100 border-b-4 border-black">
           <Nav />
           <div className="text-center pb-16 pt-8 sm:pt-12 flex flex-col gap-y-4 items-center max-w-3xl mx-auto">
-            <h1 className="text-5xl sm:text-7xl font-bold">{post.title}</h1>
-            <div className="flex flex-row gap-2 justify-center flex-wrap max-w-2xl">
+            <h1 className="text-5xl sm:text-7xl font-bold w-11/12">
+              {post.title}
+            </h1>
+            <div className="flex flex-row gap-2 justify-center flex-wrap w-10/12 md:max-w-2xl">
               {authors.map((author: string) => (
                 <Author key={author} authorString={author} />
               ))}
             </div>
           </div>
           <div className="bg-gray-200 rounded-full px-1 mx-2 mb-2 border-2 border-black inline-block">
-            <time dateTime={date} className="text-sm mx-2">
+            <time dateTime={date} className="text-base mx-2">
               {format(parseISO(date), 'LLLL d, yyyy')}
             </time>
           </div>
