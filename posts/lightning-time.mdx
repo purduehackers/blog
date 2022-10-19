@@ -87,11 +87,8 @@ values for Lightning Time represented as RGB values, along with the full color w
 </div>
 
 Below is also a tool to help you convert between "normal" time and Lightning Time. Pick some of your favorite times and convert
-between them 😎 Bonus points: pay attention to the gradient border to get even more of a feel for how the colors work.
-
-We also built a tool to convert to & from Lightning Time if you want to play around with it some more.
-Some fun facts: one bolt lasts exactly 90 minutes (because Lightning Time splits the day into 16 parts instead of 24, and 24/16 = 1.5),
-and 12:00 PM is **8~0~0**, because it's midday and 8 is half of 16.
+between them 😎 Bonus points: pay attention to how the gradient border changes as you do it to get even more of a feel for how
+the colors work.
 
 <div className="flex flex-col md:flex-row gap-4 mx-auto">
   <ConvertToLightning />
@@ -108,35 +105,45 @@ Some fun facts while you're playing with that:
 If you use Raycast, we also made a Raycast extension for converting to/from Lightning Time &
 getting colors. You can [install it here](https://github.com/MatthewStanciu/raycast-lightning-time).
 
-Finally: **we published an npm package**, `@purduehackers/time`, which allows you to use Lightning Time in your code.
+Finally: if you want to use Lightning Time in your own projects, **we published an npm package**: `@purduehackers/time`.
 This post is using that package! 😎 [Check it out on npm.](https://www.npmjs.com/package/@purduehackers/time) More languages coming soon 👀
 
 # How we made Lightning Time
 
-Every Friday night, Purdue Hackers runs an event called **Hack Night** 🌙.
-During the event, students work together to build their own projects, contribute to open source, and let their imaginations run wild. 🧠
+Purdue Hackers is a student organization at Purdue full of weirdo creatives who build projects together. Every Friday night,
+we run an event called **Hack Night** 🌙, during which we build projects, contribute to open source, and let our imaginations
+run wild. 🧠
 
 At [our third Hack Night](https://events.purduehackers.com/hack-night-03), a couple of us got together and began brainstorming
 new ways to think about time. We typically divide time into 24 hours, 60 minutes, 60 seconds, etc—but there are countless ways
 to break a day up. After a couple of hours of brainstorming together, we landed on Lightning Time.
 
-![Three people huddled around a table. The person in the middle is at a
+<div className="grid grid-cols-2 gap-2">
+  ![Three people huddled around a table. The person in the middle is at a
   computer, everyone else is looking at what they are
   doing.](/posts/lightning-time/hack-night-brainstorming.jpeg)
 
-Lightning Time wasn't created by one person; it was created by _all of us_, truly in the best possible way.
+![An image of a whiteboard with lots of things scribbled on it](/posts/lightning-time/whiteboard.jpeg)
+
+![](/posts/lightning-time/color-system-whiteboard.jpeg)
+
+![](/posts/lightning-time/original-clock.jpeg)
+
+</div>
+
+Lightning Time wasn't created by one person; it was created by _all of us_, in a truly magical way.
 
 # Why we made Lightning Time
 
 Many of us grew up never having found our people until we were united by our shared love for making things. But actually making
 things as a student is really difficult, especially if you're in a rigorous program like Purdue Computer Science.
-You have to have an idea that you find interesting, that's feasible to build, and that teaches you new things, but not too many
+You have to come up with an idea that you find interesting, is feasible to build, and teaches you new things, but not too many
 new things, otherwise you'll get overwhelmed and give up. Then you actually have to build the thing, all while
 being pulled in every direction by academic and social obligations.
 
 We want being part of Purdue Hackers to feel like being part of a magical, friendly, and creative universe, where you carve out
-real time in your day to build & ship creative & technical projects. Coming together at Hack Night to build a new time system is one of the ways
-in which this manifests.
+real time in your day to build & ship creative & technical projects with friendly and interesting people.
+Coming together at Hack Night to build a new time system is one of the ways in which this guiding philosophy manifested.
 
 We don't expect Lightning Time to be used by anyone outside our universe, but it's here for you if you want to use it.
 And if you go to Purdue and have stumbled across this post, we hope you'll check out Purdue Hackers :)

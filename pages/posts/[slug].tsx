@@ -53,7 +53,7 @@ const PostLayout = ({ post }: { post: Post }) => {
             </time>
           </div>
         </div>
-        <div className="mt-4 sm:mt-8 text-lg font-serif flex flex-col items-start gap-y-3 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
+        <div className="mt-4 sm:mt-8 mb-12 sm:mb-16 text-lg font-serif flex flex-col items-start gap-y-3 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
           <Content components={components} />
         </div>
         <div className="border-2 border-black mt-8"></div>
