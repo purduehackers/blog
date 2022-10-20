@@ -23,10 +23,16 @@ const ColorToy = ({
       <p className="text-2xl md:text-xl font-bold text-center">
         {LightningPart[part]} Colors
       </p>
-      <div className="flex flex-row gap-x-4 justify-center">
+      <div className="flex flex-row gap-x-2 justify-center">
+        {part === LightningPart.Bolt && (
+          <div className="px-2 rounded bg-gray-200 text-center border-2 border-red-800">
+            R
+          </div>
+        )}
         <input
           type="number"
           defaultValue={staticValues[0]}
+          placeholder={part === LightningPart.Bolt ? 'G' : 'R'}
           onChange={(e) => {
             const val = parseInt(e.target.value)
             if (val >= 0 && val <= 255) {
@@ -36,11 +42,19 @@ const ColorToy = ({
           }}
           className={`border-2 border-black rounded w-1/4 md:w-1/3 text-center outline-none ${
             !valid[0] ? 'bg-red-100' : ''
+          } ${
+            part === LightningPart.Bolt ? 'border-green-800' : 'border-red-800'
           }`}
         ></input>
+        {part === LightningPart.Zap && (
+          <div className="px-2 rounded bg-gray-200 text-center border-2 border-green-800">
+            G
+          </div>
+        )}
         <input
           type="number"
           defaultValue={staticValues[1]}
+          placeholder={part === LightningPart.Spark ? 'G' : 'B'}
           onChange={(e) => {
             const val = parseInt(e.target.value)
             if (val >= 0 && val <= 255) {
@@ -50,8 +64,17 @@ const ColorToy = ({
           }}
           className={`border-2 border-black rounded w-1/4 md:w-1/3 text-center outline-none ${
             !valid[1] ? 'bg-red-100' : ''
+          } ${
+            part === LightningPart.Spark
+              ? 'border-green-800'
+              : 'border-blue-800'
           }`}
         ></input>
+        {part === LightningPart.Spark && (
+          <div className="px-2 rounded bg-gray-200 text-center border-2 border-blue-800">
+            B
+          </div>
+        )}
       </div>
       <div className="flex flex-row justify-center gap-2 md:gap-0 md:justify-between">
         {midpoints.map((midpoint) => (
