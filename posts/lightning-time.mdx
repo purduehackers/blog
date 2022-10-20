@@ -20,12 +20,14 @@ import ConvertFromLightning from '../components/posts/lightning-time/convert-fro
 
 <Clock />
 
-Three weeks ago, we created <span className="lightning-gradient">Lightning Time</span> ⚡️, a new way to measure time. Today, we want to share Lightning Time with you.
+Three weeks ago, we created <span className="lightning-gradient">Lightning Time</span> ⚡️, a new way to measure time.
+Today, we want to share Lightning Time with you.
 
 # What is Lightning Time?
 
-Lightning Time is a spin on hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again, and so on. The first and largest
-unit of Lightning Time is called a <span className="bolt">bolt</span>; the second unit is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
+Lightning Time is a spin on hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again, and so on.
+The first and largest unit of Lightning Time is called a <span className="bolt">bolt</span>; the second unit
+is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
 called a **charge**.
 
 To illustrate: the current time in your timezone is <ColoredLightningString />.
@@ -51,10 +53,10 @@ Because Lightning Time is just hexadecimal time, we can represent the current ti
 since any 6-digit hexadecimal string is also a color. We don't want to represent the time as one color, though—if we did,
 the color would often look ugly. Instead, **Lightning Time represents time as three colors.**
 
-A typical hexadecimal color looks something like <span className="font-bold text-[#5c10e8]">#5c10e8</span>. Many people see hexadecimal colors as some kind of magic color-producing code—but,
-in reality, a hexadecimal color is just the hexadecimal representation of a color's RGB values! Each RGB value gets two hexadecimal digits,
-because RGB goes from 0-255 (AKA 256 possible combinations), hexadecimal goes from 0-15 (AKA 16 possible combinations),
-and 16\*16 = 256.
+A typical hexadecimal color looks something like <span className="font-bold text-[#5c10e8]">#5c10e8</span>.
+Many people see hexadecimal colors as some kind of magic color-producing code—but, in reality, a hexadecimal color is just
+the hexadecimal representation of a color's RGB values! Each RGB value gets two hexadecimal digits, because RGB goes from
+0-255 (AKA 256 possible combinations), hexadecimal goes from 0-15 (AKA 16 possible combinations), and 16\*16 = 256.
 
 Try it yourself! Convert `5c`, `10`, and `e8` [from hexadecimal to decimal](https://www.rapidtables.com/convert/number/hex-to-decimal.html),
 and you'll get the RGB values of the color. In this case, it's `(R:92, G:16, B:232)`.
@@ -140,7 +142,8 @@ Eventually, we settled on hexadecimal time, because the countless ways you can m
 to end up with a color (<span className="lightning-gradient">or three</span>) were really appealing to us.
 We considered a few different ways to represent time as a color before eventually landing on Lightning Time's three-color system.
 
-Finally, we settled on the tilde `~` and pipe `|` delimeters, and decided our new time system would be called Lightning Time.
+Finally, we settled on the tilde `~` and pipe `|` delimeters and the `bolt`, `zap`, `spark`, and `charge` unit names,
+and decided our new time system would be called Lightning Time.
 
 While we were brainstorming all of this, one of us built a clock. That clock (with some minor styling & color changes) is what's
 inside the iframe at the top of this post, and lives at [lightning-time.vercel.app](https://lightning-time.vercel.app).
