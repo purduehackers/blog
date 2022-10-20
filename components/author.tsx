@@ -10,9 +10,9 @@ const Author = ({ authorString }: { authorString: string }) => {
         width={25}
         height={25}
         alt={`Avatar for ${author}`}
-        className="w-[25px] rounded-full"
+        className="w-[30px] rounded-full"
       />
-      <p>{author}</p>
+      <p className="text-lg">{author}</p>
     </span>
   )
 }
