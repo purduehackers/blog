@@ -26,8 +26,6 @@ const ColorToy = ({
       <div className="flex flex-row gap-x-4 justify-center">
         <input
           type="number"
-          min={0}
-          max={255}
           defaultValue={staticValues[0]}
           onChange={(e) => {
             const val = parseInt(e.target.value)
@@ -42,8 +40,6 @@ const ColorToy = ({
         ></input>
         <input
           type="number"
-          min={0}
-          max={255}
           defaultValue={staticValues[1]}
           onChange={(e) => {
             const val = parseInt(e.target.value)
