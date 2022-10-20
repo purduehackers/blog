@@ -14,7 +14,7 @@ const ColorToy = ({
   part: LightningPart
   defaultValues: number[]
 }) => {
-  const midpoints = ['0', '64', '128', '192', '240']
+  const midpoints = [0, 64, 128, 192, 240] // 00, 40, 80, c0, f0
 
   const [staticValues, setStaticValues] = useState(defaultValues)
   const [valid, setValid] = useState([true, true])
@@ -84,22 +84,10 @@ const ColorToy = ({
             style={{
               backgroundColor:
                 part === LightningPart.Bolt
-                  ? `#${rgbHex(
-                      parseInt(midpoint),
-                      staticValues[0],
-                      staticValues[1]
-                    )}`
+                  ? `#${rgbHex(midpoint, staticValues[0], staticValues[1])}`
                   : part === LightningPart.Zap
-                  ? `#${rgbHex(
-                      staticValues[0],
-                      parseInt(midpoint),
-                      staticValues[1]
-                    )}`
-                  : `#${rgbHex(
-                      staticValues[0],
-                      staticValues[1],
-                      parseInt(midpoint)
-                    )}`
+                  ? `#${rgbHex(staticValues[0], midpoint, staticValues[1])}`
+                  : `#${rgbHex(staticValues[0], staticValues[1], midpoint)}`
             }}
           ></div>
         ))}
