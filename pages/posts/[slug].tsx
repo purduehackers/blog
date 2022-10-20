@@ -87,7 +87,7 @@ const PostLayout = ({ post }: { post: Post }) => {
         <div className="border-2 border-black mt-8"></div>
       </article>
       <Footer>
-        <p>
+        <p className="text-lg">
           Made with 💛 and ⚡️ •{' '}
           <span className="underline underline-offset-4 decoration-2">
             <a

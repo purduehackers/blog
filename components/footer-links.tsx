@@ -8,28 +8,28 @@ const FooterLinks = () => (
       className="hover:text-gray-600 transition"
       target="_blank"
     >
-      <Home />
+      <Home height={27} width={27} />
     </a>
     <a
       href="https://github.com/purduehackers"
       className="hover:text-gray-600 transition"
       target="_blank"
     >
-      <Github />
+      <Github height={27} width={27} />
     </a>
     <a
       href="https://instagram.com/purduehackers"
       className="hover:text-gray-600 transition"
       target="_blank"
     >
-      <Instagram />
+      <Instagram height={27} width={27} />
     </a>
     <a
       href="https://puhack.horse/discord"
       className="hover:text-gray-600 transition"
       target="_blank"
     >
-      <Discord />
+      <Discord height={27} width={27} />
     </a>
   </div>
 )
