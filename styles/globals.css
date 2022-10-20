@@ -1,11 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 @import url('./highlight.css');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --boltColor: #000000;
+  --zapColor: #000000;
+  --sparkColor: #000000;
+}
 
 @layer base {
   body {
@@ -14,10 +20,45 @@
   pre {
     @apply bg-gray-100 w-full mx-auto rounded-lg p-2 text-base overflow-x-auto max-w-xl font-mono;
   }
-  code {
+  :not(pre) > code {
     @apply bg-gray-200 rounded-lg p-1 text-base font-mono;
+  }
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  ul {
+    @apply marker:text-amber-500;
   }
   ::selection {
     background: #fcd34d;
+  }
+}
+
+@layer components {
+  .lightning-gradient {
+    @apply font-bold;
+    background: linear-gradient(
+      to right,
+      var(--boltColor),
+      var(--zapColor),
+      var(--sparkColor)
+    );
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .bolt {
+    @apply font-bold;
+    color: var(--boltColor);
+  }
+  .zap {
+    @apply font-bold;
+    color: var(--zapColor);
+  }
+  .spark {
+    @apply font-bold;
+    color: var(--sparkColor);
   }
 }

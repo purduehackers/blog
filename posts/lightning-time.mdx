@@ -1,32 +1,183 @@
 ---
 title: Introducing Lightning Time
-date: 2022-10-14
+date: 2022-10-20
 authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png),[Neil](https://media.discordapp.net/attachments/1014720593607802972/1031424440308879451/unknown.png),[Reece Ausmus](https://media.discordapp.net/attachments/905833672849113113/1031582305686405171/image0.jpg),[Jack](https://media.discordapp.net/attachments/905833672849113113/1032444231798771742/3c6ccb83716d1e4fb91d3082f6b21d77.png)'
+ogDescription: A new way to measure time, by Purdue Hackers
 ---
 
 import Clock from '../components/posts/lightning-time/clock'
+import LightningTimeProvider from '../components/posts/lightning-time/lightning-time-context'
+import LightningText, {
+  LightningPart
+} from '../components/posts/lightning-time/lightning-text'
+import ColoredLightningString from '../components/posts/lightning-time/colored-lightning-string'
+import ColorsDemo from '../components/posts/lightning-time/colors-demo'
+import ColorToy from '../components/posts/lightning-time/color-toy'
+import ConvertToLightning from '../components/posts/lightning-time/convert-to-lightning'
+import ConvertFromLightning from '../components/posts/lightning-time/convert-from-lightning'
+
+<LightningTimeProvider>
 
 <Clock />
 
-Two weeks ago, we created Lightning Time ⚡️, a new way to measure time. Today, we want to share Lightning Time with you.
+Three weeks ago, we created <span className="lightning-gradient">Lightning Time</span> ⚡️, a new way to measure time.
+Today, we want to share Lightning Time with you.
 
-# How Lightning Time was created
+# What is Lightning Time?
 
-Every Friday night, Purdue Hackers runs an event called **Hack Night** 🌙.
-During the event, students work together to build their own projects, contribute to open source, and let their imaginations run wild. 🧠
+Lightning Time is a spin on hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again, and so on.
+The first and largest unit of Lightning Time is called a <span className="bolt">bolt</span>; the second unit
+is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
+called a **charge**.
+
+To illustrate: the current time in your timezone is <ColoredLightningString />.
+
+A typical Lightning Time string looks like **8~0~0|e**, or **8~0~0** without charges.
+
+The three major units—bolts, zaps, and sparks—are each delimited by a tilde `~`. Smaller units are delimited by a single pipe `|`.
+The charge is the only named unit after the pipe, but you can go down as far as you want. For example, **8~0~0|ef4** is a
+valid Lightning Time string.
+
+Charges are kind of like seconds: you can include them (and smaller units beyond them) if you want to be more precise,
+but most of the time you can omit them.
+
+Lightning Time is timezone-specific; it's not like UTC, where one timezone is the universal timezone.
+**8~0~0** (12pm) eastern time is **6~0~0** (9am) pacific time.
+
+## Colors
+
+🌈 Where Lightning Time really stands out is that you can represent it with colors!
+(Did you notice all of the colors above are changing?)
+
+Because Lightning Time is just hexadecimal time, we can represent the current time as a color,
+since any 6-digit hexadecimal string is also a color. We don't want to represent the time as one color, though—if we did,
+the color would often look ugly. Instead, **Lightning Time represents time as three colors.**
+
+A typical hexadecimal color looks something like <span className="font-bold text-[#5c10e8]">#5c10e8</span>.
+Many people see hexadecimal colors as some kind of magic color-producing code—but, in reality, a hexadecimal color is just
+the hexadecimal representation of a color's RGB values! Each RGB value gets two hexadecimal digits, because RGB goes from
+0-255 (AKA 256 possible combinations), hexadecimal goes from 0-15 (AKA 16 possible combinations), and 16\*16 = 256.
+
+Try it yourself! Convert `5c`, `10`, and `e8` [from hexadecimal to decimal](https://www.rapidtables.com/convert/number/hex-to-decimal.html),
+and you'll get the RGB values of the color. In this case, it's `(R:92, G:16, B:232)`.
+
+Let's say the current time is **8~e~2|f**. Lightning Time begins by filling in the red, green, and blue respective values of
+each color with the four time units. It looks something like this:
+
+![a screenshot of handwriting in a digital notebook, showing three rows with six spaces for values. the first two (red value) of the
+first one are filled in by 8e, the middle two (green value) of the second one are filled in by e2, and the last two (blue value)
+of the third one are filled in by 2f.](/posts/lightning-time/colors-unfilled.jpeg)
+
+In this example, the red value of the first color is `8e`; the green value of the second color is `e2`; and the blue value
+of the third color is `2f`.
+
+This leaves the other two RGB values of each color open, **which you can fill in with whatever you want!** The values you
+fill in will remain static, while the respective red, green, and blue values of each color will change from `00` to `ff` according
+to the current time.
+
+![an expanded screenshot of the same notebook. on the left is the table from earlier. on the right is a new table with the
+full color filled in for all three values.](/posts/lightning-time/colors-filled.jpeg)
+
+Here's a demo of how the colors work, using your local time:
+
+<ColorsDemo />
+
+The static values in this demo are the same as the values highlighted in teal in the image above—they're the values
+we've picked for Purdue Hackers, and the default across the Lightning Time tooling we've built. (AKA, you don't have to come up
+with your own colors in order to use Lightning Time; you can just use our default colors.) But you can replace them with anything!
+
+This is where Lightning Time gets _really_ magical: represent time not just as any three colors, but as _your_ favorite three colors! 🤯✨
+
+## Play with Lightning Time 🪁⚡️
+
+If you want to get more of a feel for how Lightning Time colors work, try playing around with them! Below are the default static color
+values for Lightning Time represented as RGB values, along with the full color when the dynamic value is
+`00`, `40`, `80`, `c0`, and `f0`. Try changing all the numbers within [0, 255] and see if you can find a color combination
+that looks good to you. 🌈 (Tip: make big changes to the numbers, or you won't notice any changes)
+
+<div className="flex flex-col md:flex-row gap-4 font-main mx-auto">
+  <ColorToy part={LightningPart.Bolt} defaultValues={[161, 0]} />
+  <ColorToy part={LightningPart.Zap} defaultValues={[50, 214]} />
+  <ColorToy part={LightningPart.Spark} defaultValues={[246, 133]} />
+</div>
+
+Below is also a tool to help you convert between traditional time and Lightning Time. Pick some of your favorite times and convert
+between them 😎 Bonus points: pay attention to how the gradient border changes as you do it to get even more of a feel for how
+the colors work.
+
+<div className="flex flex-col md:flex-row gap-4 mx-auto">
+  <ConvertToLightning />
+  <ConvertFromLightning />
+</div>
+
+Some fun facts while you're playing with those:
+
+- One bolt lasts exactly 90 minutes, because instead of splitting the day into 24 parts, Lightning Time splits it into 16 parts, and 24/16 = 1.5.
+- Zaps and sparks don't map very well to traditional time; one zap lasts a little over 5 minutes, and one spark lasts about 21 seconds.
+- One charge lasts about one second and a half.
+- 12:00 PM is **8~0~0** because it's midday, and 8 is half of 16.
+
+## Tools
+
+If you use Raycast, we made a Raycast extension for converting to/from Lightning Time &
+working with colors. You can [install it here](https://github.com/MatthewStanciu/raycast-lightning-time).
+
+Finally: if you want to use Lightning Time in your own projects, **we published an npm package**: `@purduehackers/time`.
+(This post is using that package! 😎) [Check it out on npm.](https://www.npmjs.com/package/@purduehackers/time) More languages coming soon 👀
+
+# How we made Lightning Time
+
+Purdue Hackers is a student organization at Purdue University full of weirdo creatives who make things together. Every Friday night,
+we run an event called **Hack Night** 🌙, during which we build projects, contribute to open source, and let our imaginations
+run wild. 🧠
 
 At [our third Hack Night](https://events.purduehackers.com/hack-night-03), a couple of us got together and began brainstorming
 new ways to think about time. We typically divide time into 24 hours, 60 minutes, 60 seconds, etc—but there are countless ways
-to break a day up. After a couple of hours of brainstorming together, we landed on Lightning Time.
+to break a day up.
 
-![Image test](/lightning-time/IMG_0265.jpeg)
+We considered a handful of theories: What if we XOR the Unix epoch and normal time? What if time were circular, AKA goes up to
+a certain point, then goes back down? What if time were multidimensional, AKA rode a sine wave or something of an even higher dimension?
 
-Lightning Time wasn't created by one person; it was created by _all of us_, truly in the best possible way.
+Eventually, we settled on hexadecimal time, because the countless ways you can manipulate hexadecimal numbers
+to end up with a color (<span className="lightning-gradient">or three</span>) were really appealing to us.
+We considered a few different ways to represent time as a color before eventually landing on Lightning Time's three-color system.
 
-# How Lightning Time works
+Finally, we settled on the tilde `~` and pipe `|` delimeters and the `bolt`, `zap`, `spark`, and `charge` unit names,
+and decided our new time system would be called Lightning Time.
 
-At its core, Lightning Time is just hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again. The first and largest
-unit of Lightning Time is called a **bolt**; the second unit is called a **zap**; the third is called a **spark**; and the fourth is
-called a **charge**.
+While we were brainstorming all of this, one of us built a clock. That clock (with some minor styling & color changes) is what's
+inside the iframe at the top of this post, and lives at [lightning-time.vercel.app](https://lightning-time.vercel.app).
 
-A typical lightning time string looks like this: `8~0~0|e`.
+<div className="grid grid-cols-2 gap-2">
+  ![Three people huddled around a table. The person in the middle is at a
+  computer, everyone else is looking at what they are
+  doing.](/posts/lightning-time/hack-night-brainstorming.jpeg)
+
+![An image of a whiteboard with lots of things scribbled on it](/posts/lightning-time/whiteboard.jpeg)
+
+![a close-up of a whiteboard showing a bunch of scribbling vaguely resembling the color
+  table from earlier](/posts/lightning-time/color-system-whiteboard.jpeg)
+
+![a close-up of a laptop with a website open showing a lightning time clock. a lightning time string is in the
+  middle of the page, and the background of the page is a gradient of the three colors representing
+  that time.](/posts/lightning-time/original-clock.jpeg)
+
+</div>
+
+Lightning Time wasn't created by one person; it was created by _all of us_, in a truly magical way.
+
+---
+
+Many of us grew up never having found our people until we were united by our shared love for making things. But finding the time and
+energy to actually make things is often really difficult. We want Purdue Hackers to feel like a
+magical universe full of wonderful & friendly people who help you carve out time to build creative projects.
+Coming together at Hack Night to build a new time system is one of the ways in which this guiding philosophy
+manifested.
+
+We don't expect Lightning Time to be used by anyone outside our universe, but we think it's really cool, and it's here for you
+if you want to use it. ⚡️
+
+If you go to Purdue, we hope you'll check out Purdue Hackers :)
+[Find out when our next event is happening](https://events.purduehackers.com).
+
+</LightningTimeProvider>

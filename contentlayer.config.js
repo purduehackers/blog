@@ -26,6 +26,11 @@ const Post = defineDocumentType(() => ({
       description: 'Whether this post should appear on the homepage',
       required: false,
       default: true
+    },
+    ogDescription: {
+      type: 'string',
+      description: 'The Open Graph description of the post',
+      required: false
     }
   },
   computedFields: {

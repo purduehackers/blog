@@ -172,6 +172,11 @@
     protobufjs "^7.0.0"
     yargs "^16.2.0"
 
+"@icons-pack/react-simple-icons@^5.10.0":
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/@icons-pack/react-simple-icons/-/react-simple-icons-5.10.0.tgz#0476656482cda3ab6e79f945d3a55950363fe751"
+  integrity sha512-I93VYZJS6EQjiQr1k+FxNQv5xVWJIu222BoiSwb6CPTwAEtrCJXVZ9vygzdAOx5CnchKEIg7OcRHrx8o74uyoA==
+
 "@js-temporal/polyfill@^0.4.2":
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@js-temporal/polyfill/-/polyfill-0.4.2.tgz#badd7a581cac84fda7e9fd900910cad2fb9679b2"
@@ -505,6 +510,13 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
+"@purduehackers/time@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@purduehackers/time/-/time-0.5.0.tgz#9ec0da8c71fd8b66e1068921880bbfae644dd2b9"
+  integrity sha512-pVrbZFUEzpmlM1nCxG1hdsjQYCRtrv0eD2wM/LDoNqWWiVXX64WJ2q3liX+b0/Wln/CfB8dv+e76ZFeCfLpo5g==
+  dependencies:
+    rgb-hex "3.0.0"
+
 "@swc/helpers@0.4.11":
   version "0.4.11"
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.4.11.tgz#db23a376761b3d31c26502122f349a21b592c8de"
@@ -549,6 +561,11 @@
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.2.tgz#b74129719fc8d11c01868010082d483b7545591a"
   integrity sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==
+
+"@types/luxon@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-3.0.2.tgz#11361eb3c8a81e9b8d6b35b6ffe155e8eb95480d"
+  integrity sha512-HM2OVWckUMmXbWYZufmWT2XMURGDZ6XbyNyQ+Lx+gCFGFqbZaIjsz7b+AGeGP/AuVYHBiuGY+wXfweP1RremnA==
 
 "@types/mdast@^3.0.0":
   version "3.0.10"
@@ -1689,6 +1706,11 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+luxon@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.0.4.tgz#d179e4e9f05e092241e7044f64aaa54796b03929"
+  integrity sha512-aV48rGUwP/Vydn8HT+5cdr26YYQiUZ42NM6ToMoaGKwYfWbfLeRkEu1wXWMHBZT6+KyLfcbbtVcoQFCbbPjKlw==
 
 markdown-extensions@^1.0.0:
   version "1.1.1"
@@ -2842,6 +2864,11 @@ reusify@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
+
+rgb-hex@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rgb-hex/-/rgb-hex-3.0.0.tgz#eab0168cc1279563b18a14605315389142e2e487"
+  integrity sha512-8h7ZcwxCBDKvchSWbWngJuSCqJGQ6nDuLLg+QcRyQDbX9jMWt+PpPeXAhSla0GOooEomk3lCprUpGkMdsLjKyg==
 
 run-parallel@^1.1.9:
   version "1.2.0"
