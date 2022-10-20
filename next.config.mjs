@@ -7,7 +7,7 @@ const config = withContentlayer({
   swcMinify: true,
   pageExtensions: ['js', 'ts', 'tsx', 'mdx'],
   images: {
-    domains: ['github.com', 'cdn.discordapp.com']
+    domains: ['github.com', 'cdn.discordapp.com', 'media.discordapp.net']
   }
 })
 
