@@ -61,6 +61,11 @@ const PostLayout = ({ post }: { post: Post }) => {
         <meta property="og:description" content={post.ogDescription} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="og:type" content="website" />
+        <script
+          src="https://cdn.counter.dev/script.js"
+          data-id="42e4858e-929d-4a7d-a3ae-755820dbc79f"
+          data-utcoffset="-4"
+        ></script>
       </Head>
       <article className="w-screen">
         <div className="bg-amber-100 border-b-4 border-black">
