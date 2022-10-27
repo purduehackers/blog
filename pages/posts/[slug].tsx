@@ -58,6 +58,7 @@ const PostLayout = ({ post }: { post: Post }) => {
         <meta property="og:name" content={`${post.title} | Purdue Hackers`} />
         <meta property="og:title" content={`${post.title} | Purdue Hackers`} />
         <meta property="og:image" content={ogImage} />
+        <meta property="twitter:image" content={ogImage} />
         <meta property="og:description" content={post.ogDescription} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="og:type" content="website" />
