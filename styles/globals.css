@@ -33,7 +33,7 @@
     @apply marker:text-amber-500;
   }
   li > ul > li {
-    @apply ml-6;
+    @apply sm:ml-6;
   }
   ::selection {
     background: #fcd34d;
