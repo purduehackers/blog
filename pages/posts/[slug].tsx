@@ -85,33 +85,9 @@ const PostLayout = ({ post }: { post: Post }) => {
         <div className="mt-4 sm:mt-8 mb-12 sm:mb-16 text-lg font-serif flex flex-col items-start gap-y-3 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
           <Content components={components} />
         </div>
-        <div className="border-2 border-black mt-8"></div>
       </article>
-      <Footer>
-        <p className="text-lg">
-          Made with 💛 and ⚡️ •{' '}
-          <span className="underline underline-offset-4 decoration-2">
-            <a
-              href="https://github.com/purduehackers/blog"
-              target="_blank"
-              className="decoration-amber-400 dark:decoration-amber-500 hover:decoration-[3px]"
-            >
-              Open source
-            </a>
-          </span>{' '}
-          •{' '}
-          <span className="underline underline-offset-4 decoration-2">
-            <a
-              href="https://vercel.com?utm_source=purdue-hackers&utm_campaign=oss"
-              target="_blank"
-              className="decoration-amber-400 dark:decoration-amber-500 hover:decoration-[3px]"
-            >
-              Powered by ▲Vercel.
-            </a>
-          </span>
-        </p>
-        <FooterLinks />
-      </Footer>
+      <div className="border-2 border-black mt-8"></div>
+      <Footer />
     </>
   )
 }

@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { compareDesc, format, parseISO } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
 import Link from 'next/link'
+import Footer from 'components/footer'
 
 const PostCard = (post: Post) => {
   return (
@@ -46,6 +47,8 @@ const Home = ({ posts }: { posts: Post[] }) => (
         ))}
       </div>
     </div>
+    <div className="border-2 border-black mt-14"></div>
+    <Footer />
   </div>
 )
 
