@@ -17,7 +17,8 @@ module.exports = {
         blocks: '2px 2px'
       },
       colors: {
-        post: 'var(--postColor)'
+        post: 'var(--postMain)',
+        'post-light': 'var(--postLight)'
       }
     }
   },

@@ -3,50 +3,50 @@ const colors = [
     name: 'red',
     bg: '#fecaca',
     bgLight: '#fee2e2',
-    link: '#f87171',
-    linkbgLight: '#ef4444'
+    main: '#ef4444',
+    mainLight: '#f87171'
   },
   {
     name: 'orange',
     bg: '#fed7aa',
     bgLight: '#ffedd5',
-    link: '#fb923c',
-    linkbgLight: '#f97316'
+    main: '#f97316',
+    mainLight: '#fb923c'
   },
   {
     name: 'amber',
     bg: '#fde68a',
     bgLight: '#fef3c7',
-    link: '#fbbf24',
-    linkbgLight: '#f59e0b'
+    main: '#f59e0b',
+    mainLight: '#fbbf24'
   },
   {
     name: 'green',
     bg: '#bbf7d0',
     bgLight: '#dcfce7',
-    link: '#4ade80',
-    linkbgLight: '#22c55e'
+    main: '#22c55e',
+    mainLight: '#4ade80'
   },
   {
     name: 'teal',
     bg: '#99f6e4',
     bgLight: '#ccfbf1',
-    link: '#2dd4bf',
-    linkbgLight: '#14b8a6'
+    main: '#14b8a6',
+    mainLight: '#2dd4bf'
   },
   {
     name: 'indigo',
     bg: '#c7d2fe',
     bgLight: '#e0e7ff',
-    link: '#818cf8',
-    linkbgLight: '#6366f1'
+    main: '#6366f1',
+    mainLight: '#818cf8'
   },
   {
     name: 'violet',
     bg: '#ddd6fe',
     bgLight: '#ede9fe',
-    link: '#a78bfa',
-    linkbgLight: '#8b5cf6'
+    main: '#8b5cf6',
+    mainLight: '#a78bfa'
   }
 ]
 

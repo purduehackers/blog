@@ -9,6 +9,7 @@ import components from '../../lib/components'
 import Footer from 'components/footer'
 import parseMarkdownLink from 'lib/parse-markdown-link'
 import colors from 'lib/colors'
+import { useEffect } from 'react'
 
 export const getStaticPaths = async () => {
   const paths: string[] = allPosts.map((post) => post.url)
@@ -50,6 +51,13 @@ const getOgImage = ({
 }
 
 const PostLayout = ({ post }: { post: Post }) => {
+  useEffect(() => {
+    document.documentElement.style.setProperty('--postMain', post.color.main)
+    document.documentElement.style.setProperty(
+      '--postLight',
+      post.color.mainLight
+    )
+  }, [])
   const Content = useMDXComponent(post.body.code)
   const authors: string[] = post.authors.split(',') || [post.authors]
   const date = post.date.substring(0, post.date.length - 14)
