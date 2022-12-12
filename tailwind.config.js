@@ -15,6 +15,9 @@ module.exports = {
     extend: {
       boxShadow: {
         blocks: '2px 2px'
+      },
+      colors: {
+        post: 'var(--postColor)'
       }
     }
   },

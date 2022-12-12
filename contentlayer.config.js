@@ -31,6 +31,11 @@ const Post = defineDocumentType(() => ({
       type: 'string',
       description: 'The Open Graph description of the post',
       required: false
+    },
+    color: {
+      type: 'json',
+      description: 'The color of the post — appears on card and in background',
+      required: false
     }
   },
   computedFields: {

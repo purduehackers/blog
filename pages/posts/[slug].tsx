@@ -8,6 +8,7 @@ import Author from 'components/author'
 import components from '../../lib/components'
 import Footer from 'components/footer'
 import parseMarkdownLink from 'lib/parse-markdown-link'
+import colors from 'lib/colors'
 
 export const getStaticPaths = async () => {
   const paths: string[] = allPosts.map((post) => post.url)
@@ -18,6 +19,7 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  allPosts.map((post, i) => (post.color = colors[i % colors.length]))
   const post = allPosts.find((post) => post._raw.flattenedPath === params?.slug)
   if (!post) return { notFound: true }
   return {
@@ -63,7 +65,10 @@ const PostLayout = ({ post }: { post: Post }) => {
         <meta property="og:type" content="website" />
       </Head>
       <article className="w-screen">
-        <div className="bg-amber-100 border-b-4 border-black">
+        <div
+          className="border-b-4 border-black"
+          style={{ backgroundColor: post.color.bg }}
+        >
           <Nav />
           <div className="text-center pb-16 pt-8 sm:pt-12 flex flex-col gap-y-6 items-center max-w-3xl mx-auto">
             <h1 className="text-5xl sm:text-7xl font-bold w-11/12">

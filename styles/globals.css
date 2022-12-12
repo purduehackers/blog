@@ -11,6 +11,8 @@
   --boltColor: #000000;
   --zapColor: #000000;
   --sparkColor: #000000;
+
+  --postColor: #fef3c7;
 }
 
 @layer base {
