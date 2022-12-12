@@ -11,6 +11,9 @@
   --boltColor: #000000;
   --zapColor: #000000;
   --sparkColor: #000000;
+
+  --postMain: #f59e0b;
+  --postLight: #fbbf24;
 }
 
 @layer base {
@@ -30,7 +33,7 @@
     @apply text-2xl;
   }
   ul {
-    @apply marker:text-amber-500;
+    @apply marker:text-post;
   }
   li > ul > li {
     @apply sm:ml-6;

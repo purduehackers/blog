@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { format, parseISO } from 'date-fns'
+import { compareAsc, format, parseISO } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { GetStaticProps } from 'next'
@@ -8,6 +8,8 @@ import Author from 'components/author'
 import components from '../../lib/components'
 import Footer from 'components/footer'
 import parseMarkdownLink from 'lib/parse-markdown-link'
+import colors from 'lib/colors'
+import { useEffect } from 'react'
 
 export const getStaticPaths = async () => {
   const paths: string[] = allPosts.map((post) => post.url)
@@ -18,6 +20,10 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const posts: Post[] = allPosts.sort((a: Post, b: Post) =>
+    compareAsc(new Date(a.date), new Date(b.date))
+  )
+  posts.map((post, i) => (post.color = colors[i % colors.length]))
   const post = allPosts.find((post) => post._raw.flattenedPath === params?.slug)
   if (!post) return { notFound: true }
   return {
@@ -45,6 +51,13 @@ const getOgImage = ({
 }
 
 const PostLayout = ({ post }: { post: Post }) => {
+  useEffect(() => {
+    document.documentElement.style.setProperty('--postMain', post.color.main)
+    document.documentElement.style.setProperty(
+      '--postLight',
+      post.color.mainLight
+    )
+  }, [])
   const Content = useMDXComponent(post.body.code)
   const authors: string[] = post.authors.split(',') || [post.authors]
   const date = post.date.substring(0, post.date.length - 14)
@@ -63,7 +76,10 @@ const PostLayout = ({ post }: { post: Post }) => {
         <meta property="og:type" content="website" />
       </Head>
       <article className="w-screen">
-        <div className="bg-amber-100 border-b-4 border-black">
+        <div
+          className="border-b-4 border-black"
+          style={{ backgroundColor: post.color.bgLight }}
+        >
           <Nav />
           <div className="text-center pb-16 pt-8 sm:pt-12 flex flex-col gap-y-6 items-center max-w-3xl mx-auto">
             <h1 className="text-5xl sm:text-7xl font-bold w-11/12">
