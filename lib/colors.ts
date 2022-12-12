@@ -1,45 +1,52 @@
 const colors = [
   {
     name: 'red',
-    bg: '#fee2e2',
-    link: '#ef4444',
-    linkHover: '#f87171'
+    bg: '#fecaca',
+    bgLight: '#fee2e2',
+    link: '#f87171',
+    linkbgLight: '#ef4444'
   },
   {
     name: 'orange',
-    bg: '#ffedd5',
-    link: '#f97316',
-    linkHover: '#fb923c'
+    bg: '#fed7aa',
+    bgLight: '#ffedd5',
+    link: '#fb923c',
+    linkbgLight: '#f97316'
   },
   {
     name: 'amber',
-    bg: '#fef3c7',
-    link: '#f59e0b',
-    linkHover: '#fbbf24'
+    bg: '#fde68a',
+    bgLight: '#fef3c7',
+    link: '#fbbf24',
+    linkbgLight: '#f59e0b'
   },
   {
     name: 'green',
-    bg: '#dcfce7',
-    link: '#22c55e',
-    linkHover: '#4ade80'
+    bg: '#bbf7d0',
+    bgLight: '#dcfce7',
+    link: '#4ade80',
+    linkbgLight: '#22c55e'
   },
   {
     name: 'teal',
-    bg: '#ccfbf1',
-    link: '#14b8a6',
-    linkHover: '#2dd4bf'
+    bg: '#99f6e4',
+    bgLight: '#ccfbf1',
+    link: '#2dd4bf',
+    linkbgLight: '#14b8a6'
   },
   {
     name: 'indigo',
-    bg: '#e0e7ff',
-    link: '#6366f1',
-    linkHover: '#818cf8'
+    bg: '#c7d2fe',
+    bgLight: '#e0e7ff',
+    link: '#818cf8',
+    linkbgLight: '#6366f1'
   },
   {
     name: 'violet',
-    bg: '#ede9fe',
-    link: '#8b5cf6',
-    linkHover: '#a78bfa'
+    bg: '#ddd6fe',
+    bgLight: '#ede9fe',
+    link: '#a78bfa',
+    linkbgLight: '#8b5cf6'
   }
 ]
 

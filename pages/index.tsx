@@ -1,9 +1,9 @@
 import Head from 'next/head'
-import { compareDesc } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
 import Footer from 'components/footer'
 import PostCard from 'components/post-card'
 import colors from 'lib/colors'
+import { sortAsc, sortDesc } from 'lib/sort'
 
 const Home = ({ posts }: { posts: Post[] }) => (
   <div className="min-h-screen">
@@ -29,10 +29,8 @@ const Home = ({ posts }: { posts: Post[] }) => (
 )
 
 export async function getStaticProps() {
-  const posts: Post[] = allPosts.sort((a: Post, b: Post) => {
-    return compareDesc(new Date(a.date), new Date(b.date))
-  })
-  posts.map((post, i) => (post.color = colors[i % colors.length]))
+  sortAsc(allPosts).map((post, i) => (post.color = colors[i % colors.length]))
+  const posts: Post[] = sortDesc(allPosts)
   return { props: { posts } }
 }
 

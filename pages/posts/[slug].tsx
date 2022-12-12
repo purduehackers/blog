@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { format, parseISO } from 'date-fns'
+import { compareAsc, format, parseISO } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { GetStaticProps } from 'next'
@@ -19,7 +19,10 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  allPosts.map((post, i) => (post.color = colors[i % colors.length]))
+  const posts: Post[] = allPosts.sort((a: Post, b: Post) =>
+    compareAsc(new Date(a.date), new Date(b.date))
+  )
+  posts.map((post, i) => (post.color = colors[i % colors.length]))
   const post = allPosts.find((post) => post._raw.flattenedPath === params?.slug)
   if (!post) return { notFound: true }
   return {
@@ -67,7 +70,7 @@ const PostLayout = ({ post }: { post: Post }) => {
       <article className="w-screen">
         <div
           className="border-b-4 border-black"
-          style={{ backgroundColor: post.color.bg }}
+          style={{ backgroundColor: post.color.bgLight }}
         >
           <Nav />
           <div className="text-center pb-16 pt-8 sm:pt-12 flex flex-col gap-y-6 items-center max-w-3xl mx-auto">
