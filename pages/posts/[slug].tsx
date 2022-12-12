@@ -7,7 +7,6 @@ import Nav from 'components/nav'
 import Author from 'components/author'
 import components from '../../lib/components'
 import Footer from 'components/footer'
-import FooterLinks from 'components/footer-links'
 import parseMarkdownLink from 'lib/parse-markdown-link'
 
 export const getStaticPaths = async () => {
