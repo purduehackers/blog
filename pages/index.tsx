@@ -4,6 +4,7 @@ import Footer from 'components/footer'
 import PostCard from 'components/post-card'
 import colors from 'lib/colors'
 import { sortAsc, sortDesc } from 'lib/sort'
+import { pick } from 'contentlayer/client'
 
 const Home = ({ posts }: { posts: Post[] }) => (
   <div className="min-h-screen">
@@ -30,7 +31,9 @@ const Home = ({ posts }: { posts: Post[] }) => (
 
 export async function getStaticProps() {
   sortAsc(allPosts).map((post, i) => (post.color = colors[i % colors.length]))
-  const posts: Post[] = sortDesc(allPosts)
+  const posts = sortDesc(allPosts).map((post) =>
+    pick(post, ['title', 'date', 'url', 'color'])
+  )
   return { props: { posts } }
 }
 
