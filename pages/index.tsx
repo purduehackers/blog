@@ -30,14 +30,7 @@ const Home = ({ posts }: { posts: Post[] }) => (
 
 export async function getStaticProps() {
   sortAsc(allPosts).map((post, i) => (post.color = colors[i % colors.length]))
-  const posts = sortDesc(allPosts) as Partial<Post>[]
-
-  // By default, Contentlayer sends Posts with all their data, including the entire article.
-  // We don't need this data on the index page, and it was causing a Next.js "large page data" error.
-  for (const post of posts) {
-    delete post.body
-  }
-
+  const posts: Post[] = sortDesc(allPosts)
   return { props: { posts } }
 }
 
