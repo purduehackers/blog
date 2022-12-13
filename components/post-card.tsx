@@ -7,8 +7,7 @@ const PostCard = (post: Post) => {
     <Link href={post.url}>
       <a>
         <div
-          className="flex flex-col h-full justify-center text-center p-4 rounded-lg border-2 border-black"
-          style={{ backgroundColor: post.color.bg }}
+          className={`flex flex-col h-full justify-center text-center p-4 rounded-lg border-[3px] border-black bg-${post.color.bg} hover:bg-[${post.color.mainLight}] transition duration-100`}
         >
           <time dateTime={post.date} className="text-sm text-gray-600">
             {format(

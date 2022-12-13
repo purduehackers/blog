@@ -76,10 +76,7 @@ const PostLayout = ({ post }: { post: Post }) => {
         <meta property="og:type" content="website" />
       </Head>
       <article className="w-screen">
-        <div
-          className="border-b-4 border-black"
-          style={{ backgroundColor: post.color.bgLight }}
-        >
+        <div className={`border-b-4 border-black bg-${post.color.bgLight}`}>
           <Nav />
           <div className="text-center pb-16 pt-8 sm:pt-12 flex flex-col gap-y-6 items-center max-w-3xl mx-auto">
             <h1 className="text-5xl sm:text-7xl font-bold w-11/12">
