@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { compareAsc, format, parseISO } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { GetStaticProps } from 'next'
@@ -10,6 +10,7 @@ import Footer from 'components/footer'
 import parseMarkdownLink from 'lib/parse-markdown-link'
 import colors from 'lib/colors'
 import { useEffect } from 'react'
+import { sortAsc } from 'lib/sort'
 
 export const getStaticPaths = async () => {
   const paths: string[] = allPosts.map((post) => post.url)
@@ -20,9 +21,7 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const posts: Post[] = allPosts.sort((a: Post, b: Post) =>
-    compareAsc(new Date(a.date), new Date(b.date))
-  )
+  const posts: Post[] = sortAsc(allPosts)
   posts.map((post, i) => (post.color = colors[i % colors.length]))
   const post = allPosts.find((post) => post._raw.flattenedPath === params?.slug)
   if (!post) return { notFound: true }
