@@ -22,12 +22,12 @@ module.exports = {
     'bg-teal-200',
     'bg-teal-100',
     'hover:bg-[#2dd4bf]',
-    'bg-indigo-200',
-    'bg-indigo-100',
-    'hover:bg-[#818cf8]',
     'bg-violet-200',
     'bg-violet-100',
-    'hover:bg-[#a78bfa]'
+    'hover:bg-[#a78bfa]',
+    'bg-pink-200',
+    'bg-pink-100',
+    'hover:bg-[#f472b6]'
   ],
   theme: {
     fontFamily: {

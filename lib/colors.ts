@@ -35,18 +35,18 @@ const colors = [
     mainLight: '#2dd4bf'
   },
   {
-    name: 'indigo',
-    bg: 'indigo-200',
-    bgLight: 'indigo-100',
-    main: '#6366f1',
-    mainLight: '#818cf8'
-  },
-  {
     name: 'violet',
     bg: 'violet-200',
     bgLight: 'violet-100',
     main: '#8b5cf6',
     mainLight: '#a78bfa'
+  },
+  {
+    name: 'pink',
+    bg: 'pink-200',
+    bgLight: 'pink-100',
+    main: '#ec4899',
+    mainLight: '#f472b6'
   }
 ]
 
