@@ -25,24 +25,31 @@ Today, we want to share Lightning Time with you.
 
 # What is Lightning Time?
 
-Lightning Time is a spin on hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again, and so on.
+Lightning Time is a spin on hexadecimal time: the day is split into 16 parts, then 16 again, then 16 again, and so on. In other words: instead of there being 24 hours in a day, 60 minutes in an hour, 60 minutes in a second, there are 16 "hours" in a day, 16 "minutes" in an hour, 16 "seconds" in a minute, and so on.
+
+<img
+  src="/posts/lightning-time/timeline-1.jpg"
+  alt="A diagram showing a timeline from 12:00AM to 12:00AM, with normal time at the top and Lightning Time at the bottom. For example, 12:00AM is 0~0~0 and 12:00PM is 8~0~0. 12:00PM is 12/24th or one half of a day, just as 8 is 8/16th or one half of a day."
+/>
+
 The first and largest unit of Lightning Time is called a <span className="bolt">bolt</span>; the second unit
 is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
 called a **charge**.
 
 To illustrate: the current time in your timezone is <ColoredLightningString />.
 
-A typical Lightning Time string looks like **8~0~0|e**, or **8~0~0** without charges.
+Bolts are the "hours", zaps are the "minutes", sparks are the "seconds", and charges are the "milliseconds"; however, because Lightning Time's units are divided up differently, it runs more slowly, so these units don't map very well to the time system we're used to. 1 bolt equals exactly 90 minutes; 1 zap equals a little over 5 and a half minutes; one spark equals about 21 seconds; one charge equals about 1.3 seconds.
+
+A typical Lightning Time string looks like **8~0~0|e**, or **8~0~0** without the charge.
 
 The three major units—bolts, zaps, and sparks—are each delimited by a tilde `~`. Smaller units are delimited by a single pipe `|`.
 The charge is the only named unit after the pipe, but you can go down as far as you want. For example, **8~0~0|ef4** is a
 valid Lightning Time string.
 
-Charges are kind of like seconds: you can include them (and smaller units beyond them) if you want to be more precise,
+Charges act kind of like seconds: you can include them (and smaller units beyond them) if you want to be more precise,
 but most of the time you can omit them.
 
-Lightning Time is timezone-specific; it's not like UTC, where one timezone is the universal timezone.
-**8~0~0** (12pm) eastern time is **6~0~0** (9am) pacific time.
+Timezones still exist in Lightning Time: **8~0~0** (12pm) eastern time is **6~0~0** (9am) pacific time.
 
 ## Colors
 
@@ -56,7 +63,7 @@ the color would often look ugly. Instead, **Lightning Time represents time as th
 A typical hexadecimal color looks something like <span className="font-bold text-[#5c10e8]">#5c10e8</span>.
 Many people see hexadecimal colors as some kind of magic color-producing code—but, in reality, a hexadecimal color is just
 the hexadecimal representation of a color's RGB values! Each RGB value gets two hexadecimal digits, because RGB goes from
-0-255 (AKA 256 possible combinations), hexadecimal goes from 0-15 (AKA 16 possible combinations), and 16\*16 = 256.
+0-255 (AKA 256 possible values), hexadecimal goes from 0-15 (AKA 16 possible values), and 16\*16 = 256 possible values.
 
 Try it yourself! Convert `5c`, `10`, and `e8` [from hexadecimal to decimal](https://www.rapidtables.com/convert/number/hex-to-decimal.html),
 and you'll get the RGB values of the color. In this case, it's `(R:92, G:16, B:232)`.
@@ -110,20 +117,13 @@ the colors work.
   <ConvertFromLightning />
 </div>
 
-Some fun facts while you're playing with those:
-
-- One bolt lasts exactly 90 minutes, because instead of splitting the day into 24 parts, Lightning Time splits it into 16 parts, and 24/16 = 1.5.
-- Zaps and sparks don't map very well to traditional time; one zap lasts a little over 5 minutes, and one spark lasts about 21 seconds.
-- One charge lasts about one second and a half.
-- 12:00 PM is **8~0~0** because it's midday, and 8 is half of 16.
-
 ## Tools
 
-If you use Raycast, we made a Raycast extension for converting to/from Lightning Time &
-working with colors. You can [install it here](https://github.com/MatthewStanciu/raycast-lightning-time).
+If you want to use Lightning Time in your own projects, we published an npm package: `@purduehackers/time`.
+(Fun fact: this post is using that package! 😎) [Check it out on npm.](https://www.npmjs.com/package/@purduehackers/time)
 
-Finally: if you want to use Lightning Time in your own projects, **we published an npm package**: `@purduehackers/time`.
-(This post is using that package! 😎) [Check it out on npm.](https://www.npmjs.com/package/@purduehackers/time) More languages coming soon 👀
+We also made a Raycast extension for converting to/from Lightning Time &
+playing with colors. You can [install it here](https://www.raycast.com/MatthewStanciu/lightning-time).
 
 # How we made Lightning Time
 
