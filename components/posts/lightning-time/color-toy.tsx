@@ -19,13 +19,13 @@ const ColorToy = ({
   const [staticValues, setStaticValues] = useState(defaultValues)
   const [valid, setValid] = useState([true, true])
   return (
-    <div className="p-4 rounded-lg border-4 border-black flex flex-col gap-4 justify-center">
+    <div className="px-3 py-4 rounded-lg border-4 border-black flex flex-col gap-4 justify-center">
       <p className="text-2xl md:text-xl font-bold text-center">
         {LightningPart[part]} Colors
       </p>
-      <div className="flex flex-row gap-x-2 justify-center">
+      <div className="flex flex-row gap-x-2 justify-center font-mono">
         {part === LightningPart.Bolt && (
-          <div className="px-2 rounded bg-gray-200 text-center border-2 border-red-800">
+          <div className="px-2 rounded bg-gray-100 text-center border-2 border-red-800">
             R
           </div>
         )}
@@ -40,14 +40,14 @@ const ColorToy = ({
               setValid([true, valid[1]])
             } else setValid([false, valid[1]])
           }}
-          className={`border-2 border-black rounded w-1/5 md:w-1/3 text-center outline-none ${
+          className={`border-2 border-black rounded w-1/5 md:w-1/3 text-center sm:text-left px-1 outline-none ${
             !valid[0] ? 'bg-red-100' : ''
           } ${
             part === LightningPart.Bolt ? 'border-green-800' : 'border-red-800'
           }`}
         ></input>
         {part === LightningPart.Zap && (
-          <div className="px-2 rounded bg-gray-200 text-center border-2 border-green-800">
+          <div className="px-2 rounded bg-gray-100 text-center border-2 border-green-800">
             G
           </div>
         )}
@@ -62,7 +62,7 @@ const ColorToy = ({
               setValid([valid[0], true])
             } else setValid([valid[0], false])
           }}
-          className={`border-2 border-black rounded w-1/5 md:w-1/3 text-center outline-none ${
+          className={`border-2 border-black rounded w-1/5 md:w-1/3 text-center sm:text-left px-1 outline-none ${
             !valid[1] ? 'bg-red-100' : ''
           } ${
             part === LightningPart.Spark
@@ -71,25 +71,37 @@ const ColorToy = ({
           }`}
         ></input>
         {part === LightningPart.Spark && (
-          <div className="px-2 rounded bg-gray-200 text-center border-2 border-blue-800">
+          <div className="px-2 rounded bg-gray-100 text-center border-2 border-blue-800">
             B
           </div>
         )}
       </div>
       <div className="flex flex-row justify-center gap-2 md:gap-0 md:justify-between">
-        {midpoints.map((midpoint) => (
-          <div
-            className="rounded-full w-8 h-8"
-            key={midpoint}
-            style={{
-              backgroundColor:
+        {midpoints.map((midpoint, i) => (
+          <div key={midpoint} className="flex flex-col gap-2 justify-center">
+            <div
+              className="rounded-full w-8 h-8"
+              style={{
+                backgroundColor:
+                  part === LightningPart.Bolt
+                    ? `#${rgbHex(midpoint, staticValues[0], staticValues[1])}`
+                    : part === LightningPart.Zap
+                    ? `#${rgbHex(staticValues[0], midpoint, staticValues[1])}`
+                    : `#${rgbHex(staticValues[0], staticValues[1], midpoint)}`
+              }}
+            ></div>
+            <div
+              className={`text-xs rounded bg-gray-100 text-center font-mono border-2 ${
                 part === LightningPart.Bolt
-                  ? `#${rgbHex(midpoint, staticValues[0], staticValues[1])}`
+                  ? 'border-red-800'
                   : part === LightningPart.Zap
-                  ? `#${rgbHex(staticValues[0], midpoint, staticValues[1])}`
-                  : `#${rgbHex(staticValues[0], staticValues[1], midpoint)}`
-            }}
-          ></div>
+                  ? 'border-green-800'
+                  : 'border-blue-800'
+              }`}
+            >
+              {(i === 4 ? 60 : 64) * i}
+            </div>
+          </div>
         ))}
       </div>
     </div>

@@ -98,8 +98,7 @@ This is where Lightning Time gets _really_ magical: represent time not just as a
 ## Play with Lightning Time 🪁⚡️
 
 If you want to get more of a feel for how Lightning Time colors work, try playing around with them! Below are the default static color
-values for Lightning Time represented as RGB values, along with the full color when the dynamic value is
-`00`, `40`, `80`, `c0`, and `f0`. Try changing all the numbers within [0, 255] and see if you can find a color combination
+values for Lightning Time represented as RGB values, along with the full color when the dynamic value increases from 0 to 240. Try changing all the numbers within [0, 255] and see if you can find a color combination
 that looks good to you. 🌈 (Tip: make big changes to the numbers, or you won't notice any changes)
 
 <div className="flex flex-col md:flex-row gap-4 font-main mx-auto">
@@ -107,6 +106,8 @@ that looks good to you. 🌈 (Tip: make big changes to the numbers, or you won't
   <ColorToy part={LightningPart.Zap} defaultValues={[50, 214]} />
   <ColorToy part={LightningPart.Spark} defaultValues={[246, 133]} />
 </div>
+
+Note: this demo uses RGB values in order to make it easier for you to change the values and understand what they mean. In Lightning Time, these RGB values are represented in their hexadecimal form; see the color demo above this one.
 
 Below is also a tool to help you convert between traditional time and Lightning Time. Pick some of your favorite times and convert
 between them 😎 Bonus points: pay attention to how the gradient border changes as you do it to get even more of a feel for how
