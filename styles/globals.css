@@ -24,7 +24,7 @@
     @apply bg-gray-100 w-full mx-auto rounded-lg p-2 text-base overflow-x-auto max-w-xl font-mono;
   }
   :not(pre) > code {
-    @apply bg-gray-200 rounded-lg p-1 text-base font-mono;
+    @apply bg-gray-200 rounded-lg px-1 py-0.5 text-base font-mono;
   }
   h1 {
     @apply text-3xl;
