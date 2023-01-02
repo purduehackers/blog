@@ -22,8 +22,8 @@ const Home = ({ posts }: { posts: Post[] }) => (
       </div>
     </header>
     <div className="max-w-sm sm:max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-8 sm:pt-14 px-5 sm:px-20 mx-auto">
-      {posts.map((post, idx) => (
-        <PostCard key={idx} {...post} />
+      {posts.map((post) => (
+        <PostCard key={post.url} {...post} />
       ))}
     </div>
     <div className="border-2 border-black mt-8 sm:mt-14"></div>
