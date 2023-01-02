@@ -11,14 +11,16 @@ const Home = ({ posts }: { posts: Post[] }) => (
     <Head>
       <title>Blog — Purdue Hackers</title>
     </Head>
-    <div className="bg-cyan-100 border-b-4 border-black">
+    <header className="bg-cyan-100 border-b-4 border-black">
       <div className="text-center py-16 sm:py-20 flex flex-col gap-y-4 items-center">
-        <h1 className="text-4xl sm:text-7xl font-bold">Purdue Hackers Blog</h1>
-        <h2 className="text-xl text-gray-600">
+        <h1 className="text-4xl sm:text-7xl sm:tracking-tight font-bold">
+          Purdue Hackers Blog
+        </h1>
+        <h2 className="text-xl text-zinc-600">
           Where we share our magic with the world ✨💛⚡️
         </h2>
       </div>
-    </div>
+    </header>
     <div className="max-w-sm sm:max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-8 sm:pt-14 px-5 sm:px-20 mx-auto">
       {posts.map((post, idx) => (
         <PostCard key={idx} {...post} />

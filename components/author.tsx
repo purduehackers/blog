@@ -4,15 +4,15 @@ import parseMarkdownLink from 'lib/parse-markdown-link'
 const Author = ({ authorString }: { authorString: string }) => {
   const { author, avatarUrl } = parseMarkdownLink(authorString)
   return (
-    <span className="flex flex-row gap-x-1 items-center">
+    <span className="flex flex-row gap-x-2 items-center text-lg">
       <Image
         src={avatarUrl}
-        width={25}
-        height={25}
+        width={32}
+        height={32}
         alt={`Avatar for ${author}`}
-        className="w-[30px] rounded-full"
+        className="rounded-full"
       />
-      <p className="text-lg">{author}</p>
+      {author}
     </span>
   )
 }

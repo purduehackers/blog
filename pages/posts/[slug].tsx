@@ -9,7 +9,6 @@ import components from '../../lib/components'
 import Footer from 'components/footer'
 import parseMarkdownLink from 'lib/parse-markdown-link'
 import colors from 'lib/colors'
-import { useEffect } from 'react'
 import { sortAsc } from 'lib/sort'
 
 export const getStaticPaths = async () => {
@@ -50,13 +49,6 @@ const getOgImage = ({
 }
 
 const PostLayout = ({ post }: { post: Post }) => {
-  useEffect(() => {
-    document.documentElement.style.setProperty('--postMain', post.color.main)
-    document.documentElement.style.setProperty(
-      '--postLight',
-      post.color.mainLight
-    )
-  }, [])
   const Content = useMDXComponent(post.body.code)
   const authors: string[] = post.authors.split(',') || [post.authors]
   const date = post.date.substring(0, post.date.length - 14)
@@ -74,29 +66,37 @@ const PostLayout = ({ post }: { post: Post }) => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="og:type" content="website" />
       </Head>
-      <article className="w-screen">
-        <div className={`border-b-4 border-black bg-${post.color.bgLight}`}>
+      <main
+        className="w-screen"
+        style={{
+          // @ts-expect-error custom properties
+          '--postMain': post.color.main,
+          '--postLight': post.color.mainLight
+        }}
+      >
+        <header className={`border-b-4 border-black bg-${post.color.bgLight}`}>
           <Nav />
-          <div className="text-center pb-16 pt-8 sm:pt-12 flex flex-col gap-y-6 items-center max-w-3xl mx-auto">
-            <h1 className="text-5xl sm:text-7xl font-bold w-11/12">
+          <div className="w-full container py-8 md:pt-12 md:pb-16 flex flex-col items-start gap-y-4 mx-auto px-4 sm:px-8 md:px-14">
+            <time
+              dateTime={date}
+              className="bg-white rounded-md border-2 border-black inline-block text-base px-2 mb-5"
+            >
+              {format(parseISO(date), 'LLLL d, yyyy')}
+            </time>
+            <h1 className="text-5xl sm:text-7xl font-bold sm:w-11/12 sm:tracking-tight">
               {post.title}
             </h1>
-            <div className="flex flex-row gap-2 sm:gap-4 justify-center flex-wrap w-10/12 md:max-w-2xl">
+            <div className="flex flex-row gap-4 md:gap-x-5 flex-wrap w-10/12 md:max-w-2xl">
               {authors.map((author: string) => (
                 <Author key={author} authorString={author} />
               ))}
             </div>
           </div>
-          <div className="bg-white rounded-md mx-2 mb-2 border-2 border-black inline-block">
-            <time dateTime={date} className="text-base px-2">
-              {format(parseISO(date), 'LLLL d, yyyy')}
-            </time>
-          </div>
-        </div>
-        <div className="mt-4 sm:mt-8 mb-12 sm:mb-16 text-lg font-serif flex flex-col items-start gap-y-3 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
+        </header>
+        <article className="mt-8 sm:mt-12 mb-12 sm:mb-16 text-lg font-serif flex flex-col items-start gap-y-4 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
           <Content components={components} />
-        </div>
-      </article>
+        </article>
+      </main>
       <div className="border-2 border-black mt-8"></div>
       <Footer />
     </>
