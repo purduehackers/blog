@@ -41,7 +41,10 @@ module.exports = {
       },
       colors: {
         post: 'var(--postMain)',
-        'post-light': 'var(--postLight)'
+        'post-light': 'var(--postLight)',
+        discord: {
+          vibrant: '#5864f4'
+        }
       }
     }
   },
