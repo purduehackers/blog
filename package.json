@@ -11,6 +11,7 @@
     "@mdx-js/react": "^2.1.5",
     "@next/mdx": "^12.3.1",
     "@purduehackers/time": "^0.5.0",
+    "@vercel/analytics": "^0.1.10",
     "contentlayer": "^0.2.8",
     "date-fns": "^2.29.3",
     "luxon": "^3.0.4",
