@@ -38,6 +38,10 @@
   li > ul > li {
     @apply sm:ml-6;
   }
+  ol li::marker {
+    color: var(--postMain);
+    @apply font-bold;
+  }
   ::selection {
     background: #fcd34d;
   }
