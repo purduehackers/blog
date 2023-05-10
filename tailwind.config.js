@@ -43,7 +43,8 @@ module.exports = {
         post: 'var(--postMain)',
         'post-light': 'var(--postLight)',
         discord: {
-          vibrant: '#5864f4'
+          vibrant: '#5864f4',
+          deselected: '#404675'
         }
       }
     }
