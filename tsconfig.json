@@ -25,7 +25,7 @@
     "**/*.tsx",
     ".contentlayer/generated",
     "contentlayer.config.js",
-    "lib/components.js"
+    "components.js"
   ],
   "exclude": ["node_modules"]
 }
