@@ -30,7 +30,7 @@
     "**/*.tsx",
     ".contentlayer/generated",
     "contentlayer.config.ts",
-    "components.tsx",
+    "mdx-components.tsx",
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]

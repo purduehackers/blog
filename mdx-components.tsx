@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { HTMLAttributes } from 'react'
+import { HTMLAttributes, ImgHTMLAttributes } from 'react'
 
 export default {
   h1: ({ ...props }: HTMLAttributes<HTMLHeadingElement>) => (
@@ -21,13 +21,15 @@ export default {
   ),
   img: ({
     ...props
-  }: Omit<HTMLAttributes<HTMLImageElement>, 'src' | 'alt'> & {
+  }: Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt'> & {
     src: string
     alt: string
   }) => (
     <Image
       {...props}
-      placeholder="blur"
+      placeholder="empty"
+      width={0}
+      height={0}
       sizes="(max-width: 768px) 100vw,
       (max-width: 1024px) 50vw,
       33vw"
