@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import { allPosts, Post } from 'contentlayer/generated'
-import Footer from 'components/footer'
-import PostCard from 'components/post-card'
-import colors from 'lib/colors'
-import { sortAsc, sortDesc } from 'lib/sort'
+import Footer from '@/components/footer'
+import PostCard from '@/components/post-card'
+import colors from '@/lib/colors'
+import { sortAsc, sortDesc } from '@/lib/sort'
 import { pick } from 'contentlayer/client'
 
 const Home = ({ posts }: { posts: Post[] }) => (

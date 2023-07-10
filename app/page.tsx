@@ -1,8 +1,8 @@
 import { allPosts, Post } from 'contentlayer/generated'
-import Footer from 'components/footer'
-import PostCard from 'components/post-card'
-import colors from 'lib/colors'
-import { sortAsc, sortDesc } from 'lib/sort'
+import Footer from '@/components/footer'
+import PostCard from '@/components/post-card'
+import colors from '@/lib/colors'
+import { sortAsc, sortDesc } from '@/lib/sort'
 
 const Home = () => {
   sortAsc(allPosts).map((post, i) => (post.color = colors[i % colors.length]))

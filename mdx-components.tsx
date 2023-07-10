@@ -20,26 +20,40 @@ export default {
     ></a>
   ),
   img: ({
+    src,
+    alt,
     ...props
   }: Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt'> & {
-    src: string
-    alt: string
-  }) => (
-    <Image
-      {...props}
-      placeholder="empty"
-      width={0}
-      height={0}
-      sizes="(max-width: 768px) 100vw,
-      (max-width: 1024px) 50vw,
-      33vw"
-      style={{
-        width: 'auto',
-        height: 'auto',
-        borderRadius: '8px'
-      }}
-    />
-  ),
+    src?: string
+    alt?: string
+  }) => {
+    const optimized = /(jpe?g|png)$/.test(src || '')
+    if (optimized) {
+      const file = require(`./public${src}`).default
+      return (
+        <Image
+          {...props}
+          src={file}
+          blurDataURL={file.blurDataURL}
+          alt={alt || ''}
+          placeholder="blur"
+          width={file.width}
+          height={file.height}
+          sizes="(max-width: 768px) 100vw,
+        (max-width: 1024px) 50vw,
+        33vw"
+          style={{
+            width: 'auto',
+            maxWidth: '100%',
+            height: 'auto',
+            borderRadius: '8px'
+          }}
+        />
+      )
+    } else {
+      return <img src={src} alt={alt} />
+    }
+  },
   ul: ({ ...props }: HTMLAttributes<HTMLUListElement>) => (
     <ul className="list-disc list-outside ml-6 sm:ml-0">{props.children}</ul>
   ),

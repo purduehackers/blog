@@ -3,10 +3,26 @@ import type { PropsWithChildren } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { Metadata } from 'next'
 
+const images = [
+  'https://og.purduehackers.com/Blog.png?theme=light&md=1&fontSize=250px&caption='
+]
+
 export const metadata: Metadata = {
   title: {
     template: '%s | Purdue Hackers',
     default: 'Blog'
+  },
+  openGraph: {
+    siteName: 'Purdue Hackers',
+    type: 'website',
+    locale: 'en_US',
+    images
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Purdue Hackers',
+    creator: '@purduehackers',
+    images
   },
   themeColor: '#D97706'
 }
