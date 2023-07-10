@@ -5,26 +5,37 @@
     "build": "rm -rf .contentlayer && next build",
     "start": "next start"
   },
+  "pnpm": {
+    "overrides": {
+      "@opentelemetry/api": "1.4.1",
+      "@opentelemetry/core": "1.13.0",
+      "@opentelemetry/exporter-trace-otlp-grpc": "0.39.1",
+      "@opentelemetry/resources": "1.13.0",
+      "@opentelemetry/sdk-trace-base": "1.13.0",
+      "@opentelemetry/sdk-trace-node": "1.13.0",
+      "@opentelemetry/semantic-conventions": "1.13.0"
+    }
+  },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^5.10.0",
     "@mdx-js/loader": "^2.1.5",
     "@mdx-js/react": "^2.1.5",
-    "@next/mdx": "^12.3.1",
+    "@next/mdx": "^13.4.9",
     "@purduehackers/time": "^0.5.0",
-    "@vercel/analytics": "^0.1.10",
-    "contentlayer": "^0.2.8",
+    "@vercel/analytics": "^0.1.11",
+    "contentlayer": "^0.3.4",
     "date-fns": "^2.29.3",
     "luxon": "^3.0.4",
-    "next": "latest",
-    "next-contentlayer": "^0.2.8",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
+    "next": "^13.4.9",
+    "next-contentlayer": "^0.3.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-feather": "^2.0.10",
     "rehype-accessible-emojis": "^0.3.2",
     "rehype-code-title": "^1.0.0",
     "rehype-prism-plus": "^1.5.0",
     "remark-gfm": "^3.0.1",
-    "sharp": "^0.31.1"
+    "rgb-hex": "^4.0.1"
   },
   "devDependencies": {
     "@types/luxon": "^3.0.2",
