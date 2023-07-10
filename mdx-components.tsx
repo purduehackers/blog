@@ -39,19 +39,12 @@ export default {
           placeholder="blur"
           width={file.width}
           height={file.height}
-          sizes="(max-width: 768px) 100vw,
-        (max-width: 1024px) 50vw,
-        33vw"
-          style={{
-            width: 'auto',
-            maxWidth: '100%',
-            height: 'auto',
-            borderRadius: '8px'
-          }}
+          sizes="(max-width: 768px) 100vw, 672px"
+          style={{ borderRadius: '8px' }}
         />
       )
     } else {
-      return <img src={src} alt={alt} />
+      return <img src={src} alt={alt} style={{ borderRadius: '8px' }} />
     }
   },
   ul: ({ ...props }: HTMLAttributes<HTMLUListElement>) => (
