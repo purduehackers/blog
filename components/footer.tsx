@@ -1,7 +1,7 @@
 import FooterLinks from './footer-links'
 
 const Footer = () => (
-  <div className="bg-gray-200 text-center bottom-0 mt-auto w-full flex flex-col justify-center gap-y-4 py-12 px-4">
+  <div className="bg-gray-200 text-center bottom-0 mt-auto w-full flex flex-col justify-center gap-y-4 py-12 px-4 border-t-4 border-black">
     <p className="text-lg">
       Made with 💛 and ⚡️ •{' '}
       <span className="underline underline-offset-4 decoration-2">
