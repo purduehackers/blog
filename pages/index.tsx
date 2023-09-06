@@ -7,7 +7,7 @@ import { sortAsc, sortDesc } from 'lib/sort'
 import { pick } from 'contentlayer/client'
 
 const Home = ({ posts }: { posts: Post[] }) => (
-  <div className="min-h-screen">
+  <div className="min-h-screen flex flex-col">
     <Head>
       <title>Blog — Purdue Hackers</title>
     </Head>
