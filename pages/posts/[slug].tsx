@@ -67,7 +67,7 @@ const PostLayout = ({ post }: { post: Post }) => {
         <meta property="og:type" content="website" />
       </Head>
       <main
-        className="w-screen"
+        className="w-screen flex flex-col"
         style={{
           // @ts-expect-error custom properties
           '--postMain': post.color.main,
@@ -93,11 +93,10 @@ const PostLayout = ({ post }: { post: Post }) => {
             </div>
           </div>
         </header>
-        <article className="mt-8 sm:mt-12 mb-12 sm:mb-16 text-lg font-serif flex flex-col items-start gap-y-4 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
+        <article className="mt-8 sm:mt-12 mb-8 sm:mb-12 text-lg font-serif flex flex-col items-start gap-y-4 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
           <Content components={components} />
         </article>
       </main>
-      <div className="border-2 border-black mt-8"></div>
       <Footer />
     </>
   )
