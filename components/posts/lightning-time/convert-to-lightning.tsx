@@ -1,3 +1,5 @@
+'use client'
+
 import { LightningTime } from '@purduehackers/time'
 import { DateTime } from 'luxon'
 import { useState } from 'react'

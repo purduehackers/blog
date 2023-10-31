@@ -1,3 +1,5 @@
+'use client'
+
 import { useContext } from 'react'
 import ColoredLightningString from './colored-lightning-string'
 import { LightningTimeContext } from './lightning-time-context'

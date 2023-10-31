@@ -1,3 +1,5 @@
+'use client'
+
 import LightningText, { LightningPart } from './lightning-text'
 
 const ColoredLightningString = () => {
