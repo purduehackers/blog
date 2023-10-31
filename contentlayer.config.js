@@ -36,6 +36,13 @@ const Post = defineDocumentType(() => ({
       type: 'json',
       description: 'The color of the post — appears on card and in background',
       required: false
+    },
+    clientComponent: {
+      type: 'boolean',
+      description:
+        'Whether the content of this post should be rendered as a client component',
+      required: false,
+      default: false
     }
   },
   computedFields: {

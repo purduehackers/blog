@@ -9,6 +9,7 @@ import colors from '@/lib/colors'
 import { sortAsc } from '@/lib/sort'
 import { notFound } from 'next/navigation'
 import PostContent from '@/components/post-content'
+import PostContentClient from '@/components/post-content-client'
 
 interface PageProps {
   params: { slug: string }
@@ -109,7 +110,11 @@ export default async function PostLayout({ params }: PageProps) {
             </div>
           </div>
         </header>
-        <PostContent rawContent={post.body.code} />
+        {post.clientComponent ? (
+          <PostContentClient rawContent={post.body.code} />
+        ) : (
+          <PostContent rawContent={post.body.code} />
+        )}
       </main>
       <div className="border-2 border-black mt-8"></div>
       <Footer />
