@@ -32,8 +32,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      main: '"Space Grotesk", system-ui, Roboto, sans-serif',
-      serif: '"IBM Plex Serif"',
+      main: ['var(--font-space-grotesk)'],
+      serif: ['var(--font-ibm-plex-serif)'],
       mono: ['var(--font-geist-mono)']
     },
     extend: {
