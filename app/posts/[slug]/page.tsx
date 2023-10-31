@@ -1,10 +1,8 @@
 import { format, parseISO } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
-import { getMDXComponent } from 'next-contentlayer/hooks'
 import type { Metadata } from 'next'
 import Nav from '@/components/nav'
 import Author from '@/components/author'
-import components from '@/mdx-components'
 import Footer from '@/components/footer'
 import parseMarkdownLink from '@/lib/parse-markdown-link'
 import colors from '@/lib/colors'
@@ -79,7 +77,6 @@ export default async function PostLayout({ params }: PageProps) {
   if (!post) return notFound()
 
   const authors: string[] = post.authors.split(',') || [post.authors]
-  const Content = getMDXComponent(post.body.code)
 
   const date = post.date.substring(0, post.date.length - 14)
 
@@ -112,9 +109,7 @@ export default async function PostLayout({ params }: PageProps) {
             </div>
           </div>
         </header>
-        <PostContent>
-          <Content components={components} />
-        </PostContent>
+        <PostContent rawContent={post.body.code} />
       </main>
       <div className="border-2 border-black mt-8"></div>
       <Footer />
