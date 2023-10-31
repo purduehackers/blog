@@ -116,7 +116,6 @@ export default async function PostLayout({ params }: PageProps) {
           <PostContent rawContent={post.body.code} />
         )}
       </main>
-      <div className="border-2 border-black mt-8"></div>
       <Footer />
     </>
   )
