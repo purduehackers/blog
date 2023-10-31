@@ -27,6 +27,19 @@ const config = withContentlayer({
         pathname: '/**'
       }
     ]
+  },
+  // Importing a pdf broke on app router for some reason, no idea why
+  // This fixes it, no idea why
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.pdf/,
+      type: 'asset/resource',
+      generator: {
+        filename: 'static/[hash][ext]'
+      }
+    })
+
+    return config
   }
 })
 
