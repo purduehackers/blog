@@ -1,4 +1,4 @@
-import { withContentlayer } from 'next-contentlayer'
+const { withContentlayer } = require('next-contentlayer')
 
 /**
  * @type {import('next').NextConfig}
@@ -11,4 +11,4 @@ const config = withContentlayer({
   }
 })
 
-export default config
+module.exports = config

@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { GeistSans, GeistMono } from 'geist/font'
 import { Analytics } from '@vercel/analytics/react'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -20,7 +21,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
         />
       </Head>
-      <Component {...pageProps} />
+      <main className={`${GeistSans.variable} ${GeistMono.variable}`}>
+        <Component {...pageProps} />
+      </main>
       <Analytics />
     </>
   )
