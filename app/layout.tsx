@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import type { PropsWithChildren } from 'react'
 import { Analytics } from '@vercel/analytics/react'
-import { Metadata } from 'next'
+import { Metadata, Viewport } from 'next'
 import { GeistMono } from 'geist/font'
 
 const images = [
@@ -9,6 +9,7 @@ const images = [
 ]
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://blog.purduehackers.com'),
   title: {
     template: '%s | Purdue Hackers',
     default: 'Blog'
@@ -24,7 +25,10 @@ export const metadata: Metadata = {
     title: 'Purdue Hackers',
     creator: '@purduehackers',
     images
-  },
+  }
+}
+
+export const viewport: Viewport = {
   themeColor: '#D97706'
 }
 
