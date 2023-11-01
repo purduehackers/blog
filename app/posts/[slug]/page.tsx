@@ -1,34 +1,29 @@
-import Head from 'next/head'
 import { format, parseISO } from 'date-fns'
 import { allPosts, Post } from 'contentlayer/generated'
-import { useMDXComponent } from 'next-contentlayer/hooks'
-import { GetStaticProps } from 'next'
-import Nav from 'components/nav'
-import Author from 'components/author'
-import components from '../../lib/components'
-import Footer from 'components/footer'
-import parseMarkdownLink from 'lib/parse-markdown-link'
-import colors from 'lib/colors'
-import { sortAsc } from 'lib/sort'
+import type { Metadata } from 'next'
+import Nav from '@/components/nav'
+import Author from '@/components/author'
+import Footer from '@/components/footer'
+import parseMarkdownLink from '@/lib/parse-markdown-link'
+import colors from '@/lib/colors'
+import { sortAsc } from '@/lib/sort'
+import { notFound } from 'next/navigation'
+import PostContent from '@/components/post-content'
+import PostContentClient from '@/components/post-content-client'
 
-export const getStaticPaths = async () => {
-  const paths: string[] = allPosts.map((post) => post.url)
-  return {
-    paths,
-    fallback: false
-  }
+interface PageProps {
+  params: { slug: string }
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const generateStaticParams = async () =>
+  allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
+
+function fetchPost(slug: string): Post | undefined {
   const posts: Post[] = sortAsc(allPosts)
   posts.map((post, i) => (post.color = colors[i % colors.length]))
-  const post = allPosts.find((post) => post._raw.flattenedPath === params?.slug)
-  if (!post) return { notFound: true }
-  return {
-    props: {
-      post
-    }
-  }
+  const post = allPosts.find((post) => post._raw.flattenedPath === slug)
+  if (!post) return
+  return post
 }
 
 const getOgImage = ({
@@ -48,26 +43,44 @@ const getOgImage = ({
   )}.png?theme=light&md=1&fontSize=200px&caption=${authorImages}`
 }
 
-const PostLayout = ({ post }: { post: Post }) => {
-  const Content = useMDXComponent(post.body.code)
+export async function generateMetadata({
+  params
+}: PageProps): Promise<Metadata> {
+  const post = fetchPost(params.slug)
+  if (!post) return notFound()
+
   const authors: string[] = post.authors.split(',') || [post.authors]
-  const date = post.date.substring(0, post.date.length - 14)
   const ogImage = getOgImage({ title: post.title, authors })
+
+  return {
+    title: post.title,
+    openGraph: {
+      title: post.title,
+      description: post.ogDescription,
+      type: 'article',
+      publishedTime: post.date,
+      images: [ogImage]
+    },
+    twitter: {
+      images: [ogImage],
+      title: post.title,
+      description: post.ogDescription
+    }
+  }
+}
+
+export default async function PostLayout({ params }: PageProps) {
+  const post = fetchPost(params.slug)
+  if (!post) return notFound()
+
+  const authors: string[] = post.authors.split(',') || [post.authors]
+
+  const date = post.date.substring(0, post.date.length - 14)
+
   return (
     <>
-      <Head>
-        <title>{post.title} | Purdue Hackers</title>
-        <meta property="og:site_name" content="Purdue Hackers" />
-        <meta property="og:name" content={`${post.title} | Purdue Hackers`} />
-        <meta property="og:title" content={`${post.title} | Purdue Hackers`} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="twitter:image" content={ogImage} />
-        <meta property="og:description" content={post.ogDescription} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta property="og:type" content="website" />
-      </Head>
       <main
-        className="w-screen flex flex-col"
+        className="w-screen"
         style={{
           // @ts-expect-error custom properties
           '--postMain': post.color.main,
@@ -93,13 +106,13 @@ const PostLayout = ({ post }: { post: Post }) => {
             </div>
           </div>
         </header>
-        <article className="mt-8 sm:mt-12 mb-8 sm:mb-12 text-lg font-serif flex flex-col items-start gap-y-4 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
-          <Content components={components} />
-        </article>
+        {post.clientComponent ? (
+          <PostContentClient rawContent={post.body.code} />
+        ) : (
+          <PostContent rawContent={post.body.code} />
+        )}
       </main>
       <Footer />
     </>
   )
 }
-
-export default PostLayout

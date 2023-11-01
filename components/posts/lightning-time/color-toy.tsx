@@ -1,3 +1,5 @@
+'use client'
+
 import rgbHex from 'rgb-hex'
 import { useState } from 'react'
 

@@ -1,4 +1,4 @@
-import Image from 'next/future/image'
+import Image from 'next/image'
 import parseMarkdownLink from 'lib/parse-markdown-link'
 
 const Author = ({ authorString }: { authorString: string }) => {

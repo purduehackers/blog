@@ -1,3 +1,5 @@
+'use client'
+
 import { useContext } from 'react'
 import { LightningTimeContext } from './lightning-time-context'
 

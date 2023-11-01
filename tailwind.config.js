@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
+    './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './posts/*.mdx',
-    './lib/*.{js,ts}'
+    './mdx-components.tsx'
   ],
   safelist: [
     'bg-red-200',
@@ -31,9 +31,9 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      main: '"Space Grotesk", system-ui, Roboto, sans-serif',
-      serif: '"IBM Plex Serif"',
-      mono: '"Space Mono"'
+      main: ['var(--font-space-grotesk)'],
+      serif: ['var(--font-ibm-plex-serif)'],
+      mono: ['var(--font-geist-mono)']
     },
     extend: {
       boxShadow: {

@@ -16,8 +16,14 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "contentlayer/generated": ["./.contentlayer/generated"]
-    }
+      "contentlayer/generated": ["./.contentlayer/generated"],
+      "@/*": ["./*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -25,7 +31,8 @@
     "**/*.tsx",
     ".contentlayer/generated",
     "contentlayer.config.js",
-    "lib/components.js"
+    "lib/components.js",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
