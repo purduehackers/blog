@@ -1,10 +1,8 @@
-'use client'
-
-import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/router'
 import BackButton from './back-button'
 
 const Nav = () => {
-  const pathname = usePathname()
+  const { pathname } = useRouter()
 
   return (
     <nav className="w-full top-0 z-10">

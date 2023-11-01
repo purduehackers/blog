@@ -1,5 +1,3 @@
-'use client'
-
 const Clock = () => (
   <div className="w-full">
     <iframe
