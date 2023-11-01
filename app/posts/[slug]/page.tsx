@@ -15,14 +15,10 @@ interface PageProps {
   params: { slug: string }
 }
 
-export function generateStaticParams() {
-  const paths = allPosts.map((post) => ({
-    slug: post.url
-  }))
-  return paths
-}
+export const generateStaticParams = async () =>
+  allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
 
-async function fetchPost(slug: string): Promise<Post | undefined> {
+function fetchPost(slug: string): Post | undefined {
   const posts: Post[] = sortAsc(allPosts)
   posts.map((post, i) => (post.color = colors[i % colors.length]))
   const post = allPosts.find((post) => post._raw.flattenedPath === slug)
@@ -50,7 +46,7 @@ const getOgImage = ({
 export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
-  const post = await fetchPost(params.slug)
+  const post = fetchPost(params.slug)
   if (!post) return notFound()
 
   const authors: string[] = post.authors.split(',') || [post.authors]
@@ -74,7 +70,7 @@ export async function generateMetadata({
 }
 
 export default async function PostLayout({ params }: PageProps) {
-  const post = await fetchPost(params.slug)
+  const post = fetchPost(params.slug)
   if (!post) return notFound()
 
   const authors: string[] = post.authors.split(',') || [post.authors]

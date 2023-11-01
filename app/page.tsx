@@ -1,4 +1,4 @@
-import { allPosts, Post } from 'contentlayer/generated'
+import { allPosts } from 'contentlayer/generated'
 import Footer from '@/components/footer'
 import PostCard from '@/components/post-card'
 import colors from '@/lib/colors'

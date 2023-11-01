@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://blog.purduehackers.com'),
   title: {
     template: '%s | Purdue Hackers',
-    default: 'Blog'
+    default: 'Blog | Purdue Hackers'
   },
   openGraph: {
     siteName: 'Purdue Hackers',
