@@ -4,7 +4,7 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './posts/*.mdx',
-    './*.{js,ts,tsx}'
+    './mdx-components.tsx'
   ],
   safelist: [
     'bg-red-200',
