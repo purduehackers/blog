@@ -33,7 +33,7 @@ module.exports = {
     fontFamily: {
       main: '"Space Grotesk", system-ui, Roboto, sans-serif',
       serif: '"IBM Plex Serif"',
-      mono: '"Space Mono"'
+      mono: ['var(--font-geist-mono)']
     },
     extend: {
       boxShadow: {
