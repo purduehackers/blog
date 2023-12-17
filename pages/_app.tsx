@@ -2,7 +2,14 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { GeistMono } from 'geist/font'
+import { IBM_Plex_Serif } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
+
+const ibmPlexSerif = IBM_Plex_Serif({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  variable: '--font-ibm-plex-serif'
+})
 
 function MyApp({ Component, pageProps }: AppProps) {
   const vercelEnv = process.env.NEXT_PUBLIC_VERCEL_ENV
@@ -21,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
         />
       </Head>
-      <main className={`${GeistMono.variable}`}>
+      <main className={`${GeistMono.variable} ${ibmPlexSerif.variable}`}>
         <Component {...pageProps} />
       </main>
       <Analytics />
