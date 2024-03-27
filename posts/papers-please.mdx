@@ -1,0 +1,53 @@
+---
+title: Papers, Please
+date: 2024-03-27
+authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png),[Lilian Zhao](https://github.com/lilianzlettuce.png),[Jack Hogan](https://github.com/ImTheSquid.png),[Ayden Bridges](https://github.com/TheBlueTophat.png)'
+ogDescription: Introducing the Purdue Hackers passports.
+---
+
+- We spent 3 months making passports for purdue hackers. today, we want to share them with you
+- physical booklets containing user's info and pages for stamps
+- every passport has an nfc sticker embedded in the cover, which contains an id
+- passports are handmade by their creators at hour-long passport-making ceremonies which run every two weeks. hackers sign up for a passport-making ceremony by creating their data page at passports.ph.com
+- the nfc stickers allow for passports to be used for building really cool infrastructure
+- passports have two goals:
+  - give hackers a physical keepsake from their time in college
+  - allow hackers to become "card-carrying" members & give them trusted access to things via their nfc stickers
+
+# How they're made
+
+- layer of black picheng faux-leather (link to amazon). 17.8x12.4cm
+- cover design is cut out of gold heat transfer vinyl from joann with a cricut maker 3, then heat pressed onto the faux leather
+- two sets of laminated black cardstock 8.2x12.4cm, one on each side
+- 1 layer of black cardstock, 17.4x12.4cm
+- the pages are printed on regular printer paper, except for the first page which printed on cardstock
+- we lay book tape (link to amaazon) on the data page. this, in addition to being printed on cardstock, gives it extra weight and important/official feel
+- the pages are folded and sewed to the layer of black cardstock
+- an nfc sticker is placed on one of the laminated cardstock pieces
+- we glue everything with book glue (link to demco): laminated cardstock to faux leather, then sewed pages on top
+- then the booklets are pressed open under a weight while the glue dries (24 hours ideally)
+- nfc stickers are activated with the passport authority app we made (link to github)
+
+# How it started
+
+- we had this idea in may 2023 and started exploring it in august 2023.
+- we briefly explored plastic ID cards, but decided against them because we wanted something unique/subversive/unexpected/etc
+- we got to work in september, first experimenting with a riso printer, which prints one color at a time in CMYK, which we hoped would create a nice dithered effect that has a passport feel. unfortunately that didn't work well—printing on a riso printer takes forever, and riso prints are not perfectly aligned by default, but we needed exact dimensions. so we scrapped it
+- efforts significantly ramped up in early november when we made our first actual passport prototype! (include picture)
+- we made 10(? verify number) passports by winter break. (include pictures)
+- by january we had made our final prototype, and we were ready to mass-produce. we made the data page website and the first ceremony ran on january 20something
+
+# How it's going
+
+- 50 passports have been made
+- the first piece of infrastructure we made was `purduehackers/id`, the "sign in with passport" api. it's an oauth service with passports as a provider and it's really cool. we're currently building infra on top of it
+- we also made a door opener, so people with passports can now open the locked doors to bechtel during hack night using their passport
+- we make a new stamp every week (derived from the badge), and everyone with a passport gets stamped at hack night (include picture)
+- currently having a passport is being an early adopter—no production apps use `id` yet—but people are already loving them
+- by the end of the semester we'll ship `dash`, a dashboard that lets you do extra things but that you can only sign into with a passport. for example, changing the sound played to hack night when you scan your passport on the door opener
+
+---
+
+- we think passports are the next frontier of purdue hackers and we're really excited they're here
+- this kind of stuff is uniquely enabled by us being a college club
+- we're excited for `id` and `dash` and we're also really excited to see the infrastructure people build around passports in the future
