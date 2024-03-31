@@ -20,7 +20,7 @@ We spent 3 months designing & prototyping a passport for Purdue Hackers. Today, 
 
 </div>
 
-The Purdue Hackers passport is a physical, passport-shaped booklet, containing a "data page" with its owner's information, and 16 pages for stamps.
+The Purdue Hackers passport is a physical, passport-shaped booklet, containing a "data page" with its owner's information and 16 pages for stamps, each a reference to some defining part of Purdue Hackers.
 
 <YouTubePlayer videoId="AngfUtdNcV8" />
 
@@ -44,12 +44,33 @@ We want passports to level you up as a member of Purdue Hackers. Having a passpo
 
 # How it's going
 
-- 50 passports have been made
-- the first piece of infrastructure we made was `purduehackers/id`, the "sign in with passport" api. it's an oauth service with passports as a provider and it's really cool. we're currently building infra on top of it
-- we also made a door opener, so people with passports can now open the locked doors to bechtel during hack night using their passport
-- we make a new stamp every week (derived from the badge), and everyone with a passport gets stamped at hack night (include picture)
-- currently having a passport is being an early adopter—no production apps use `id` yet—but people are already loving them
-- by the end of the semester we'll ship `dash`, a dashboard that lets you do extra things but that you can only sign into with a passport. for example, changing the sound played to hack night when you scan your passport on the door opener
+41 passports have been made across 6 passport-making ceremonies in just over 2 months.
+
+Shortly after we ran the first passport-making ceremony, we decided to put their NFC stickers to use by building the first piece of infrastructure for them: [`purduehackers/id`](https://github.com/purduehackers/id).
+
+`id` is the "Sign in with passport" API. It's a full OAuth2 implementation with passports as the provider, written in Rust.
+
+<YouTubePlayer videoId="IXMuO62g0Sk" />
+
+With `id`, anyone in Purdue Hackers can build a website or app that others can sign into with their passports. The software built on top of `id` is what turns passport owners into "card-carrying members" of Purdue Hackers.
+
+One such project is [Passport Authority](https://github.com/purduehackers/passport-authority), the iOS app we made to activate passports at passport-making ceremonies. Passport Authority allows us to view a list of passports made on the data pages website, then activate a passport by writing the proper records to its NFC sticker and marking it activate in the database. We sign into this app with our own passports.
+
+<div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+
+![](/posts/papers-please/authority-1.png)
+
+![](/posts/papers-please/authority-2.jpg)
+
+</div>
+
+Another project built on top of `id` is [the door opener](https://github.com/purduehackers/door-opener), which unlocks and opens the front doors of our Hack Night venue for those who scan their passport.
+
+<YouTubePlayer videoId="31aA09y7xFA" />
+
+By the end of the semester, we will also ship a dashboard for passport owners which will allow them to turn on 2FA, manage their passport, collect digital versions of Hack Night badges, and play a custom sound when they use the door opener at Hack Night, among other things.
+
+Currently, no user-facing apps building on top of `id` have shipped to production; having a passport is being an early adopter. Even so, lots of folks have been excited to make their own passports. We're really excited for the infrastructure we're building to level up their passports in the coming months.
 
 # How it started
 
