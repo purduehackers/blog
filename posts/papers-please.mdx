@@ -40,21 +40,21 @@ We believe this is a uniquely special period of our lives, and we want to create
 
 ### 2. Allow hackers to become "card-carrying members" of Purdue Hackers
 
-We want passports to level you up as a member of Purdue Hackers. Having a passport signals that you are willing to spend an hour handcrafting it, and once you have one you can show it to others as a badge of honor—a physical indicator that you're a dedicated member of Purdue Hackers. Passports should also establish a higher baseline level of trust within the org and unlock things accordingly—for example, entering Hack Night without having to ring the doorbell, or accessing managed hosting provided by Purdue Hackers by signing in with your passport.
+We want passports to level you up as a member of Purdue Hackers. Having a passport signals that you're willing to spend an hour handcrafting it, and once you have one you can show it to others as a badge of honor—a physical indicator that you're a dedicated member of Purdue Hackers. Passports should also establish a higher baseline level of trust within the org and unlock things accordingly—for example, entering Hack Night without having to ring the doorbell, or accessing managed hosting provided by Purdue Hackers by signing in with your passport.
 
 # How it's going
 
-41 passports have been made across 6 passport-making ceremonies in just over 2 months.
+41 passports have been made across 6 passport-making ceremonies in a little over 2 months.
 
 Shortly after we ran the first passport-making ceremony, we decided to put their NFC stickers to use by building the first piece of infrastructure for them: [`purduehackers/id`](https://github.com/purduehackers/id).
 
-`id` is the "Sign in with passport" API. It's a full OAuth2 implementation with passports as the provider, written in Rust.
+ID is the "Sign in with passport" API. It's a full OAuth2 implementation with passports as the provider, written in Rust.
 
 <YouTubePlayer videoId="IXMuO62g0Sk" />
 
-With `id`, anyone in Purdue Hackers can build a website or app that others can sign into with their passports. The software built on top of `id` is what turns passport owners into "card-carrying members" of Purdue Hackers.
+With ID, anyone in Purdue Hackers can build a website or app that others can sign into with their passports. The software built on top of ID is what turns passport owners into "card-carrying members" of Purdue Hackers.
 
-One such project is [Passport Authority](https://github.com/purduehackers/passport-authority), the iOS app we made to activate passports at passport-making ceremonies. Passport Authority allows us to view a list of passports made on the data pages website, then activate a passport by writing the proper records to its NFC sticker and marking it activated in the database. We sign into this app with our own passports.
+One such project is [Passport Authority](https://github.com/purduehackers/passport-authority), the iOS app we made to activate passports at passport-making ceremonies. Passport Authority allows us to view a list of issued passports, then activate a passport by writing the proper records to its NFC sticker and marking it activated in the database. We sign into this app with our own passports using ID.
 
 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
 
@@ -64,19 +64,19 @@ One such project is [Passport Authority](https://github.com/purduehackers/passpo
 
 </div>
 
-Another project built on top of `id` is [the door opener](https://github.com/purduehackers/door-opener), which unlocks and opens the front doors of our Hack Night venue for those who scan their passport.
+Another project built on top of ID is [the door opener](https://github.com/purduehackers/door-opener), which unlocks and opens the front doors of our Hack Night venue for those who scan their passport.
 
 <YouTubePlayer videoId="31aA09y7xFA" />
 
 By the end of the semester, we will also ship a dashboard allowing passport owners to turn on 2FA, manage their passport, collect digital versions of Hack Night badges, and play a custom sound when they use the door opener at Hack Night, among other things.
 
-Currently, having a passport is being an early adopter; no user-facing apps building on top of `id` have shipped to production. Even so, lots of folks have been excited to make their own, driven by the weekly stamps and seeing others carrying theirs. We're really excited for the infrastructure we're building to level up their passports in the coming months.
+Currently, having a passport is being an early adopter; no user-facing apps building on top of ID have shipped to production. Even so, lots of folks have been excited to make their own, driven by the weekly stamps and seeing others carrying theirs. We're really excited for the infrastructure we're building to level up their passports in the coming months.
 
 # How it started
 
-We started exploring this idea at the beginning of the Fall 2023 semester. We initially explored alternatives such as plastic or metal ID cards, but quickly realized that passports felt _right_—we could make the unit costs comparable to or lower than ID cards, hackers would have to make them by hand (which would make them feel more special), and it's not a form of ID most people would expect (compared to plastic cards, which everyone has for government and school IDs).
+We started exploring this idea at the beginning of the Fall 2023 semester. We initially explored alternatives such as plastic or metal ID cards, but quickly realized that passports were the move—we could make the unit costs comparable to or lower than ID cards, hackers would have to make them by hand (which would make them feel more special), and it's not a form of ID most people would expect (compared to plastic cards, which everyone has for government and school IDs).
 
-Getting started was tough—none of us had any idea where to begin. Thankfully, the [Knowledge Lab](https://www.lib.purdue.edu/KnowledgeLab) stepped in to help. They're a new library makerspace on campus with a bunch of resources perfect for rapidly prototyping passports: Cricut machines, heat presses, sewing machines, printer with specialty paper, and lots more. Robin and Nathan, who help run the Knowledge Lab, are some of the kindest people we've ever met, and they helped us at every step, teaching us how to use the machines and bouncing ideas off us. This project would not have gotten off the ground had it not been for the resources in the Knowledge Lab & the kindness of those who run it.
+Getting started was tough—none of us had any idea where to begin. Thankfully, the [Knowledge Lab](https://www.lib.purdue.edu/KnowledgeLab) stepped in to help. They're a new library makerspace on campus with a bunch of resources perfect for rapidly prototyping passports: Cricut machines, heat presses, sewing machines, printer with specialty paper, and lots more. Robin and Nathan, who help run the Knowledge Lab, are some of the kindest people we've ever met, and they helped us at every step, teaching us how to use all the machines we needed, and bouncing ideas off us. This project would not have gotten off the ground had it not been for the resources in the Knowledge Lab & the kindness of those who run it.
 
 We started in earnest in September, first experimenting with various designs in Figma:
 
@@ -164,6 +164,6 @@ Passport-making ceremonies were initially very rough around the edges: prep work
 
 ---
 
-It's been unbelievably satisfying to have everything come together after so many months of work—the final design of the booklets & pages, passport ceremony logistics, the data page creator, Passport Authority, `id`. We're very excited for the upcoming dashboard, which will be a major upgrade for all passport owners, and the first user-facing app built on top of `id`. But we're even more excited about the apps that we haven't thought of yet which community members will build in the future. Passports are the next frontier of Purdue Hackers.
+It's been unbelievably satisfying to have everything come together after so many months of work—the final design of the booklets & pages, passport ceremony logistics, the data page creator, Passport Authority, ID. We're very excited for the upcoming dashboard, which will be a major upgrade for all passport owners, and the first user-facing app built on top of `id`. But we're even more excited about the apps that we haven't thought of yet which community members will build in the future. Passports are the next frontier of Purdue Hackers.
 
 If you go to Purdue, sign up to make your passport at [passports.purduehackers.com](https://passports.purduehackers.com).
