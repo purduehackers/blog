@@ -1,0 +1,171 @@
+---
+title: Papers, Please
+date: 2024-04-02
+authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png),[Lilian Zhao](https://github.com/lilianzlettuce.png),[Jack Hogan](https://github.com/ImTheSquid.png),[Ayden Bridges](https://github.com/TheBlueTophat.png),[Hazel Roeder](https://github.com/fizzyapple12.png),[Sean Choi](https://github.com/szeans.png)'
+ogDescription: Introducing the new, NFC-enabled Purdue Hackers passport.
+---
+
+import { YouTubePlayer } from '../components/youtube-player'
+
+We spent 3 months designing & prototyping a passport for Purdue Hackers. Today, we want to share it with you.
+
+<div className="grid grid-cols-2 gap-2">
+![](/posts/papers-please/passport-1.jpg)
+
+![](/posts/papers-please/passport-2.jpg)
+
+![](/posts/papers-please/passport-3.jpg)
+
+![](/posts/papers-please/passport-4.jpg)
+
+</div>
+
+The Purdue Hackers passport is a physical, passport-shaped booklet, containing a "data page" with its owner's information and 16 pages for stamps, each a reference to some defining part of Purdue Hackers.
+
+<YouTubePlayer videoId="AngfUtdNcV8" />
+
+Passports are handmade by their owners at hour-long passport-making ceremonies, which run every two weeks at Hack Night. Hackers sign up for a passport-making ceremony by [creating their personalized data page](https://passports.purduehackers.com).
+
+Every week we laser cut a new stamp, and hackers get their passports stamped at Hack Night.
+
+![](/posts/papers-please/stamped-passport.jpeg)
+
+Every passport has an NFC sticker embedded in its cover, which has an ID written to it. This NFC sticker is the heart of a passport, allowing it to become a legitimate identifying document within our universe, and for unique infrastructure to be built around it.
+
+Passports have two goals:
+
+### 1. Give hackers a physical keepsake from their time in college
+
+We believe this is a uniquely special period of our lives, and we want to create long-lasting, detailed documentation of it. The [Hack Night badges](https://arc.net/l/quote/vnenuxsq) are one way we do this, and we want passports to be another way. We want hackers to keep their passports with them forever, their data pages and stamps serving as vivid reminders of their time in Purdue Hackers.
+
+### 2. Allow hackers to become "card-carrying members" of Purdue Hackers
+
+We want passports to level you up as a member of Purdue Hackers. Having a passport signals that you're willing to spend an hour handcrafting it, and once you have one you can show it to others as a badge of honor—a physical indicator that you're a dedicated member of Purdue Hackers. Passports should also establish a higher baseline level of trust within the org and unlock things accordingly—for example, entering Hack Night without having to ring the doorbell, or accessing managed hosting provided by Purdue Hackers by signing in with your passport.
+
+Every part of the passports project, including files, materials, production timeline, and assembly instructions, is [open source on GitHub](https://github.com/purduehackers/passports).
+
+# How it's going
+
+41 passports have been made across 6 passport-making ceremonies in a little over 2 months.
+
+Shortly after we ran the first passport-making ceremony, we decided to put their NFC stickers to use by building the first piece of infrastructure for them: [`purduehackers/id`](https://github.com/purduehackers/id).
+
+ID is the "Sign in with passport" API. It's a full OAuth2 implementation with passports as the provider, written in Rust.
+
+<YouTubePlayer videoId="IXMuO62g0Sk" />
+
+With ID, anyone in Purdue Hackers can build a website or app that others can sign into with their passports. The software built on top of ID is what turns passport owners into "card-carrying members" of Purdue Hackers.
+
+One such project is [Passport Authority](https://github.com/purduehackers/passport-authority), the iOS app we made to activate passports at passport-making ceremonies. Passport Authority allows us to view a list of issued passports, then activate a passport by writing the proper records to its NFC sticker and marking it activated in the database. We sign into this app with our own passports using ID.
+
+<div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+
+![](/posts/papers-please/authority-1.png)
+
+![](/posts/papers-please/authority-2.jpg)
+
+</div>
+
+Another project built on top of ID is [the door opener](https://github.com/purduehackers/door-opener), which unlocks and opens the front doors of our Hack Night venue for those who scan their passport.
+
+<YouTubePlayer videoId="31aA09y7xFA" />
+
+By the end of the semester, we will also ship a dashboard allowing passport owners to turn on 2FA, manage their passport, collect digital versions of Hack Night badges, and play a custom sound when they use the door opener at Hack Night, among other things.
+
+Currently, having a passport is being an early adopter; no user-facing apps building on top of ID have shipped to production. Even so, lots of folks have been excited to make their own, driven by the weekly stamps and seeing others carrying theirs. We're really excited for the infrastructure we're building to level up their passports in the coming months.
+
+# How it started
+
+We started exploring this idea at the beginning of the Fall 2023 semester. We initially explored alternatives such as plastic or metal ID cards, but quickly realized that passports were the move—we could make the unit costs comparable to or lower than ID cards, hackers would have to make them by hand (which would make them feel more special), and it's not a form of ID most people would expect (compared to plastic cards, which everyone has for government and school IDs).
+
+Getting started was tough—none of us had any idea where to begin. Thankfully, the [Knowledge Lab](https://www.lib.purdue.edu/KnowledgeLab) stepped in to help. They're a new library makerspace on campus with a bunch of resources perfect for rapidly prototyping passports: Cricut machines, heat presses, sewing machines, printer with specialty paper, and lots more. Robin and Nathan, who help run the Knowledge Lab, are some of the kindest people we've ever met, and they helped us at every step, teaching us how to use all the machines we needed, and bouncing ideas off us. This project would not have gotten off the ground had it not been for the resources in the Knowledge Lab & the kindness of those who run it.
+
+We started in earnest in September, first experimenting with various designs in Figma:
+
+<figure className="text-base text-center font-main mx-auto">
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/papers-please/figma-1.png)
+
+![](/posts/papers-please/figma-2.png)
+
+</div>
+
+<figcaption className="mt-2">Some early Figma designs. <span><a 
+      target="_blank"
+      className="text-post hover:text-post-light transition"
+      style={{
+        textDecoration: 'underline',
+        textUnderlineOffset: '4px'
+      }}
+      href="https://www.figma.com/file/4WLH7BPp8O5mDcWx3xhLNT/passport-design?type=design&node-id=0-1&mode=design&t=5rui9TuvGLx0TW6Y-0">View the Figma board</a></span></figcaption>
+</figure>
+
+We then experimented with printing these designs on the Knowledge Lab's Riso printer, which prints in CMYK one color at a time, dozens of pages at a time. It's typically used for creating prints [like this.](https://upload.wikimedia.org/wikipedia/en/5/55/Barack_Obama_Hope_poster.jpg) We were hoping this approach would create a natural dithering effect and a color palette resembling real-world passports.
+
+<YouTubePlayer videoId="NQvHiK2tkpU" />
+
+A Riso printer is purposefully imprecise, and each page is slightly different. Unfortunately, we realized that our designs needed sub-millimeter precision to render small bits of text and create neat bounds for cutting the pages to the right size, so the Riso printer wouldn't work for us. We ended up using a laser printer on regular printer paper—which sounds like it wouldn't feel right, but we actually discovered that when placed in the context of the rest of a passport, it creates an illusion that it's specialized "passport paper". Human brains are fascinating.
+
+Efforts significantly ramped up in early November, when we made our first prototype.
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/papers-please/first-prototype-1.jpg)
+
+![](/posts/papers-please/first-prototype-2.jpg)
+
+</div>
+
+Then another:
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/papers-please/second-1.jpg)
+
+![](/posts/papers-please/second-2.jpg)
+
+</div>
+
+The "Swiss version":
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/papers-please/swiss-1.jpg)
+
+![](/posts/papers-please/swiss-2.jpg)
+
+</div>
+
+Then many more:
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/papers-please/thanksgiving.jpg)
+
+![](/posts/papers-please/faux-leather.jpg)
+
+</div>
+
+Nearly 20 prototypes later, we made our final prototype in January, and we were ready to mass-produce. We finalized the data & stamp page designs, and made the [Issuing Office](https://github.com/purduehackers/passport-issuing-office), allowing people to generate their data pages. Finally, we were ready to run our first passport-making ceremony, with 5 trusted beta testers, on January 26th:
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/papers-please/ceremony-1-1.jpg)
+
+![](/posts/papers-please/ceremony-1-5.jpg)
+
+![](/posts/papers-please/ceremony-1-2.jpg)
+
+![](/posts/papers-please/ceremony-1-3.jpg)
+
+</div>
+
+Passport-making ceremonies were initially very rough around the edges: prep work for the first two took an entire day, the ceremonies went significantly overtime, we lacked necessary tools, and the resulting passports were notably low-quality. But each new ceremony brought significant improvements; today, 10 new people with no context or training make consistently high-quality passports in one hour every two weeks. After only two months of iteration, we've built our own mini industrial operation.
+
+---
+
+It's been unbelievably satisfying to have everything come together after so many months of work—the final design of the booklets & pages, passport ceremony logistics, Issuing Office, Passport Authority, ID. We're very excited for the upcoming dashboard, which will be a major upgrade for all passport owners, and the first user-facing app built on top of ID. But we're even more excited about the apps that we haven't thought of yet which community members will build in the future. Passports are the next frontier of Purdue Hackers.
+
+If you go to Purdue, sign up to make your passport at [passports.purduehackers.com](https://passports.purduehackers.com).
