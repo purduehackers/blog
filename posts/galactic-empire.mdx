@@ -5,6 +5,8 @@ authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png)'
 ogDescription: For the long-term future of Purdue Hackers.
 ---
 
+import { YouTubePlayer } from '../components/youtube-player'
+
 I recently read Isaac Asimov’s _Foundation_ trilogy, and it got me thinking a lot about Purdue Hackers. Originally published as short stories throughout the 1940s, _Foundation_ is set in the far future, where humans have conquered the Milky Way and established a Galactic Empire. One scientist, Hari Seldon, develops a new form of science called “psychohistory”, which allows for mathematically predicting macro-level trends in human history.
 
 One day, Hari Seldon predicts with near certainty that the Galactic Empire, which has stood strong for thousands of years, will soon collapse, and 30,000 years of dark ages will follow. It’s too late to stop the collapse—there’s too much inertia across the Galaxy—but it’s not too late to shorten the dark ages. So Hari Seldon establishes the Foundation, a group of 100,000 scientists at the edge of the Galaxy who are tasked with chronicling all of human history and knowledge in the _Encyclopedia Galactica_.
@@ -13,7 +15,7 @@ Meanwhile, Hari Seldon sets up every Foundation-and-adjacent human, like dominos
 
 The remainder of the three _Foundation_ books is Hari Seldon’s Plan playing out over many generations—how they conquer their neighborhood, handle unpredictable variables that threaten the Plan, and spread further out into the Galaxy, developing magical technology and encouraging art, science, and culture to flourish on their planets.
 
-I’ve been leading Purdue Hackers for two years. In this time, Purdue Hackers has radically transformed: 80 people make things at Hack Night, our weekly hacker festival; we have a vibrant & friendly online community of 2,000 hackers constantly shipping projects; every week, we design and laser cut [collectible “badges”](https://arc.net/l/quote/oltqquwc) for club members, and we’ve never missed a week; we’ve made esoteric projects like [Lightning Time](https://blog.purduehackers.com/posts/lightning-time), and created rituals around them, like [the weekly count to 0](https://youtu.be/iOTNc4vM3T0?si=LbYxeohQi38htcqq); we’ve received donations from tech leaders like Paul Graham and Steve Wozniak.
+I’ve been leading Purdue Hackers for two years. In this time, Purdue Hackers has radically transformed: 80 people make things at Hack Night, our weekly hacker festival; we have a vibrant & friendly online community of 2,000 hackers constantly shipping projects, where folks have made their closest friends; hackers make their own [NFC-enabled passports](https://blog.purduehackers.com/posts/papers-please) and creative projects like [Lightning Time](https://blog.purduehackers.com/posts/lightning-time); we’ve received donations from tech leaders like Paul Graham, and run [an AMA with Steve Wozniak](https://youtu.be/25RlBawQEb4).
 
 I have one year before I graduate in the spring of 2025, and something I’ve become acutely aware of is that none of this was inevitable. Purdue Hackers, in its 11-year history, has never looked like this before, and getting here required an unbelievable amount of effort and many stars to align. About a year ago, I personally decided that Purdue Hackers was what I wanted to do in college, and dropped everything outside of classes to pursue it essentially full time. Had I not done this, Purdue Hackers would look very different.
 
@@ -27,7 +29,7 @@ Many kids have the Fire at a very young age, but K12 education beats it out of t
 
 The Current is the forces of your environment that push you in a particular direction. The Current is the reason why you’re the sum of the people you spend the most time around. 60% of the Current is set by your birth country and socioeconomic background; the rest is set by a million things throughout your life, but most importantly your education and your friends.
 
-It’s possible, but often very difficult, to fight against the Current. Those who successfully do so are either inspiring success stories or tragedies. But the Current *can* be changed relatively quickly with a change of environment, education, and/or friends.
+It’s possible, but often very difficult, to fight against the Current. Those who successfully do so are either inspiring success stories or tragedies. But the Current _can_ be changed relatively quickly with a change of environment, education, and/or friends.
 
 The goal of Purdue Hackers over the last two years has been to establish a Current that kindles the Fire. The community should naturally push you to make things and be radically kind and weird; Hack Night should naturally push you to make your closest friends and ship ambitious projects, constantly surprising yourself. And it should feel organic: the Current should make it the default state for people, not force or pressure them.
 
@@ -53,7 +55,7 @@ Telephone is played when the current leader of an org looks to what their org di
 
 Telephone is caused by weak and/or uninspired leadership, and is generally a sign that the org will degrade or fail to meaningfully move forward. Too many years of Telephone will send an org barreling toward dark ages, establishing a dark Current that becomes very difficult to change.
 
-Telephone is exceedingly common in student orgs, which have high turnover rates and no full-time organizers. It’s almost inevitable that every student org will suffer from Telephone at least once in its life, even if it is very strong at one point.
+Telephone is exceedingly common in student orgs, which have high turnover rates and no full-time leadership. It’s almost inevitable that every student org will suffer from Telephone at least once in its life, even if it is very strong at one point.
 
 In my opinion, the convergent evolution of North American collegiate hackathons and hacker clubs toward surface-level career prep is a result of multiple generations of Telephone having been played by their respective organizers. Purdue Hackers is currently avoiding this path, but we have no defenses against Telephone—and if we don’t build them, we will inevitably join the path after the current generation graduates. For the long-term future of Purdue Hackers, it’s time to establish a Foundation.
 
@@ -65,16 +67,46 @@ With this in mind, I’ve outlined a plan for building defenses against Telephon
 
 ## 1. Build a strong culture
 
-Build something people strongly identify with and care about seeing continue. Establish strong values, constantly live them, and reward others for living them. It’s okay to be the only one carrying the torch for a while, but give torches to other people as soon as you can. Give people ownership over the org: allow them to contribute their own pieces to the culture and make it their own. Avoid cults of personality.
+Build something people strongly identify with and care about seeing continue. Establish strong values, constantly live them, and reward others for living them. It’s okay to be the only one carrying the torch for a while, but give torches to other people as soon as you can. Give people ownership over the org: encourage them to contribute their own pieces to the culture and make it their own. Avoid cults of personality.
 
-We are doing a great job with this. 80 people show up to Hack Night every week and stay late into the night, often until 6am. The community has become a home for dozens of people, many of whom have made their closest friends. These friend groups have enabled each other to build highly ambitious technical projects at Hack Night that they otherwise would not have built. Many community members have access to core channels and own major pieces of the org. We have a distinct brand and regularly put out high-quality visual material.
+We are doing a great job with this. Our community has become the primary social space for dozens of people, with Hack Night as the center of gravity. Many folks have created tight-knit friend groups, which have enabled each other to build highly ambitious technical projects. Every recent Purdue Hackers initiative, including [infrastructure](https://github.com/purduehackers/id) [for the](https://github.com/purduehackers/door-opener) [passports](https://blog.purduehackers.com/posts/papers-please), Hack Night’s [day-of dashboard](https://github.com/purduehackers/fizzy-night), the [upcoming sign](https://github.com/purduehackers/sign-firmware), and logistics for the [Steve Wozniak AMA](https://www.youtube.com/watch?v=25RlBawQEb4), have been spearheaded by community members.
 
-## 2. Write your values and practices down
+One project that’s emblematic of our success here is [Lightning Time](https://blog.purduehackers.com/posts/lightning-time), a hexadecimal-based time system created at Hack Night. It’s now a rite of passage to learn how it works, and it’s embedded into the Hack Night [schedule](https://events.purduehackers.com/hack-night-43) and [dashboard](https://github.com/purduehackers/fizzy-night/blob/main/src/components/Clock/clock.tsx), and [the sign’s firmware](https://github.com/purduehackers/sign-firmware/commit/1480537ce278c8ded0f70e377efa55083c13b2a2).
+
+## 2. Create rituals
+
+Create easy and harmless rituals that encode your values, and make following them a part of your culture. These rituals should be emblematic of your culture and be some of its loudest parts.
+
+Rituals foster camaraderie between the members of your org. They have a similar effect to inside jokes, except rituals should be public, easy to follow, and encouraged for everyone. They act as a layer of glue—so if a leader is playing Telephone, it will be easier to leave the glue on than take it off.
+
+Our main ritual is the count to `0~0~0`: at Hack Night, when the time in Lightning Time strikes `f~f~f|0`, everyone gathers around the dashboard and counts up in hexadecimal, from `0` to `f`, following the charge (the unit to the right of the pipe, which lasts about 1.2 seconds) until the clock strikes `0~0~0` (or midnight, in traditional time). It’s like a new year’s countdown from another dimension.
+
+<YouTubePlayer videoId="iOTNc4vM3T0" />
+
+Another ritual is emerging from Hack Night’s conlanging circle: greeting each other with “Good Hack Night.” Their goal is to get regulars used to saying this, then create a Purdue Hackers conlang and establish a Hack Night-wide ritual of greeting each other in the new language.
+
+## 3. Write your values and practices down
 
 Write down specifically what and who your org is for, and constantly communicate it. Not everyone needs to agree with your written values, but it should be impossible to be a member of your org and not be aware of them. You also can’t guarantee that future generations will agree with your values, but disagreeing with them will require forming their own opinions, which you want to encourage.
 
 Regularly share externally what your org is doing. Rigorously document procedures and technical knowledge, as well as every time you learn new things that improve them. Make all writing very easily accessible to the public (or at least to members). Build all software open source.
 
-We have made great strides here, but we need to be doing a lot more.
+We have made great strides here, but we need to be doing a lot more. [more assessment]
+
+## 4. Run creative initiatives that require active maintenance
+
+Start initiatives that, by nature, must happen regularly (every 1-2 weeks), and make them foundational pieces that your org cannot function without. Encode your values into them, and make them wholly unique to you. The more creative and unconventional, the better.
+
+This serves two goals. First, it keeps momentum going and gives people ownership over the org, both of which keep them engaged and make it easier to move forward. Second, it’s a way of deeply encoding your org’s values and culture into its practices, which makes it harder to lose them “by accident”, or without an intentional and focused shift away from them. If a leader is playing Telephone, the Current will push them toward maintaining the initiatives.
+
+Purdue Hackers runs three such initiatives: Hack Night, badges, and passports.
+
+Hack Night is a hacker festival that runs every Friday night at [our local makerspace](https://www.purdue.edu/bidc/). It starts at 8pm and ends when the last person leaves—often around 6am. Events run within Hack Night from 9pm to 1am—[reading circles, demos](https://events.purduehackers.com/hack-night-40), and [sessions](https://arc.net/l/quote/ueijubut)—all of which are run by community members. Hack Night is the core of Purdue Hackers: it _must_ happen every week.
+
+Badges are laser-cut collectibles that we give out at Hack Night. Every week, we make a unique design containing that week’s Hack Night version number and date, source material, and laser engrave & cut 80 collectibles. A Hack Night event is not canonical if there’s no badge associated with it, and most Hack Night attendees come expecting to add a new one to their collection, so there _must_ be a new badge every week.
+
+[Passports](https://blog.purduehackers.com/posts/papers-please) are NFC-enabled identifying documents for Purdue Hackers. Hackers get their passports stamped at Hack Night, and the [“Sign In with Passport” API](https://github.com/purduehackers/id) enables us to build software exclusive to passport holders. Passports are made by their owners at passport-making ceremonies, which run during Hack Night. We just shipped them, but demand is already high enough that we _must_ run a passport-making ceremony every two weeks. And as we build more passport-exclusive core infrastructure, this will only grow stronger.
+
+## 5. Choose leaders wisely
 
 - let’s assume you can’t stop telephone from happening. one thing you can do is make sure that 1) the culture starts off very strong, 2) do a lot of external comms clearly articulating what you’re for and against. you can’t guarantee that future generations will agree with you, but disagreeing will require them to form their own opinions, which is what you want. and if they still play telephone, they start with great foundations. 3) create interesting and creative programs/initiatives that future generations have to maintain. if they’re playing telephone, the default will be maintaining these great programs. 4) create rituals that people are expected to follow. if they’re playing telephone, the default will be to follow the rituals, which can maintain at least part of the original culture. 5) but ultimately what you really need is strong leadership. you want to make periods of telephone last as short as possible, and you only do that with good leadership. so the process of selecting a new leader needs to be very rigorous, lasting a full year and choosing someone who can be there for a long time.
