@@ -96,8 +96,8 @@ const PostLayout = ({ post }: { post: Post }) => {
         <article className="mt-8 sm:mt-12 mb-8 sm:mb-12 text-lg font-serif flex flex-col items-start gap-y-4 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
           <Content components={components} />
         </article>
+        <Footer />
       </main>
-      <Footer />
     </>
   )
 }
