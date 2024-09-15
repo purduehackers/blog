@@ -6,11 +6,11 @@ const Footer = () => (
       Made with 💛 and ⚡️ •{' '}
       <span className="underline underline-offset-4 decoration-2">
         <a
-          href="https://blog.purduehackers.com/rss.xml"
+          href="https://github.com/purduehackers/blog"
           target="_blank"
           className="decoration-amber-400 dark:decoration-amber-500 hover:decoration-[3px]"
         >
-          RSS
+          Open source
         </a>
       </span>{' '}
       •{' '}
