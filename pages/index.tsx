@@ -5,6 +5,7 @@ import PostCard from 'components/post-card'
 import colors from 'lib/colors'
 import { sortAsc, sortDesc } from 'lib/sort'
 import { pick } from 'contentlayer/client'
+import generateRssFeed from 'lib/utils'
 
 const Home = ({ posts }: { posts: Post[] }) => (
   <div className="min-h-screen flex flex-col">
@@ -35,6 +36,7 @@ export async function getStaticProps() {
   const posts = sortDesc(allPosts).map((post) =>
     pick(post, ['title', 'date', 'url', 'color'])
   )
+  generateRssFeed(allPosts);
   return { props: { posts } }
 }
 
