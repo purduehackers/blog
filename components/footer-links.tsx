@@ -1,5 +1,5 @@
 import { Home } from 'react-feather'
-import { Instagram, Discord, Github } from '@icons-pack/react-simple-icons'
+import { Instagram, Discord, Github, Rss } from '@icons-pack/react-simple-icons'
 
 const FooterLinks = () => (
   <div className="flex flex-row justify-center gap-x-5">
@@ -9,6 +9,13 @@ const FooterLinks = () => (
       target="_blank"
     >
       <Home height={27} width={27} />
+    </a>
+    <a
+      href="https://blog.purduehackers.com/rss.xml"
+      className="hover:text-gray-600 transition"
+      target="_blank"
+    >
+      <Rss height={27} width={27} />
     </a>
     <a
       href="https://github.com/purduehackers"
