@@ -5,6 +5,8 @@ authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png), [Sean Choi](
 ogDescription: The story of a vine cipher, modded rotary phone, and a scavenger hunt.
 ---
 
+import ReactAudioPlayer from 'react-audio-player'
+
 More than half of our Hack Night badges are “the best badge we’ve ever made”. We say this about so many of our badges that the phrase has become a meme among Hack Night regulars, and an expectation of future badges: given four badges, you can expect two or three of them to be “the best badge we’ve ever made”.
 
 But this week, we outdid ourselves so hard that it deserves its own entry in Purdue Hackers lore. The Hack Night 5.3 badge is the best badge we’ve ever made, by quite a long shot, and it’s emblematic of what makes Purdue Hackers so special today.
@@ -39,7 +41,7 @@ Then we brainstormed what a puzzle in this format would look like. The first ide
 
 We settled on ASCII codes that spelled out a message when all badges were put together. But that didn’t feel like enough: hiding a message in its ASCII representation is an old trick that we expected many players to figure out. We wanted the message to fill the whole badge, feel alien, and be beautiful enough for each badge to stand on its own without the scavenger hunt.
 
-This turned us toward the “vine script”: the Spoken Language Circle, which meets at every Hack Night at 9pm, has been developing a writing system based on vines with leaves and berries—and they had recently made great progress. It’s still far away from being “production-ready”—the spoken language  itself is very early, so the vine script today is effectively a cipher for English sounds—but that could actually make it a great fit for this badge, since it would make it possible to decode without having to also translate an alien language.
+This turned us toward the “vine script”: the Spoken Language Circle, which meets at every Hack Night at 9pm, has been developing a writing system based on vines with leaves and berries—and they had recently made great progress. It’s still far away from being “production-ready”—the spoken language itself is very early, so the vine script today is effectively a cipher for English sounds—but that could actually make it a great fit for this badge, since it would make it possible to decode without having to also translate an alien language.
 
 ![](/posts/the-best-badge/vine-key.jpg)
 
@@ -65,11 +67,22 @@ The Wednesday before Hack Night, we laser cut the badges out of yellow mirrored 
 
 We weren’t done: Jack and Matthew wrote a script, then recorded the message to be played on the phone. Meanwhile, Hazel used ElevenLabs to ask for a password, displayed on top of the website pointed to by the ASCII codes, then edited both files and put them into the phone.
 
-[both files]
+<figure className="text-sm text-center font-main">
+
+<ReactAudioPlayer src="/posts/the-best-badge/question.mp3" controls />
+
+<figcaption>The password prompt</figcaption>
+</figure>
+
+<figure className="text-sm text-center font-main">
+
+<ReactAudioPlayer src="/posts/the-best-badge/success.mp3" controls />
+
+<figcaption>Tapping into Evil Hack Night</figcaption>
+</figure>
 
 Finally, Jack printed tickets, which those who made it all the way to the end could redeem for a free Insomnia cookie.
 
 ![](/posts/the-best-badge/tickets.jpg)
 
 ## Day Of
-
