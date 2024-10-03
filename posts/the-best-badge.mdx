@@ -1,7 +1,7 @@
 ---
 title: The Best Badge We’ve Ever Made
 date: 2024-09-21
-authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png), [Sean Choi](https://github.com/szeans.png),[Jack Hogan](https://github.com/ImTheSquid.png),[Hazel Roeder](https://github.com/fizzyapple12.png)'
+authors: '[Matthew Stanciu](https://github.com/MatthewStanciu.png), [Sean Choi](https://github.com/szeans.png),[Jack Hogan](https://github.com/ImTheSquid.png),[Hazel Roeder](https://github.com/fizzyapple12.png),[Ayden Bridges](https://github.com/TheBlueTophat.png)'
 ogDescription: The story of a vine cipher, modded rotary phone, and a scavenger hunt.
 ---
 
@@ -9,7 +9,7 @@ import ReactAudioPlayer from 'react-audio-player'
 
 More than half of our Hack Night badges are “the best badge we’ve ever made”. We say this about so many of our badges that the phrase has become a meme among Hack Night regulars, and an expectation of future badges: given four badges, you can expect two or three of them to be “the best badge we’ve ever made”.
 
-But this week, we outdid ourselves so hard that it deserves its own entry in Purdue Hackers lore. The Hack Night 5.3 badge is the best badge we’ve ever made, by quite a long shot, and it’s emblematic of what makes Purdue Hackers so special today.
+But two weeks ago, we outdid ourselves so hard that it deserves its own entry in Purdue Hackers lore. The Hack Night 5.3 badge is the best badge we’ve ever made, by quite a long shot, and it’s emblematic of what makes Purdue Hackers so special today.
 
 # What are badges?
 
@@ -21,13 +21,13 @@ Every badge is a labor of love. We begin a week and a half before its associated
 
 [2-4 more of the best ones we’ve ever done]
 
-We’ve done all this every week, never missing a week, since Hack Night 1.0 in November 2022. And they keep getting better: since we started making badges two years ago, we’ve learned what works, gotten more creative with our themes, and taken more community contributions, both theme suggestions and designs. Longtime Hack Night regulars have large collection of badges, and many of our alumni have brought their collections to their new homes.
+We’ve done all this every week, never missing a week, since Hack Night 1.0 in November 2022. And they keep getting better: since we began making badges two years ago, we’ve learned what works, gotten more creative with our themes, and encouraged designs from community members. Longtime Hack Night regulars have large collection of badges, and many of our alumni have brought their collections to their new homes.
 
 # The Hack Night 5.3 badge
 
 A typical badge is one design from which we make 80 copies. But we’ve strayed from this norm before: the badges for Hack Nights 3.2, 3.11, 4.3, 4.4, and 4.5 all had more than one version.
 
-Last week, we decided to take this idea even further: a badge that has 7 versions which, when put together, reveal a message to be decoded, kicking off a scavenger hunt.
+For Hack Night 5.3, we decided to take this idea even further: a badge that has 7 versions which, when put together, reveal a message to be decoded, kicking off a scavenger hunt.
 
 ## Creating the badge
 
@@ -41,7 +41,7 @@ Then we brainstormed what a puzzle in this format would look like. The first ide
 
 We settled on ASCII codes that spelled out a message when all badges were put together. But that didn’t feel like enough: hiding a message in its ASCII representation is an old trick that we expected many players to figure out. We wanted the message to fill the whole badge, feel alien, and be beautiful enough for each badge to stand on its own without the scavenger hunt.
 
-This turned us toward the “vine script”: the Spoken Language Circle, which meets at every Hack Night at 9pm, has been developing a writing system based on vines with leaves and berries—and they had recently made great progress. It’s still far away from being “production-ready”—the spoken language itself is very early, so the vine script today is effectively a cipher for English sounds—but that could actually make it a great fit for this badge, since it would make it possible to decode without having to also translate an alien language.
+This turned us toward the “vine script”: the Spoken Language Circle, which meets at every Hack Night at 9pm, has been developing a writing system based on vines with leaves and berries—and they had recently made great progress. It’s still far away from being “production-ready”, but we nevertheless felt like it was a perfect fit for the badge.
 
 ![](/posts/the-best-badge/vine-key.jpg)
 
@@ -65,7 +65,7 @@ The Wednesday before Hack Night, we laser cut the badges out of yellow mirrored 
 
 ![](/posts/the-best-badge/final-assembly-2.jpg)
 
-We weren’t done: Jack and Matthew wrote a script, then recorded the message to be played on the phone. Meanwhile, Hazel used ElevenLabs to ask for a password, displayed on top of the website pointed to by the ASCII codes, then edited both files and put them into the phone.
+Now that the badges were cut, Jack and Matthew recorded the message to be played on the phone. Meanwhile, Hazel used ElevenLabs to create a password prompt, which was displayed on top of the website pointed to by the ASCII codes, then edited both files and put them into the phone.
 
 <figure className="text-sm text-center font-main">
 
@@ -85,6 +85,62 @@ Finally, Jack printed tickets, which those who made it all the way to the end co
 
 ![](/posts/the-best-badge/tickets.jpg)
 
+## The final puzzle
+
+First, you receive a badge, just like at every Hack Night—except at this one, the badge you receive is one of 7 variations. If you put all 7 together in the correct way, the fully-assembled puzzle reveals two messages: one in the form of a vine, with leaves and berries, running through every badge; and one in the form of seemingly random numbers, of which every badge contains 2 or 3.
+
+The seemingly random numbers are actually ASCII codes arranged randomly; if you turn each code into its character representation, you may recognize that you’re looking at a scrambled URL. Putting it together reveals it to be `puhack.horse/53`.
+
+![](/posts/the-best-badge/53.png)
+
+This website contains instructions for decoding the vine, a message about a password, and a question “Where do the creations belong?” with a text input.
+
+Using the instructions at the top, mapping each of the leaves on the vine to their character representations, you find the message in the vine is `ROTARY PHONE 310685`. At this point, it’s time to find the rotary phone hidden somewhere in the venue.
+
+Once you find it, you pick it up and dial `310685`. The phone begins to ring, then a demonic voice asks, “Please enter the password.” If you dial `53`—recall that the website says “The password is at the top of this website”—you get tapped into the Evil Purdue Hackers universe.
+
+The message from Evil Purdue Hackers is two of its members discussing projects folks are building in that universe: [passports](https://blog.purduehackers.com/posts/papers-please) except you get deported if you don’t have one, the door closer, and the torment nexus. Near the end, the two members remark that these projects should be in a gallery.
+
+![](/posts/the-best-badge/53-solved.png)
+
+If you recognize this as the answer to the question on the website, and enter it into the form, the website turns green and asks you to redeem it for a ticket, which you’ll exchange for a cookie.
+
 ## Day Of
 
-Anticipating that people may have difficulty
+Anticipating that people may have difficulty finding 6 other people at Hack Night, we planned a 10pm Session where we would gather folks to put their badges together. But we set up the phone at the start of Hack Night, so folks could get started whenever they wanted if they found a group.
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/the-best-badge/first-group-1.jpg)
+
+![](/posts/the-best-badge/first-group-2.jpg)
+
+</div>
+
+The first group solved the puzzle at around 9:15, just over an hour into Hack Night. This inspired other groups to start, boosted by the 10pm Session.
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/the-best-badge/session-1.jpg)
+
+![](/posts/the-best-badge/session-2.jpg)
+
+![](/posts/the-best-badge/session-3.jpg)
+
+![](/posts/the-best-badge/session-4.jpg)
+
+![](/posts/the-best-badge/session-5.jpg)
+
+![](/posts/the-best-badge/session-6.jpg)
+
+</div>
+
+By the time `0~0~0` hit, about 20 people had solved the puzzle. These people placed their order for an Insomnia cookie, which we picked up 30 minutes later.
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/the-best-badge/cookies-1.jpg)
+
+![](/posts/the-best-badge/cookies-2.jpg)
+
+</div>
