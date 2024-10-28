@@ -91,11 +91,29 @@ After a few months of work, thing were starting to look up. We had the pipes con
 
 [SIGN PROGRESS PICTURE HERE]
 
-As an aside, by this point, two people who had helped print the sign blocks, Tommy and Tejas, had even made a miniature version of the Sign to show how “easy” it was to get a working product. It was cute, working, but also one tenth the height of the actual thing.
+As an aside, by this point, two people who had helped print the sign blocks, Tommy and Tejas, had even made a miniature version of the Sign to show how “easy” it was to get a working product. It was fun, working, but also one tenth the height of the actual thing.
 
 [MINI SIGN]
 
+I thought I was gonna catch up with them and ship the Sign very soon after. However, things started to break down. I had issues with the EEPROM that is planned to store configuration settings for the Sign. This took a while to debug, but ended up just being a slight timing issue that I was able to fix with one line of code. The bigger problem was that the Pi Pico had no support for WPA2-Enterprise.
 
+Purdue, like many other organizations, wants to know who’s on their network and who owns what device. A reasonable ask, but an absolute nightmare for me. There wasn’t even a function to call to get the Pico to connect to Purdue’s network, `PAL3.0`. I did some  digging and found a network, `PAL-Gadgets`, that used traditional WAP2 security. Great! Slight problem: the network requires emailing people to get devices on it, each device is registered per MAC address, and worst of all, the network only works in certain rooms around campus. I decided that we could make it work, so I went through a maze of emails before eventually getting access to the network. I try to run my code to synchronize with the internet, and... nothing. Sometimes my network packets are able to get through to the open internet, but the more I try the worse that chance gets. I go through all five stages of grief trying to get this working. I even consider ordering a second Pi Pico, thinking it may be a manufacturing issue. All of this takes months and significantly delays the Sign.
+
+After way too long trying every which way to get the Pico online, I make a tough decision: I abandon the Pico. This results in me having to completely rewrite my code and consider: what do I use instead? After some (insufficient) research, I settle upon the ESP32-S3. I used it in a similar project and it worked well enough. I design a quick board to convert the Pico slot to one that could fit an ESP32-S3 and ordered it.
+
+[ESP TO PICO REV 1]
+
+Soon enough it came in and Hazel assembled it. I got to work writing some new code for the Sign, and things went very well for the first couple of days! I even got the ESP connecting to `PAL3.0`, something that made my life much easier. However, I soon ran into a problem: The Sign’s LEDs require the use of pulse width modulation, or PWM, to change their brightness and make a full color gamut. The ESP32-S3 doesn’t have enough PWM channels for all of the LEDs. This meant that I couldn’t control the sign and make it display every color I wanted to. In fact, no more than about 10! Hazel and I brainstormed, trying to implement PWM in software but to no avail. This setback was particularly frustrating, as we all felt like we were so close to the finish line.
+
+After spending some time on other projects I went back to the drawing board. Some further research revealed that the ESP32 original did have enough PWM channels for the sign. This was good, but the ESP32 lacked the same connection system as the ESP32-S3, meaning I would need additional interfacing circuitry to make it work. I added the necessary things, ordered it, and it arrived soon after. When I first attempted to power it on, it didn’t boot. Uh oh. After further investigation, Espressif, the makers of the ESP32 series, use a special communication chip for the ESP32 with special connections that I didn’t realize were necessary. A reasonable mistake, but still infuriating. The fix this time was much simpler: solder a button onto two of the ESP32’s pins to bypass the need for the special communication chip, making it possible for the chip to boot and accept new firmware. This would cause programming the chip to be a pain, since the button had to be held down for a very specific length of time to get the ESP32 into a mode that would accept code, but it worked.
+
+[ESP TO PICO REV 2]
+
+I was able to reuse most of the code from the ESP32-S3 to the ESP32, so development went relatively quickly after this. I implemented the PWM code, spent a long time getting self-updating firmware working through GitHub CI, and cleaned up my code. At around 15:30 on October 13, 2024, the Sign version 1.0 finally shipped!
+
+[JACK HOLDING SIGN]
+
+After 548 days of blood, sweat, and tears, the Sign had finally shipped.
 
 March 2024 - October 2024
 
@@ -108,6 +126,12 @@ March 2024 - October 2024
 - Picture of new PCB, CAD, working sign
 
 # V: Future
+
+The future is bright for the Sign. There are many possibilities for new software, such as integration with [ID](https://blog.purduehackers.com/posts/papers-please) or the dashboard and custom lighting patterns made with a full animation editor. The button on the back of the sign is yet to be assigned any purpose, so it could be used for anything from switching profiles to ringing a bell somewhere. There are still some issues: the EEPROM is not accessible due to an issue with the ESP32 conversion board and the boot button is an annoyance that should be fixed in the next revision of the board.
+
+Overall, this project has taught me so much about project management, budgeting, collaboration and teamwork, but most potently, getting up when you’re knocked down. I can’t count how many times that happened, but if I didn’t manage to get up after each and every time that happened, I wouldn’t have written this blog post. In the end, it was all worth it to finally see the Sign lighting up the night.
+
+[SIGN LIGHTING UP THE NIGHT]
 
 - Future plans
 - Custom profiles
