@@ -14,4 +14,4 @@ export const GET: APIRoute = async ({ site }) => {
       link: `/blog/${post.slug}/`,
     })),
   });
-}
+};

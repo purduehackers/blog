@@ -36,9 +36,9 @@ const ColorToy = ({
           onChange={(e) => {
             const val = parseInt(e.target.value);
             if (val >= 0 && val <= 255) {
-              setStaticValues([val, staticValues[1]]);
-              setValid([true, valid[1]]);
-            } else setValid([false, valid[1]]);
+              setStaticValues([val, staticValues[1]!]);
+              setValid([true, valid[1]!]);
+            } else setValid([false, valid[1]!]);
           }}
           className={`border-2 border-black rounded w-1/5 md:w-1/3 text-center sm:text-left px-1 outline-none ${
             !valid[0] ? "bg-red-100" : ""
@@ -58,9 +58,9 @@ const ColorToy = ({
           onChange={(e) => {
             const val = parseInt(e.target.value);
             if (val >= 0 && val <= 255) {
-              setStaticValues([staticValues[0], val]);
-              setValid([valid[0], true]);
-            } else setValid([valid[0], false]);
+              setStaticValues([staticValues[0]!, val]);
+              setValid([valid[0]!, true]);
+            } else setValid([valid[0]!, false]);
           }}
           className={`border-2 border-black rounded w-1/5 md:w-1/3 text-center sm:text-left px-1 outline-none ${
             !valid[1] ? "bg-red-100" : ""
@@ -84,10 +84,10 @@ const ColorToy = ({
               style={{
                 backgroundColor:
                   part === LightningPart.Bolt
-                    ? `#${rgbHex(midpoint, staticValues[0], staticValues[1])}`
+                    ? `#${rgbHex(midpoint, staticValues[0]!, staticValues[1]!)}`
                     : part === LightningPart.Zap
-                      ? `#${rgbHex(staticValues[0], midpoint, staticValues[1])}`
-                      : `#${rgbHex(staticValues[0], staticValues[1], midpoint)}`,
+                      ? `#${rgbHex(staticValues[0]!, midpoint, staticValues[1]!)}`
+                      : `#${rgbHex(staticValues[0]!, staticValues[1]!, midpoint)}`,
               }}
             ></div>
             <div

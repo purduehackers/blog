@@ -37,7 +37,7 @@ export default defineConfig({
   markdown: {},
   vite: {
     ssr: {
-      noExternal: ['@purduehackers/time'],  // Force Vite to treat this package as ESM
+      noExternal: ["@purduehackers/time"], // Force Vite to treat this package as ESM
     },
   },
 });
