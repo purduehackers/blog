@@ -21,12 +21,7 @@ export default {
       {...props}
       width={0}
       height={0}
-      className="w-full md:w-1/2 lg:w-1/3"
-      style={{
-        width: "auto",
-        height: "auto",
-        borderRadius: "8px",
-      }}
+      className="w-full md:w-[50vw] lg:w-[33vw] rounded-md"
     />
   ),
   ul: (props) => (
