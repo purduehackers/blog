@@ -21,7 +21,7 @@ export default {
       {...props}
       width={0}
       height={0}
-      className="w-full md:w-[50vw] lg:w-[33vw] rounded-md"
+      className="w-full md:w-[50vw] lg:w-[33vw] rounded-lg"
     />
   ),
   ul: (props) => (
