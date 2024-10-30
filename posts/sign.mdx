@@ -55,7 +55,12 @@ Once everyone got back from summer break in August 2023, work resumed on the Sig
 
 It didn't take too long for me to get a basic CAD together. We gave an estimated timeline of six-ish months to complete the entire project, hardware and software, so we could start showing it off to prospective members as soon as possible. In fact, since this was our first hardware initiative, we expected to fund many more similar projects like this so other Hackers could get into the physical space just like me. Unfortunately, none of us were very experienced with hardware design at the time, so we had no idea how wrong we were.
 
-[CAD OF THE SIGN]
+<figure className="text-sm text-center font-main">
+
+![A screenshot of the Sign in Autodesk Fusion.](/posts/sign/fusion.png)
+
+<figcaption>The Sign in Autodesk Fusion.</figcaption>
+</figure>
 
 There was some debate over what the Sign should be made out of. Some suggested wood, others sheet metal. We decided that 3D printing would be the easiest way to get the necessary contours without having to deal with advanced manufacturing techniques that could drive us over time or budget. This resulted in us getting four reels of filament, totaling $84.96. This wasn’t even the most expensive part of the (initial) purchase order of the Sign: the LED light strips cost $99. We knew that a $200 was an optimistic target, but with just these two purchases we had blown that budget. We decided to expand the budget to $400 at this point.
 
@@ -79,11 +84,21 @@ At this point I needed a break, which I would get since there was a lot of fixin
 
 After a few months of work, thing were starting to look up. We had the pipes connecting the blocks together, and the new PCB was delivered. We attached the new and improved components and the Sign came to life!
 
-[SIGN PROGRESS PICTURE HERE]
+<figure className="text-sm text-center font-main">
+
+![The Sign sitting on a table displaying Lightning Time with me over to the right looking very satisfied.](/posts/sign/progress.jpg)
+
+<figcaption>Testing some initial software on the Sign.</figcaption>
+</figure>
 
 As an aside, by this point, two people who had helped print the component blocks, Tommy and Tejas, had even made a miniature version of the Sign to show how “easy” it was to get a working product. It was fun, working, but also one tenth the height of the actual thing.
 
-[MINI SIGN]
+<figure className="text-sm text-center font-main">
+
+![A miniature version of the Sign glowing in front of the true Sign.](/posts/sign/mini.jpg)
+
+<figcaption>The Sign and its little sibling.</figcaption>
+</figure>
 
 I thought I was gonna catch up with them and ship the Sign very soon after. However, things started to break down. I had issues with the EEPROM that is planned to store configuration settings for the Sign. This took a while to debug, but ended up just being a slight timing issue that I was able to fix with one line of code. The bigger problem was that the Pi Pico had no support for WPA2-Enterprise.
 
@@ -91,7 +106,12 @@ Purdue, like many other organizations, wants to know who’s on their network an
 
 After way too long trying every which way to get the Pico online, I made a tough decision: I abandoned the Pico. This resulted in me having to completely rewrite my code and find a suitable replacement controller. After some research I settled on the ESP32-S3. I had used it in a similar project and it worked well enough. I designed a quick board to convert the Pico slot to one that could fit an ESP32-S3 and ordered it.
 
-[ESP TO PICO REV 1]
+<figure className="text-sm text-center font-main">
+
+![A 3D render of a small, black, gum stick-sized PCB that controlled the Sign with an ESP32-S3.](/posts/sign/esprev1.png)
+
+<figcaption>The first revision of the Sign&apos;s ESP32 control board.</figcaption>
+</figure>
 
 Soon enough it came in and Hazel assembled it. I got to work writing some new code for the Sign, and things went very well for the first couple of days! I even got the ESP connecting to `PAL3.0`, something that made my life much easier, allowing the Sign to connect to Wi-Fi anywhere on campus. However, I soon ran into a problem: the Sign’s LEDs require the use of pulse width modulation, or PWM, to change their brightness and make a full color gamut. The ESP32-S3 doesn’t have enough PWM channels for all of the LEDs. This meant that I couldn’t control the Sign and make it display every color I wanted to. In fact, no more than about 10! Hazel and I brainstormed, trying to implement PWM in software but to no avail. This setback was particularly frustrating since we all felt like we were so close to the finish line.
 
@@ -99,7 +119,12 @@ After spending some time on other projects I went back to the drawing board. Som
 
 When I first attempted to power on the board, it didn’t boot. Dread started to surround me. What had I done wrong this time? After further investigation, Espressif, the makers of the ESP32 series, use a special communication chip for the ESP32 with special connections that I didn’t realize were necessary. A reasonable mistake, but still infuriating. The fix this time was much simpler: solder a button onto two of the ESP32’s pins to bypass the need for the special communication chip, making it possible for the chip to boot and accept new firmware. This would cause programming the chip to be a pain, since the button had to be held down for a very specific length of time to get the ESP32 into a mode that would accept code, but it worked.
 
-[ESP TO PICO REV 2]
+<figure className="text-sm text-center font-main">
+
+![A small, black, gum stick-sized PCB that controls the Sign with an ESP32.](/posts/sign/esprev2.jpg)
+
+<figcaption>The second revision of the Sign&apos;s ESP32 control board.</figcaption>
+</figure>
 
 I was able to reuse most of the code from the ESP32-S3 to the ESP32, so development went relatively quickly after this. I implemented the PWM code, spent a long time getting self-updating firmware working through GitHub CI, and cleaned up my code. After 548 days of blood, sweat, and tears at around 15:30 on October 13, 2024, the Sign version 1.0 finally shipped!
 
