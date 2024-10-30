@@ -1,29 +1,32 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
-import colors from '../../lib/colors';
+import { type CollectionEntry, getCollection } from "astro:content";
+
+import BlogPost from "layouts/BlogPost.astro";
+
+import colors from "lib/colors";
+import components from "lib/components";
 
 export async function getStaticPaths() {
   const getColors = (i: number) => {
     return colors[i % colors.length];
   };
-	const posts = await getCollection('blog');
-	return posts.sort(
-		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-).map((post, i) => {
-	post.data.color = getColors(posts.length - i - 1);
-	return{
-		params: { slug: post.slug },
-		props: { ...post},
-	};
-	});
+  const posts = await getCollection("blog");
+  return posts
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .map((post, i) => {
+      post.data.color = getColors(posts.length - i - 1);
+      return {
+        params: { slug: post.slug },
+        props: { ...post },
+      };
+    });
 }
-type Props = CollectionEntry<'blog'>;
+type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
 const { Content } = await post.render();
 ---
 
 <BlogPost {...post.data}>
-	<Content />
+  <Content components={components} />
 </BlogPost>

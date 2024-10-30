@@ -1,21 +1,27 @@
 ---
 title: Introducing Lightning Time
 pubDate: 2022-10-20
-authors: ['[Matthew Stanciu](https://github.com/MatthewStanciu.png)','[Neil]()','[Reece Ausmus]()','[Jack](https://github.com/Athryx.png)']
+authors:
+  [
+    "[Matthew Stanciu](https://github.com/MatthewStanciu.png)",
+    "[Neil]()",
+    "[Reece Ausmus]()",
+    "[Jack](https://github.com/Athryx.png)",
+  ]
 description: A new way to measure time, by Purdue Hackers
 ---
 
 import LightningText, {
-  LightningPart
-} from '../../react/posts/lightning-time/lightning-text'
-import ColoredLightningString from '../../react/posts/lightning-time/colored-lightning-string'
-import ColorsDemo from '../../react/posts/lightning-time/colors-demo'
-import ColorToy from '../../react/posts/lightning-time/color-toy'
-import ConvertToLightning from '../../react/posts/lightning-time/convert-to-lightning'
-import ConvertFromLightning from '../../react/posts/lightning-time/convert-from-lightning'
-import LightningTimeUpdater from '../../components/LightningTimeUpdater.astro';
+  LightningPart,
+} from "../../components/posts/lightning-time/lightning-text";
+import ColoredLightningString from "../../components/posts/lightning-time/colored-lightning-string";
+import ColorsDemo from "../../components/posts/lightning-time/colors-demo";
+import ColorToy from "../../components/posts/lightning-time/color-toy";
+import ConvertToLightning from "../../components/posts/lightning-time/convert-to-lightning";
+import ConvertFromLightning from "../../components/posts/lightning-time/convert-from-lightning";
+import LightningTimeUpdater from "../../components/LightningTimeUpdater.astro";
 
-<LightningTimeUpdater/>
+<LightningTimeUpdater />
 
 <div className="w-full">
   <iframe
@@ -40,7 +46,7 @@ The first and largest unit of Lightning Time is called a <span className="bolt">
 is called a <span className="zap">zap</span>; the third is called a <span className="spark">spark</span>; and the fourth is
 called a **charge**.
 
-To illustrate: the current time in your timezone is <ColoredLightningString />.
+To illustrate: the current time in your timezone is <ColoredLightningString client:only="react" />.
 
 Bolts are the "hours", zaps are the "minutes", sparks are the "seconds", and charges are the "milliseconds"; however, because Lightning Time's units are divided up differently, it runs more slowly, so these units don't map very well to the time system we're used to. 1 bolt equals exactly 90 minutes; 1 zap equals a little over 5 and a half minutes; one spark equals about 21 seconds; one charge equals about 1.3 seconds.
 
@@ -91,7 +97,7 @@ full color filled in for all three values.](/posts/lightning-time/colors-filled.
 
 Here's a demo of how the colors work, using your local time:
 
-<ColorsDemo client:only="react"/>
+<ColorsDemo client:only="react" />
 
 The static values in this demo are the same as the values highlighted in teal in the image above—they're the values
 we've picked for Purdue Hackers, and the default across the Lightning Time tooling we've built. (AKA, you don't have to come up
@@ -118,8 +124,8 @@ between them 😎 Bonus points: pay attention to how the gradient border changes
 the colors work.
 
 <div className="flex flex-col md:flex-row gap-4 mx-auto">
-  <ConvertToLightning client:idle/>
-  <ConvertFromLightning client:only="react"/>
+  <ConvertToLightning client:idle />
+  <ConvertFromLightning client:only="react" />
 </div>
 
 ## Tools
@@ -171,7 +177,7 @@ inside the iframe at the top of this post, and lives at [lightning-time.vercel.a
 
 Lightning Time wasn't created by one person; it was created by _all of us_, in a truly magical way.
 
-<hr/>
+---
 
 Many of us grew up never having found our people until we were united by our shared love for making things. But finding the time and
 energy to actually make things is often really difficult. We want Purdue Hackers to feel like a

@@ -1,19 +1,20 @@
 ---
 interface Props {
-	date: Date;
-	monthFormat?: "long" | "short";
+  date: Date;
+  monthFormat?: "long" | "short";
+  size?: "sm" | "base";
 }
 
-const { date, monthFormat = "long" } = Astro.props;
+const { date, monthFormat = "long", size } = Astro.props;
 ---
 
-<time datetime={date.toISOString()}>
-	{
-		date.toLocaleDateString('en-us', {
-			year: 'numeric',
-			month: monthFormat,
-			day: 'numeric',
-			timeZone: 'UTC',
-		})
-	}
+<time datetime={date.toISOString()} class={`text-${size} px-2`}>
+  {
+    date.toLocaleDateString("en-us", {
+      year: "numeric",
+      month: monthFormat,
+      day: "numeric",
+      timeZone: "UTC",
+    })
+  }
 </time>
