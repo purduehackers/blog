@@ -20,6 +20,7 @@ First, let me introduce you to the subject of this story, the Sign:
 The Sign is the physical embodiment of the spirit of Purdue Hackers: make something amazing with help from your friends and show it to the world. It’s made of PLA, wood, metal, acrylic, and silicon. It took a year and half to build and is the fruit of the effort of around ten people. Today the Sign shines out from our makerspace, the Bechtel Center, telling the world when Hack Night is happening. It may look relatively simple, but there is a world of complexity hidden beneath the acrylic paneling and shining LEDs.
 
 # I: Spark
+
 ## April 2023: Hack Nights 2.6 & 2.7
 
 It all started near the end of April 2023 at Hack Night 2.6. A group of Hack Night attendees got together and started brainstorming cool hardware projects that we could pursue. A bunch of cool ideas came out of that session, including a flag, an update to Lightning Time, and other fun projects. The big project of the night, though, was a massive sign of our logo. We envisioned a shining monument to Purdue Hackers, with massive LED panels that we could stick in the window of our venue to show the world that Hack Night was happening.
@@ -49,6 +50,7 @@ The day after, I started work on the custom PCB that would power the Sign, and a
 While I didn&apos;t initially expect to, I ended up taking a leading position on this project. I thought it would be good to have a project of my own that others at Purdue Hackers could help with, so off I went. I made up a parts list, got a budget to work with of about $200, and ordered the necessary electronic components.
 
 # II: Rise
+
 ## April - November 2023
 
 Once everyone got back from summer break in August 2023, work resumed on the Sign almost instantly. I started work on the CAD for the project, and I did the finishing touches on the PCB I made a few months ago. After a few Hack Nights, we finally got around to ordering the parts. We agreed upon a reasonable $200 floating budget, and I threw together a cart. This penchant for just going for new purchases would continue to bite us in terms of our budget, but at the time everything was going great.
@@ -67,6 +69,7 @@ There was some debate over what the Sign should be made out of. Some suggested w
 Soon after, the PCBs came in. They looked amazing! We were super excited to get everything soldered to it once the rest of the parts came in. I started working on the firmware for the Sign around this point, and while it was a challenge working without many of the creature comforts I was used to within the context of an operating system, I made an initial prototype. At this point we thought we would have a fully-working Sign in September, at the latest October.
 
 # III: Fall
+
 ## December 2023 - February 2024
 
 Soon enough, the parts that I&apos;d ordered arrived and we got our first look at the electronics. Everything looked great at first glance! Everything we needed was there, and I was even able to source some extra parts from my supply so we could save some cash. We were over budget by about $70, but it was fine, right? This was the big expense out of the way. This semester, Hazel, a computer engineer, had started coming to Hack Night, and she had taken some interest in the Sign project. We decided to do the PCB assembly together as a fun project, and her experience in the field would be very helpful regardless.
@@ -75,7 +78,7 @@ The second we set up our soldering station for the PCB, we immediately realized 
 
 <figure className="text-sm text-center font-main">
 
-![The Sign&apos;s power board with the transistors&apos; legs crossed to correct a design flaw.](/posts/sign/ballerina.jpg)
+![The Sign's power board with the transistors' legs crossed to correct a design flaw.](/posts/sign/ballerina.jpg)
 
 <figcaption>The <q>ballerina transistors</q> in question.</figcaption>
 </figure>
@@ -89,6 +92,7 @@ Even after these fixes, I failed to account for the tolerance of the 3D printing
 At this point I needed a break, which I would get since there was a lot of fixing to be done.
 
 # IV: Rebirth
+
 ## March - October 2024
 
 After a few months of work things were starting to look up. We had the pipes connecting the blocks together, and the new PCB was delivered. We attached the new and improved components and the Sign came to life!
@@ -111,7 +115,7 @@ As an aside, by this point, two people who had helped print the component blocks
 
 I thought I was gonna catch up with them and ship the Sign very soon after. However, things started to break down. I had issues with the EEPROM that is planned to store configuration settings for the Sign. This took a while to debug, but ended up just being a slight timing issue that I was able to fix with one line of code. The bigger problem was that the Pi Pico had no support for WPA2-Enterprise.
 
-Purdue, like many other organizations, wants to know who’s on their network and who owns what device. A reasonable ask, but an absolute nightmare for me. There wasn’t even a function to call to get the Pico to connect to Purdue’s network, `PAL3.0`. I did some  digging and found a network, `PAL-Gadgets`, that used traditional WAP2 security. Great! Slight problem: the network requires emailing people to get devices on it, each device is registered per MAC address, and worst of all, the network only works in certain rooms around campus. I decided that we could make it work, so I went through a maze of emails before eventually getting access to the network. I ran my code to synchronize with the internet, and... nothing. Sometimes my network packets were able to get through to the open internet, but the more I tried the worse that chance got. I went through all five stages of grief trying to get this working. I even considered ordering a second Pi Pico, thinking it may be a manufacturing issue. All of this took months and significantly delayed the Sign.
+Purdue, like many other organizations, wants to know who’s on their network and who owns what device. A reasonable ask, but an absolute nightmare for me. There wasn’t even a function to call to get the Pico to connect to Purdue’s network, `PAL3.0`. I did some digging and found a network, `PAL-Gadgets`, that used traditional WAP2 security. Great! Slight problem: the network requires emailing people to get devices on it, each device is registered per MAC address, and worst of all, the network only works in certain rooms around campus. I decided that we could make it work, so I went through a maze of emails before eventually getting access to the network. I ran my code to synchronize with the internet, and... nothing. Sometimes my network packets were able to get through to the open internet, but the more I tried the worse that chance got. I went through all five stages of grief trying to get this working. I even considered ordering a second Pi Pico, thinking it may be a manufacturing issue. All of this took months and significantly delayed the Sign.
 
 After way too long trying every which way to get the Pico online, I made a tough decision: I abandoned the Pico. This resulted in me having to completely rewrite my code and find a suitable replacement controller. After some research I settled on the ESP32-S3. I had used it in a similar project and it worked well enough. I designed a quick board to convert the Pico slot to one that could fit an ESP32-S3 and ordered it.
 
@@ -145,6 +149,7 @@ I was able to reuse most of the code from the ESP32-S3 to the ESP32, so developm
 </figure>
 
 # V: Future
+
 ## October 2024 - ∞
 
 The future is bright for the Sign. There are many possibilities for new software, such as integration with [ID](https://blog.purduehackers.com/posts/papers-please) or the dashboard and custom lighting patterns made with a full animation editor. The button on the back of the Sign is yet to be assigned any purpose, so it could be used for anything from switching profiles to ringing a bell somewhere. There are still some issues: the EEPROM is not accessible due to an issue with the ESP32 conversion board and the boot button is an annoyance that should be fixed in the next revision of the board.
