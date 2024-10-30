@@ -16,6 +16,9 @@
 }
 
 @layer base {
+  body {
+    @apply font-main;
+  }
   li > ul > li {
     @apply sm:ml-6;
   }
