@@ -16,8 +16,8 @@ const { color = colors[0] } = data;
   href={`posts/${post.slug}`}
   class={`flex py-4 px-3 gap-2 flex-col h-full justify-center rounded-lg border-[3px] border-black bg-${color!.bg} hover:bg-[${color!.mainLight}] transition duration-100 no-underline text-black hover:text-black`}
 >
-  <div class="rounded-md mx-auto bg-white border-2 border-black px-2 text-sm">
-    <FormattedDate date={data.pubDate} , monthFormat="short" />
+  <div class="rounded-md mx-auto bg-white border-2 border-black">
+    <FormattedDate date={data.pubDate} monthFormat="short" size="sm" />
   </div>
   <h2 class="text-center text-3xl sm:text-2xl md:text-3xl font-bold">
     {data.title}

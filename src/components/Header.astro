@@ -25,9 +25,9 @@ const { authors, pubDate, updatedDate, title, color } = Astro.props;
     class="w-full container py-8 md:pt-12 md:pb-16 flex flex-col items-start gap-y-4 mx-auto px-4 sm:px-8 md:px-14"
   >
     <div
-      class="bg-white rounded-md border-2 border-black inline-block text-base px-2 mb-5"
+      class="bg-white rounded-md border-2 border-black inline-block text-base mb-5"
     >
-      <FormattedDate date={pubDate} />
+      <FormattedDate date={pubDate} size="base" />
       {
         updatedDate && (
           <div class="last-updated-on">

@@ -6,8 +6,6 @@ import BlogPost from "layouts/BlogPost.astro";
 import colors from "lib/colors";
 import components from "lib/components";
 
-import "styles/global.css";
-
 export async function getStaticPaths() {
   const getColors = (i: number) => {
     return colors[i % colors.length];
