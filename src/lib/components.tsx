@@ -21,14 +21,7 @@ export default {
       {...props}
       width={0}
       height={0}
-      sizes="(max-width: 768px) 100vw,
-      (max-width: 1024px) 50vw,
-      33vw"
-      style={{
-        width: "auto",
-        height: "auto",
-        borderRadius: "8px",
-      }}
+      className="w-full md:w-[50vw] lg:w-[33vw] rounded-lg"
     />
   ),
   ul: (props) => (

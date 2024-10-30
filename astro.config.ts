@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/static";
-import playformCompress from "@playform/compress";
+// import playformCompress from "@playform/compress";
 
 export default defineConfig({
   site: "https://blog.purduehackers.com",
@@ -23,7 +23,7 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     sitemap(),
-    playformCompress({ Logger: 1 }),
+    // playformCompress({ Logger: 1 }),
   ],
 
   server: {
