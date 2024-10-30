@@ -35,4 +35,9 @@ export default defineConfig({
     defaultStrategy: "viewport",
   },
   markdown: {},
+  vite: {
+    ssr: {
+      noExternal: ['@purduehackers/time'],  // Force Vite to treat this package as ESM
+    },
+  },
 });

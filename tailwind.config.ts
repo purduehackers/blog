@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import { fontFamily as fonts } from "tailwindcss/defaultTheme";
 
 const config = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
