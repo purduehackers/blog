@@ -5,6 +5,7 @@ import Header from "components/Header.astro";
 import Footer from "components/Footer.astro";
 
 import colors from "lib/colors";
+import { getOgImage } from "lib/utils";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -16,11 +17,13 @@ const {
   authors,
   color = colors[0],
 } = Astro.props;
+
+const ogImage = getOgImage({ title: title, authors })
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={`${title} | Purdue Hackers`} description={description} />
+    <BaseHead title={`${title} | Purdue Hackers`} description={description} image={ogImage} />
   </head>
 
   <main

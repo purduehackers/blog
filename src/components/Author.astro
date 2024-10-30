@@ -1,15 +1,9 @@
 ---
+import { parseMarkdownLink } from 'lib/utils';
+
 interface Props {
   authorString: string;
 }
-
-const parseMarkdownLink = (link: string) => {
-  const match = /\[(.+?)\]\((https?:\/\/[a-zA-Z0-9/.(-]+?)?\)/g.exec(link);
-  return {
-    author: match?.[1] || "Unknown",
-    avatarUrl: match?.[2] || "https://github.com/purduehackers.png",
-  };
-};
 
 const { authorString } = Astro.props;
 const { avatarUrl, author } = parseMarkdownLink(authorString);
