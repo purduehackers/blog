@@ -9,7 +9,7 @@ export const GET: APIRoute = async ({ site }) => {
   const sorted_posts = posts.sort((a, b) => Number(b.data.pubDate) - Number(a.data.pubDate))
 
   const site_url =
-  process.env.NODE_ENV === 'production'
+  process.env.PUBLIC_VERCEL_ENV === 'production'
     ? 'https://blog.purduehackers.com/'
     : 'http://localhost:3000/'
 
