@@ -1,16 +1,17 @@
 ---
 interface Props {
   videoId: string;
+  title: string;
 }
 
-import { YouTube } from "@astro-community/astro-embed-youtube";
-const { videoId } = Astro.props;
+const { videoId, title } = Astro.props;
 ---
 
-<div class="w-full text-center rounded-lg">
-  <YouTube
-    class="youtubeContainer"
-    style={{ borderRadius: "8px" }}
-    id={videoId}
-  />
-</div>
+<iframe
+  class="youtubeContainer"
+  allowfullscreen="1"
+  allow="accelerometer; autoplay"
+  title={title}
+  width="100%"
+  src={`https://www.youtube.com/embed/${videoId}`}
+></iframe>
