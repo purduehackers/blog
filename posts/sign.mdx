@@ -71,7 +71,16 @@ Soon after, the PCBs came in. They looked amazing! We were super excited to get 
 
 Soon enough, the parts that I'd ordered arrived and we got our first look at the electronics. Everything looked great at first glance! Everything we needed was there, and I was even able to source some extra parts from my supply so we could save some cash. We were over budget by about $70, but it was fine, right? This was the big expense out of the way. This semester, Hazel, a computer engineer, had started coming to Hack Night, and she had taken some interest in the Sign project. We decided to do the PCB assembly together as a fun project, and her experience in the field would be very helpful regardless.
 
-The second we set up our soldering station for the PCB, we immediately realized two problems, one obvious but fixable, the other more discrete but possibly deadly. First, none of the holes were sized correctly, and some of them were in a completely incorrect location. This was disheartening, but we could work around it by bending leads, making what we called "ballerina transistors" to get around this issue. The second problem took Hazel some time to notice, but when she did, it signed this initial board's death warrant: the traces, or copper paths on the PCB that relays signals between components, were woefully thin for the power we were gonna push through them. We had plans to push around 60 watts of power on traces designed to take about 5 to 10 watts. Oops. This was such an under-spec that it was very possible that the board could catch on fire. Needless to say, we had to rethink some things.
+The second we set up our soldering station for the PCB, we immediately realized two problems, one obvious but fixable, the other more discrete but possibly deadly. First, none of the holes were sized correctly, and some of them were in a completely incorrect location. This was disheartening, but we could work around it by bending leads, making what we called "ballerina transistors" to get around this issue.
+
+<figure className="text-sm text-center font-main">
+
+![The Sign&apos;s power board with the transistors&quot; legs crossed to correct a design flaw.](/posts/sign/progress.jpg)
+
+<figcaption>The "ballerina transistors" in question.</figcaption>
+</figure>
+
+The second problem took Hazel some time to notice, but when she did, it signed this initial board's death warrant: the traces, or copper paths on the PCB that relays signals between components, were woefully thin for the power we were gonna push through them. We had plans to push around 60 watts of power on traces designed to take about 5 to 10 watts. Oops. This was such an under-spec that it was very possible that the board could catch on fire. Needless to say, we had to rethink some things.
 
 One night I was out at dinner with some friends, one of whom was Caleb, a mechanical engineer. I was talking about the Sign, and Caleb asked to see the CAD out of curiosity. I pulled it up, and he immediately said, "where's your timeline, your joints, your constraints?" I responded, "what do you mean?" He gave me a look that I knew meant one thing: I had made more than a few mistakes. Luckily I hadn't sent off the CAD to be cut and printed yet, so it was really good that he had caught these issues early. Soon after this, I made a real effort to figure out a bill of materials for the structure of the Sign. Unfortunately, I had completely underestimated the costs, and we were gonna end up with the Sign costing around $700 in total, 3.5 times our original budget.
 
@@ -82,7 +91,7 @@ At this point I needed a break, which I would get since there was a lot of fixin
 # IV: Rebirth
 ## March - October 2024
 
-After a few months of work, thing were starting to look up. We had the pipes connecting the blocks together, and the new PCB was delivered. We attached the new and improved components and the Sign came to life!
+After a few months of work things were starting to look up. We had the pipes connecting the blocks together, and the new PCB was delivered. We attached the new and improved components and the Sign came to life!
 
 <figure className="text-sm text-center font-main">
 
@@ -115,7 +124,7 @@ After way too long trying every which way to get the Pico online, I made a tough
 
 Soon enough it came in and Hazel assembled it. I got to work writing some new code for the Sign, and things went very well for the first couple of days! I even got the ESP connecting to `PAL3.0`, something that made my life much easier, allowing the Sign to connect to Wi-Fi anywhere on campus. However, I soon ran into a problem: the Sign’s LEDs require the use of pulse width modulation, or PWM, to change their brightness and make a full color gamut. The ESP32-S3 doesn’t have enough PWM channels for all of the LEDs. This meant that I couldn’t control the Sign and make it display every color I wanted to. In fact, no more than about 10! Hazel and I brainstormed, trying to implement PWM in software but to no avail. This setback was particularly frustrating since we all felt like we were so close to the finish line.
 
-After spending some time on other projects I went back to the drawing board. Some further research revealed that the ESP32 original did have enough PWM channels for the Sign. This was good, but the ESP32 lacked the same connection system as the ESP32-S3, meaning I would need additional interfacing circuitry to make it work. I added the necessary things, ordered it, and it arrived soon after.
+After spending some time on other projects, I went back to the drawing board. Some further research revealed that the ESP32 original did have enough PWM channels for the Sign. This was good, but the ESP32 lacked the same connection system as the ESP32-S3, meaning I would need additional interfacing circuitry to make it work. I added the necessary things, ordered it, and it arrived soon after.
 
 When I first attempted to power on the board, it didn’t boot. Dread started to surround me. What had I done wrong this time? After further investigation, Espressif, the makers of the ESP32 series, use a special communication chip for the ESP32 with special connections that I didn’t realize were necessary. A reasonable mistake, but still infuriating. The fix this time was much simpler: solder a button onto two of the ESP32’s pins to bypass the need for the special communication chip, making it possible for the chip to boot and accept new firmware. This would cause programming the chip to be a pain, since the button had to be held down for a very specific length of time to get the ESP32 into a mode that would accept code, but it worked.
 
@@ -138,7 +147,7 @@ I was able to reuse most of the code from the ESP32-S3 to the ESP32, so developm
 # V: Future
 ## October 2024 - ∞
 
-The future is bright for the Sign. There are many possibilities for new software, such as integration with [ID](https://blog.purduehackers.com/posts/papers-please) or the dashboard and custom lighting patterns made with a full animation editor. The button on the back of the sign is yet to be assigned any purpose, so it could be used for anything from switching profiles to ringing a bell somewhere. There are still some issues: the EEPROM is not accessible due to an issue with the ESP32 conversion board and the boot button is an annoyance that should be fixed in the next revision of the board.
+The future is bright for the Sign. There are many possibilities for new software, such as integration with [ID](https://blog.purduehackers.com/posts/papers-please) or the dashboard and custom lighting patterns made with a full animation editor. The button on the back of the Sign is yet to be assigned any purpose, so it could be used for anything from switching profiles to ringing a bell somewhere. There are still some issues: the EEPROM is not accessible due to an issue with the ESP32 conversion board and the boot button is an annoyance that should be fixed in the next revision of the board.
 
 Overall, this project has taught me so much about project management, budgeting, collaboration and teamwork, but most potently, getting up when you’re knocked down. I can’t count how many times that happened, but if I didn’t manage to get up after each and every time that happened, I wouldn’t have written this blog post. In the end, it was all worth it to finally see the Sign lighting up the night.
 
