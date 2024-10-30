@@ -5,5 +5,5 @@
   "framework": "astro",
   "installCommand": "pnpm install",
   "outputDirectory": "dist",
-  "trailingSlash": "false"
+  "trailingSlash": false
 }
