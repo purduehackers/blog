@@ -1,15 +1,16 @@
 ---
 interface Props {
-	videoId: string;
+  videoId: string;
 }
 
-import { YouTube } from '@astro-community/astro-embed-youtube';
+import { YouTube } from "@astro-community/astro-embed-youtube";
 const { videoId } = Astro.props;
 ---
+
 <div class="w-full text-center rounded-lg">
-      <YouTube
-        class="youtubeContainer"
-        style={{ borderRadius: "8px" }}
-        id={videoId}
-      />
-    </div>
+  <YouTube
+    class="youtubeContainer"
+    style={{ borderRadius: "8px" }}
+    id={videoId}
+  />
+</div>

@@ -1,21 +1,27 @@
 ---
 title: Introducing Lightning Time
 pubDate: 2022-10-20
-authors: ['[Matthew Stanciu](https://github.com/MatthewStanciu.png)','[Neil]()','[Reece Ausmus]()','[Jack](https://github.com/Athryx.png)']
+authors:
+  [
+    "[Matthew Stanciu](https://github.com/MatthewStanciu.png)",
+    "[Neil]()",
+    "[Reece Ausmus]()",
+    "[Jack](https://github.com/Athryx.png)",
+  ]
 description: A new way to measure time, by Purdue Hackers
 ---
 
 import LightningText, {
-  LightningPart
-} from '../../react/posts/lightning-time/lightning-text'
-import ColoredLightningString from '../../react/posts/lightning-time/colored-lightning-string'
-import ColorsDemo from '../../react/posts/lightning-time/colors-demo'
-import ColorToy from '../../react/posts/lightning-time/color-toy'
-import ConvertToLightning from '../../react/posts/lightning-time/convert-to-lightning'
-import ConvertFromLightning from '../../react/posts/lightning-time/convert-from-lightning'
-import LightningTimeUpdater from '../../components/LightningTimeUpdater.astro';
+  LightningPart,
+} from "../../components/posts/lightning-time/lightning-text";
+import ColoredLightningString from "../../components/posts/lightning-time/colored-lightning-string";
+import ColorsDemo from "../../components/posts/lightning-time/colors-demo";
+import ColorToy from "../../components/posts/lightning-time/color-toy";
+import ConvertToLightning from "../../components/posts/lightning-time/convert-to-lightning";
+import ConvertFromLightning from "../../components/posts/lightning-time/convert-from-lightning";
+import LightningTimeUpdater from "../../components/LightningTimeUpdater.astro";
 
-<LightningTimeUpdater/>
+<LightningTimeUpdater />
 
 <div className="w-full">
   <iframe
@@ -91,7 +97,7 @@ full color filled in for all three values.](/posts/lightning-time/colors-filled.
 
 Here's a demo of how the colors work, using your local time:
 
-<ColorsDemo client:only="react"/>
+<ColorsDemo client:only="react" />
 
 The static values in this demo are the same as the values highlighted in teal in the image above—they're the values
 we've picked for Purdue Hackers, and the default across the Lightning Time tooling we've built. (AKA, you don't have to come up
@@ -118,8 +124,8 @@ between them 😎 Bonus points: pay attention to how the gradient border changes
 the colors work.
 
 <div className="flex flex-col md:flex-row gap-4 mx-auto">
-  <ConvertToLightning client:idle/>
-  <ConvertFromLightning client:only="react"/>
+  <ConvertToLightning client:idle />
+  <ConvertFromLightning client:only="react" />
 </div>
 
 ## Tools
@@ -171,7 +177,7 @@ inside the iframe at the top of this post, and lives at [lightning-time.vercel.a
 
 Lightning Time wasn't created by one person; it was created by _all of us_, in a truly magical way.
 
-<hr/>
+<hr />
 
 Many of us grew up never having found our people until we were united by our shared love for making things. But finding the time and
 energy to actually make things is often really difficult. We want Purdue Hackers to feel like a
@@ -184,3 +190,4 @@ if you want to use it. ⚡️
 
 If you go to Purdue, we hope you'll check out Purdue Hackers :)
 [Find out when our next event is happening](https://events.purduehackers.com).
+../../components/posts/lightning-time/lightning-text../../components/posts/lightning-time/colored-lightning-string../../components/posts/lightning-time/colors-demo../../components/posts/lightning-time/color-toy../../components/posts/lightning-time/convert-to-lightning../../components/posts/lightning-time/convert-from-lightning../../react/posts/lightning-time/lightning-text../../react/posts/lightning-time/colored-lightning-string../../react/posts/lightning-time/colors-demo../../react/posts/lightning-time/color-toy../../react/posts/lightning-time/convert-to-lightning../../react/posts/lightning-time/convert-from-lightningcomponents/react/posts/lightning-time/lightning-textcomponents/react/posts/lightning-time/colored-lightning-stringcomponents/react/posts/lightning-time/colors-democomponents/react/posts/lightning-time/color-toycomponents/react/posts/lightning-time/convert-to-lightningcomponents/react/posts/lightning-time/convert-from-lightning

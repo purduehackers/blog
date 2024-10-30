@@ -1,5 +1,7 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+import type { Config } from "tailwindcss";
+import { fontFamily as fonts } from "tailwindcss/defaultTheme";
+
+const config = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     fontFamily: {
@@ -44,4 +46,6 @@ export default {
     "hover:bg-[#f472b6]",
   ],
   plugins: [],
-};
+} satisfies Config;
+
+export default config;

@@ -16,36 +16,6 @@
 }
 
 @layer base {
-  body {
-    @apply font-main;
-  }
-  hr {
-    @apply border-2 border-post w-1/2 mx-auto my-4;
-  }
-  pre {
-    @apply bg-gray-100 w-full mx-auto rounded-lg p-2 text-base overflow-x-auto max-w-xl font-mono;
-  }
-  :not(pre) > code {
-    @apply bg-gray-200 rounded-lg px-1 py-0.5 text-base font-mono;
-  }
-  h1 {
-    @apply text-3xl font-bold;
-  }
-  h2 {
-    @apply text-2xl font-bold;
-  }
-  h3 {
-    @apply font-bold;
-  }
-  ul {
-    @apply marker:text-post list-disc list-outside ml-6 sm:ml-0;
-  }
-  ol {
-    @apply list-decimal list-inside ml-6;
-  }
-  li {
-    @apply mb-2;
-  }
   li > ul > li {
     @apply sm:ml-6;
   }
@@ -56,20 +26,8 @@
   ::selection {
     background: #fcd34d;
   }
-  img,
   lite-youtube {
     border-radius: 8px;
-  }
-  a {
-    @apply text-post hover:text-post-light transition;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-  a > code {
-    @apply font-mono;
-  }
-  blockquote {
-    @apply italic ml-4;
   }
 }
 
