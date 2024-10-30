@@ -71,13 +71,13 @@ Soon after, the PCBs came in. They looked amazing! We were super excited to get 
 
 Soon enough, the parts that I'd ordered arrived and we got our first look at the electronics. Everything looked great at first glance! Everything we needed was there, and I was even able to source some extra parts from my supply so we could save some cash. We were over budget by about $70, but it was fine, right? This was the big expense out of the way. This semester, Hazel, a computer engineer, had started coming to Hack Night, and she had taken some interest in the Sign project. We decided to do the PCB assembly together as a fun project, and her experience in the field would be very helpful regardless.
 
-The second we set up our soldering station for the PCB, we immediately realized two problems, one obvious but fixable, the other more discrete but possibly deadly. First, none of the holes were sized correctly, and some of them were in a completely incorrect location. This was disheartening, but we could work around it by bending leads, making what we called "ballerina transistors" to get around this issue.
+The second we set up our soldering station for the PCB, we immediately realized two problems, one obvious but fixable, the other more discrete but possibly deadly. First, none of the holes were sized correctly, and some of them were in a completely incorrect location. This was disheartening, but we could work around it by bending leads, making what we called <q>ballerina transistors</q> to get around this issue.
 
 <figure className="text-sm text-center font-main">
 
-![The Sign&apos;s power board with the transistors&quot; legs crossed to correct a design flaw.](/posts/sign/ballerina.jpg)
+![The Sign&apos;s power board with the transistors&apos; legs crossed to correct a design flaw.](/posts/sign/ballerina.jpg)
 
-<figcaption>The &quot;ballerina transistors&quot; in question.</figcaption>
+<figcaption>The <q>ballerina transistors</q> in question.</figcaption>
 </figure>
 
 The second problem took Hazel some time to notice, but when she did, it signed this initial board's death warrant: the traces, or copper paths on the PCB that relays signals between components, were woefully thin for the power we were gonna push through them. We had plans to push around 60 watts of power on traces designed to take about 5 to 10 watts. Oops. This was such an under-spec that it was very possible that the board could catch on fire. Needless to say, we had to rethink some things.
