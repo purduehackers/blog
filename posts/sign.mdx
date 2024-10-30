@@ -11,7 +11,11 @@ We spent the last year and a half designing, building, and programming a meter-t
 
 First, let me introduce you to the subject of this story, the Sign:
 
-[SIGN IN THE NIGHT, CUSTOM PCB SHOT]
+<figure className="text-sm text-center font-main">
+
+![The Sign in its rightful spot in a window of Bechtel.](/posts/sign/bechtelwindow.jpg)
+
+</figure>
 
 The Sign is the physical embodiment of the spirit of Purdue Hackers: make something amazing with help from your friends and show it to the world. It’s made of PLA, wood, metal, acrylic, and silicon. It took a year and half to build and is the fruit of the effort of around ten people. Today the Sign shines out from our makerspace, the Bechtel Center, telling the world when Hack Night is happening. It may look relatively simple, but there is a world of complexity hidden beneath the acrylic paneling and shining LEDs.
 
@@ -91,7 +95,7 @@ After way too long trying every which way to get the Pico online, I made a tough
 
 Soon enough it came in and Hazel assembled it. I got to work writing some new code for the Sign, and things went very well for the first couple of days! I even got the ESP connecting to `PAL3.0`, something that made my life much easier, allowing the Sign to connect to Wi-Fi anywhere on campus. However, I soon ran into a problem: the Sign’s LEDs require the use of pulse width modulation, or PWM, to change their brightness and make a full color gamut. The ESP32-S3 doesn’t have enough PWM channels for all of the LEDs. This meant that I couldn’t control the Sign and make it display every color I wanted to. In fact, no more than about 10! Hazel and I brainstormed, trying to implement PWM in software but to no avail. This setback was particularly frustrating since we all felt like we were so close to the finish line.
 
-After spending some time on other projects I went back to the drawing board. Some further research revealed that the ESP32 original did have enough PWM channels for the Sign. This was good, but the ESP32 lacked the same connection system as the ESP32-S3, meaning I would need additional interfacing circuitry to make it work. I added the necessary things, ordered it, and it arrived soon after. 
+After spending some time on other projects I went back to the drawing board. Some further research revealed that the ESP32 original did have enough PWM channels for the Sign. This was good, but the ESP32 lacked the same connection system as the ESP32-S3, meaning I would need additional interfacing circuitry to make it work. I added the necessary things, ordered it, and it arrived soon after.
 
 When I first attempted to power on the board, it didn’t boot. Dread started to surround me. What had I done wrong this time? After further investigation, Espressif, the makers of the ESP32 series, use a special communication chip for the ESP32 with special connections that I didn’t realize were necessary. A reasonable mistake, but still infuriating. The fix this time was much simpler: solder a button onto two of the ESP32’s pins to bypass the need for the special communication chip, making it possible for the chip to boot and accept new firmware. This would cause programming the chip to be a pain, since the button had to be held down for a very specific length of time to get the ESP32 into a mode that would accept code, but it worked.
 
@@ -99,7 +103,12 @@ When I first attempted to power on the board, it didn’t boot. Dread started to
 
 I was able to reuse most of the code from the ESP32-S3 to the ESP32, so development went relatively quickly after this. I implemented the PWM code, spent a long time getting self-updating firmware working through GitHub CI, and cleaned up my code. After 548 days of blood, sweat, and tears at around 15:30 on October 13, 2024, the Sign version 1.0 finally shipped!
 
-[FULL SHOT OF SIGN]
+<figure className="text-sm text-center font-main">
+
+![A closeup shot of the Sign reflecting off of a monitor and a table in a dark room.](/posts/sign/closeup.jpg)
+
+<figcaption>The Sign at its first Checkpoints.</figcaption>
+</figure>
 
 # V: Future
 ## October 2024 - ∞
@@ -108,4 +117,8 @@ The future is bright for the Sign. There are many possibilities for new software
 
 Overall, this project has taught me so much about project management, budgeting, collaboration and teamwork, but most potently, getting up when you’re knocked down. I can’t count how many times that happened, but if I didn’t manage to get up after each and every time that happened, I wouldn’t have written this blog post. In the end, it was all worth it to finally see the Sign lighting up the night.
 
-[JACK HOLDING SIGN]
+<figure className="text-sm text-center font-main">
+
+![Me holding the Sign in the Purdue Hackers office.](/posts/sign/jack.png)
+
+</figure>
