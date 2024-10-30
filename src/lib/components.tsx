@@ -21,9 +21,7 @@ export default {
       {...props}
       width={0}
       height={0}
-      sizes="(max-width: 768px) 100vw,
-      (max-width: 1024px) 50vw,
-      33vw"
+      className="w-full md:w-1/2 lg:w-1/3"
       style={{
         width: "auto",
         height: "auto",
