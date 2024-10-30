@@ -1,0 +1,115 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --boltColor: #000000;
+  --zapColor: #000f00;
+  --sparkColor: #00000f;
+
+  --postMain: #f59e0b;
+  --postLight: #fbbf24;
+}
+
+@layer base {
+  body {
+    @apply font-main;
+  }
+  hr {
+    @apply border-2 border-post w-1/2 mx-auto my-4;
+  }
+  pre {
+    @apply bg-gray-100 w-full mx-auto rounded-lg p-2 text-base overflow-x-auto max-w-xl font-mono;
+  }
+  :not(pre) > code {
+    @apply bg-gray-200 rounded-lg px-1 py-0.5 text-base font-mono;
+  }
+  h1 {
+    @apply text-3xl font-bold;
+  }
+  h2 {
+    @apply text-2xl font-bold;
+  }
+  h3 {
+    @apply font-bold;
+  }
+  ul {
+    @apply marker:text-post list-disc list-outside ml-6 sm:ml-0;
+  }
+  ol {
+    @apply list-decimal list-inside ml-6;
+  }
+  li {
+    @apply mb-2;
+  }
+  li > ul > li {
+    @apply sm:ml-6;
+  }
+  ol li::marker {
+    color: var(--postMain);
+    @apply font-bold;
+  }
+  ::selection {
+    background: #fcd34d;
+  }
+  img,
+  lite-youtube {
+    border-radius: 8px;
+  }
+  a {
+    @apply text-post hover:text-post-light transition;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  a > code {
+    @apply font-mono;
+  }
+  blockquote {
+    @apply italic ml-4;
+  }
+}
+
+@layer components {
+  .lightning-gradient {
+    @apply font-bold;
+    background: linear-gradient(
+      to right,
+      var(--boltColor),
+      var(--zapColor),
+      var(--sparkColor)
+    );
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .bolt {
+    @apply font-bold;
+    color: var(--boltColor);
+  }
+  .zap {
+    @apply font-bold;
+    color: var(--zapColor);
+  }
+  .spark {
+    @apply font-bold;
+    color: var(--sparkColor);
+  }
+
+  .youtubeContainer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .youtubeContainer iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}

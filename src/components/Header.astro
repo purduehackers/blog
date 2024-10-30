@@ -1,0 +1,46 @@
+---
+import HeaderLink from './HeaderLink.astro';
+import Author from './Author.astro';
+import FormattedDate from './FormattedDate.astro';
+import { SITE_TITLE } from '../consts';
+import Nav from './Nav.astro';
+
+interface Props {
+    authors: string[],
+    pubDate: Date,
+    updatedDate?: Date,
+    title: string,
+    color: {
+      main: string,
+      mainLight: string,
+      bg: string,
+      bgLight: string,
+    }
+}
+
+const { authors, pubDate, updatedDate, title, color } = Astro.props;
+---
+
+<header class={`border-b-4 border-black bg-${color.bgLight}`}>
+  <Nav />
+  <div class="w-full container py-8 md:pt-12 md:pb-16 flex flex-col items-start gap-y-4 mx-auto px-4 sm:px-8 md:px-14">
+  <div class="bg-white rounded-md border-2 border-black inline-block text-base px-2 mb-5">
+  <FormattedDate date={pubDate} />
+							{
+								updatedDate && (
+									<div class="last-updated-on">
+										Last updated on <FormattedDate date={updatedDate} />
+									</div>
+								)
+							}
+							</div>
+    <h1 class="text-5xl sm:text-7xl font-bold sm:w-11/12 sm:tracking-tight">
+      {title}
+    </h1>
+    <div class="flex flex-row gap-4 md:gap-x-5 flex-wrap w-10/12 md:max-w-2xl">
+      {authors.map((author: string) => (
+        <Author authorString={author} />
+      ))}
+    </div>
+  </div>
+</header>

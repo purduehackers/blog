@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import colors from '../lib/colors';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate, authors, color = colors[0] } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={`${title} | Purdue Hackers`} description={description} />
+	</head>
+
+	<main
+        class="w-screen flex flex-col"
+        style={{
+          '--postMain': color.main,
+          '--postLight': color.mainLight,
+        }}
+      >
+        <Header authors={authors} pubDate={pubDate} updatedDate={updatedDate} title={title} color={color} />
+
+        <article class="mt-8 sm:mt-12 mb-8 sm:mb-12 text-lg font-serif flex flex-col items-start gap-y-4 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
+          <slot />
+        </article>
+        <Footer />
+      </main>
+</html>
+<style>
+    hr {
+        background-color: red;
+    }
+</style>
