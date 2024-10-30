@@ -23,9 +23,9 @@ export const GET: APIRoute = async ({ site }) => {
     description: SITE_DESCRIPTION,
     site: site!,
     customData:
-      `<lastBuildDate>` + sorted_posts[0]!.data.pubDate.toUTCString() + `</lastBuildDate>` +
-      `<atom:link href="` + site_url + `rss.xml" rel="self" type="application/rss+xml"/>` +
-      `<pubDate>` + sorted_posts[0]!.data.pubDate.toUTCString() + `</pubDate>`,
+      `<lastBuildDate>${sorted_posts[0]!.data.pubDate.toUTCString()}</lastBuildDate>` +
+      `<atom:link href="${site_url}rss.xml" rel="self" type="application/rss+xml"/>` +
+      `<pubDate>${sorted_posts[0]!.data.pubDate.toUTCString()}</pubDate>`,
     items: sorted_posts.map((post) => ({
       ...post.data,
       link: `/blog/${post.slug}/`,
