@@ -28,7 +28,7 @@ export const GET: APIRoute = async ({ site }) => {
       `<pubDate>${sorted_posts[0]!.data.pubDate.toUTCString()}</pubDate>`,
     items: sorted_posts.map((post) => ({
       ...post.data,
-      link: `/pages/${post.slug}/`,
+      link: `/posts/${post.slug}/`,
     })),
   });
 };
