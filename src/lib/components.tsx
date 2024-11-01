@@ -33,6 +33,9 @@ export default {
   li: (props) => <li className="mb-2">{props.children}</li>,
   hr: () => <hr className="border-2 border-post w-1/2 mx-auto my-4" />,
   blockquote: (props) => (
-    <blockquote className="italic ml-4">{props.children}</blockquote>
+    <blockquote className="border-l-4 border-post blockquote">
+      {/* <span className="italic pl-4">{props.children}</span> */}
+      {props.children}
+    </blockquote>
   ),
 };
