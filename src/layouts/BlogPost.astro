@@ -7,9 +7,7 @@ import Footer from "components/Footer.astro";
 import colors from "lib/colors";
 import { getOgImage } from "lib/utils";
 
-type Props = CollectionEntry<"blog" | "vipNewsletter">["data"] & {
-  type: "blog" | "vipNewsletter";
-};
+type Props = CollectionEntry<"blog">["data"];
 
 const {
   title,

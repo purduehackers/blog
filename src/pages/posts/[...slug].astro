@@ -10,7 +10,7 @@ export async function getStaticPaths() {
   const getColors = (i: number) => {
     return colors[i % colors.length];
   };
-  const posts = await getCollection("blog");
+  const posts = await getCollection("blog", ({ data }) => data.type === "blog");
   return posts
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .map((post, i) => {

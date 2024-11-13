@@ -9,7 +9,10 @@ import colors from "lib/colors";
 
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 
-const coll = await getCollection("vipNewsletter");
+const coll = await getCollection(
+  "blog",
+  ({ data }) => data.type === "vip-newsletter",
+);
 const posts = coll
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .map((post, i) => {
