@@ -4,8 +4,7 @@ import { getCollection } from "astro:content";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
 export const GET: APIRoute = async ({ site }) => {
-  // TODO: Add VIP newsletters to RSS feed
-  const posts = await getCollection("blog", ({ data }) => data.type === "blog");
+  const posts = await getCollection("blog", ({ data }) => data.type === "blog" || "vip-newsletter");
 
   const sorted_posts = posts.sort(
     (a, b) => Number(b.data.pubDate) - Number(a.data.pubDate),
