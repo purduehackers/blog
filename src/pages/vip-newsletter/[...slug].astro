@@ -10,7 +10,10 @@ export async function getStaticPaths() {
   const getColors = (i: number) => {
     return colors[i % colors.length];
   };
-  const posts = await getCollection("blog", ({ data }) => data.type === "blog");
+  const posts = await getCollection(
+    "blog",
+    ({ data }) => data.type === "vip-newsletter",
+  );
   return posts
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .map((post, i) => {
@@ -27,6 +30,6 @@ const post = Astro.props;
 const { Content } = await post.render();
 ---
 
-<BlogPost {...post.data} type="blog">
+<BlogPost {...post.data}>
   <Content components={components} />
 </BlogPost>

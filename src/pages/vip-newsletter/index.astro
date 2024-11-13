@@ -7,9 +7,12 @@ import PostCard from "components/PostCard.astro";
 
 import colors from "lib/colors";
 
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_TITLE } from "../../consts";
 
-const coll = await getCollection("blog", ({ data }) => data.type === "blog");
+const coll = await getCollection(
+  "blog",
+  ({ data }) => data.type === "vip-newsletter",
+);
 const posts = coll
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .map((post, i) => {
@@ -23,28 +26,28 @@ const posts = coll
   <head>
     <BaseHead
       title={SITE_TITLE}
-      description={SITE_DESCRIPTION}
-      image="https://og.purduehackers.com/Blog.png?theme=light&md=1&fontSize=250px&caption="
+      description="All the newsletters we send to 70+ alumni, faculty, and sponsors."
+      image="https://og.purduehackers.com/VIP%20Newsletter.png?theme=light&md=1&fontSize=250px&caption="
     />
   </head>
   <body>
     <div class="min-h-screen flex flex-col">
-      <header class="bg-cyan-100 border-b-4 border-black">
+      <header class="bg-pink-100 border-b-4 border-black">
         <div
           class="text-center py-16 sm:py-20 flex flex-col gap-y-4 items-center"
         >
           <h1 class="text-4xl sm:text-7xl sm:tracking-tight font-bold">
-            Purdue Hackers Blog
+            VIP Newsletters
           </h1>
           <h2 class="text-xl text-zinc-600 font-normal">
-            Where we share our magic with the world ✨💛⚡️
+            The monthly email we send to folks we want to stay in touch with.
           </h2>
         </div>
       </header>
       <div
         class="max-w-sm sm:max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-8 sm:py-14 px-5 sm:px-20 mx-auto"
       >
-        {posts.map((post) => <PostCard post={post} type="blog" />)}
+        {posts.map((post) => <PostCard post={post} type="vipNewsletter" />)}
       </div>
       <Footer />
     </div>
