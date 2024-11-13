@@ -19,4 +19,23 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const vipNewsletter = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    authors: z.array(z.string()),
+    color: z
+      .object({
+        main: z.string(),
+        mainLight: z.string(),
+        bg: z.string(),
+        bgLight: z.string(),
+      })
+      .optional(),
+  }),
+});
+
+export const collections = { blog, vipNewsletter };

@@ -1,9 +1,14 @@
 ---
 import { ArrowLeftIcon } from "astro-feather";
+
+interface Props {
+  type: "blog" | "vipNewsletter";
+}
+const { type } = Astro.props;
 ---
 
 <a
-  href="/"
+  href={type === "blog" ? "/" : "/vip-newsletter"}
   class="flex flex-row justify-left hover:text-gray-600 transition py-4 group no-underline text-black"
 >
   <div class="group-hover:-translate-x-1 transition-transform mr-1">

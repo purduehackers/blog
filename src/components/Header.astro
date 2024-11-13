@@ -14,13 +14,14 @@ interface Props {
     bg: string;
     bgLight: string;
   };
+  type: "blog" | "vipNewsletter";
 }
 
-const { authors, pubDate, updatedDate, title, color } = Astro.props;
+const { authors, pubDate, updatedDate, title, color, type } = Astro.props;
 ---
 
 <header class={`border-b-4 border-black bg-${color.bgLight}`}>
-  <Nav />
+  <Nav type={type} />
   <div
     class="w-full container py-8 md:pt-12 md:pb-16 flex flex-col items-start gap-y-4 mx-auto px-4 sm:px-8 md:px-14"
   >

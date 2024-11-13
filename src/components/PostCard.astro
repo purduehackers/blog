@@ -4,16 +4,17 @@ import FormattedDate from "./FormattedDate.astro";
 import colors from "../lib/colors";
 
 interface Props {
-  post: CollectionEntry<"blog">;
+  post: CollectionEntry<"blog" | "vipNewsletter">;
+  type: "blog" | "vipNewsletter";
 }
 
-const { post } = Astro.props;
+const { post, type } = Astro.props;
 const { data } = post;
 const { color = colors[0] } = data;
 ---
 
 <a
-  href={`posts/${post.slug}`}
+  href={`${type === "blog" ? "posts" : "vip-newsletter"}/${post.slug}`}
   class={`flex py-4 px-3 gap-2 flex-col h-full justify-center rounded-lg border-[3px] border-black bg-${color!.bg} hover:bg-[${color!.mainLight}] transition duration-100 no-underline text-black hover:text-black`}
 >
   <div class="rounded-md mx-auto bg-white border-2 border-black">
