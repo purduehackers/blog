@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import BaseHead from "components/BaseHead.astro";
 import Footer from "components/Footer.astro";
 import PostCard from "components/PostCard.astro";
+import Nav from "components/Nav.astro";
 
 import colors from "lib/colors";
 
@@ -33,6 +34,7 @@ const posts = coll
   <body>
     <div class="min-h-screen flex flex-col">
       <header class="bg-pink-100 border-b-4 border-black">
+        <Nav type="blog" />
         <div
           class="text-center py-16 sm:py-20 flex flex-col gap-y-4 items-center"
         >

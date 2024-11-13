@@ -14,5 +14,5 @@ const { type } = Astro.props;
   <div class="group-hover:-translate-x-1 transition-transform mr-1">
     <ArrowLeftIcon />
   </div>
-  All Posts
+  All{" "}{type === "blog" ? "Posts" : "Newsletters"}
 </a>
