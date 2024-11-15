@@ -16,14 +16,19 @@ const {
   updatedDate,
   authors,
   color = colors[0],
+  type,
 } = Astro.props;
 
-const ogImage = getOgImage({ title: title, authors })
+const ogImage = getOgImage({ title: title, authors });
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={`${title} | Purdue Hackers`} description={description} image={ogImage} />
+    <BaseHead
+      title={`${title} | Purdue Hackers`}
+      description={description}
+      image={ogImage}
+    />
   </head>
 
   <main
@@ -39,6 +44,7 @@ const ogImage = getOgImage({ title: title, authors })
       updatedDate={updatedDate}
       title={title}
       color={color!}
+      type={type}
     />
 
     <article

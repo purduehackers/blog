@@ -16,6 +16,7 @@ const blog = defineCollection({
         bgLight: z.string(),
       })
       .optional(),
+    type: z.enum(["blog", "vip-newsletter"]).default("blog"),
   }),
 });
 
