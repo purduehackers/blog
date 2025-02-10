@@ -5,6 +5,8 @@ authors: ["[Matthew Stanciu](https://github.com/MatthewStanciu.png)"]
 description: It took 2 years and 3 and a half tries to finally make demos a part of Hack Night. The story of made it such a heavy lift is the story of how Hack Night scaled up beyond our wildest dreams.
 ---
 
+import YouTubePlayer from "components/YouTubePlayer.astro";
+
 On November 4th, 2022, at [Hack Night 1.0](https://events.purduehackers.com/hack-night-10), we ran the first instance of demos at Hack Night. But by [the following week](https://events.purduehackers.com/hack-night-11), we had already stopped running them.
 
 On February 16th, 2024, [Hack Night 4.0](https://events.purduehackers.com/hack-night-40) made a second attempt at Hack Night demos, branding them “midnight demos”. These ran sporadically throughout Spring 2024, but had fizzled out by the end of the semester.
@@ -13,15 +15,18 @@ On August 30th, 2024, [Hack Night 5.0](https://events.purduehackers.com/hack-nig
 
 On September 13th, 2024, [Hack Night 5.2](https://events.purduehackers.com/hack-night-52) ran the first instance of **🏁&nbsp;Checkpoints**, the rebranded version of midnight demos.
 
-Checkpoints have been a resounding success. Right after everyone gathers in the main area for [the countdown to 0\~0\~0](https://youtu.be/i6dzI7AhH40), the lights go out, the floor speaker is turned to its maximum volume, and folks line up to share what they’ve built on a giant screen for all of Hack Night to see.
+Checkpoints have been a resounding success. Right after everyone gathers in the main area for [the countdown to `0~0~0`](https://youtu.be/i6dzI7AhH40), the lights go out, the floor speaker is turned to its maximum volume, and folks line up to share what they’ve built on a giant screen for all of Hack Night to see.
 
-[grid of things demoed at checkpoints]
+<YouTubePlayer
+  title="Celebrating 0~0~0 at Hack Night 5.11 | Purdue Hackers"
+  videoId="i6dzI7AhH40"
+/>
 
-Today, 20 people share an update at Checkpoints every week, and hundreds of updates have been shared. When I asked community member Ishan what he thought about the first one, he said:
+Today, dozens of people share an update at Checkpoints every week, and hundreds of updates have been shared. When I asked community member Ishan what he thought about the first one, he said:
 
 > You know the feeling you get when you lost something you had, like you didn’t realize what you had until you lost it? Checkpoints are like that but the opposite: we’ve gained what was missing from Hack Night.
 
-One might expect demos at a hackathon-flavored event like Hack Night to fit in naturally, given that they’re core pieces of traditional hackathons. But it took us 2 years and 3 and a half tries to make them a part of Hack Night. Why was it such a heavy lift? The answer is the story of how we scaled Hack Night beyond our wildest dreams and found its purpose.
+One might expect demos at a hackathon-flavored event like Hack Night to fit in naturally, given that they’re core pieces of traditional hackathons. But it took us 2 years and 3 and a half tries to make them a part of Hack Night. Why was it such a heavy lift? The answer is the story of how we scaled Hack Night beyond our wildest dreams and discovered its purpose.
 
 ---
 
@@ -36,11 +41,17 @@ Hack Night made two bets:
 1. Many interesting people actually rarely go out on Friday night and are looking for a social event where they can hang out with other interesting people. Hack Night can become the Friday night social event for them.
 2. Many people want to build personal projects, but academic & social obligations prevent them from finding the time or energy to follow through. Hack Night can become built-in time every week for making things.
 
-These bets, combined with the initially uncertain nature of Hack Night, created a strong “zero obligation” culture. No part of Hack Night, including participating in its events or coming to begin with, should ever feel required.
+These bets, combined with the initially uncertain nature of Hack Night, created a strong “zero obligation” culture. No part of Hack Night, including participating in its events or coming at all, should ever feel required.
 
 [Hack Night 0.3](https://events.purduehackers.com/hack-night-03) was the initial success case of this model: a group of 20 people came with few expectations and naturally split into groups. One group of 6 got to talking about alternative ways to measure time, and by midnight, had created [Lightning Time](https://blog.purduehackers.com/posts/lightning-time), which remains a core part of our culture today.
 
-[hack night 0.3 lightning time]
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/how-we-cracked-demos/0.3-1.jpg)
+
+![](/posts/how-we-cracked-demos/0.3-2.jpg)
+
+</div>
 
 Even so, we felt like the completely unstructured nature of Hack Night was limiting. It was great if you already had an idea, or happened to meet someone you connected with, but it felt intimidating and isolating for everyone else.
 
@@ -61,7 +72,17 @@ Even so, we felt like the completely unstructured nature of Hack Night was limit
 
 Participation was not required for any of these events, but I laser cut a couple collectible [“badges”](https://blog.purduehackers.com/posts/the-best-badge), engraved with the date of the event, to give out to those who chose to demo.
 
-[pictures of hack night 1.0 incl the first badge]
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/how-we-cracked-demos/1.0-1.jpg)
+
+![](/posts/how-we-cracked-demos/1.0-2.jpg)
+
+![](/posts/how-we-cracked-demos/1.0-3.jpg)
+
+![](/posts/how-we-cracked-demos/1.0-4.jpg)
+
+</div>
 
 Of all of Hack Night 1.0’s experiments, demos stuck around most in my brain. Giving folks an opportunity to share things they had been working on added a lot of energy to the event, compounded by the collectible badge rewards.
 
@@ -82,17 +103,35 @@ Two major versions—Hack Night 2.x and 3.x—came and went before we attempted 
 - [Hack Night 2.0](https://blog.purduehackers.com/posts/hack-night-2.0) moved the venue to the second floor of [the Bechtel Center](https://purdue.edu/bidc), Purdue’s makerspace for students, which shifted the vibe massively from the classroom in WALC.
 - [Hack Night 3.0](https://events.purduehackers.com/hack-night-30-beta)’s most notable change was that our average weekly attendance spiked from 20 to *80*.
 
-[2 badges]
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/how-we-cracked-demos/badge-1.jpg)
+
+![](/posts/how-we-cracked-demos/badge-2.jpg)
+
+</div>
 
 Soon after Hack Night 1.0, we realized the badges we gave away as prizes for demoing could instead be beautiful & high-quality keepsakes—so we began giving them to every Hack Night attendee, and [they scaled up to a core part of the Hack Night experience.](https://blog.purduehackers.com/posts/the-best-badge)
 
 Many began making their closest friends at Hack Night & making it their primary weekly hangout spot. Sometime during the 3.x era, we also brought back weekly Sessions, but rebranded them to be facilitated by community members who would share something they learned recently, or test an upcoming workshop.
 
-[images of large hack night]
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/how-we-cracked-demos/large-hack-night-1.jpg)
+
+![](/posts/how-we-cracked-demos/large-hack-night-2.jpg)
+
+</div>
 
 By some of the later Hack Night 3.x events, Hack Night had become nearly unrecognizable from the versions 0.x and 1.x Hack Nights of 2022. What began as a gathering of 10 people in a classroom ending before midnight had become an intense 80-person production in a makerspace, with unique collectibles distributed to everybody, at least one sub-event every week, [ambitious community projects](https://blog.purduehackers.com/posts/sign), and [rituals](https://youtu.be/i6dzI7AhH40), ending between 5:00 and 9:00am the next morning.
 
-[more image of large hack night]
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/how-we-cracked-demos/large-hack-night-3.jpg)
+
+![](/posts/how-we-cracked-demos/large-hack-night-4.jpg)
+
+</div>
 
 Even so, it took a while to attempt demos again. The failure of Hack Night 1.0’s strict schedule strengthened the “zero-obligation” precedent first set at Hack Night 0.1, and we had learned from that by making sure all of Hack Night’s sub-events were opt-in, never commanding the attention of every attendee. The Bechtel Center’s expansive layout reinforced this by allowing folks to spread far out. We also didn’t know how to solve the problem of folks being intimidated or sharing polished “backlog projects”, and felt like demos were blocking on solving this problem.
 
@@ -112,29 +151,51 @@ By this point, we had already been running a Session every week in a corner of t
 
 Demos would be just like the 10pm Sessions, but at midnight and for anyone to share something they made. Participation was optional and there were no rules around what you could share.
 
-[picture from 4.0 demos]
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/how-we-cracked-demos/4.3-demos-1.jpg)
+
+![](/posts/how-we-cracked-demos/4.3-demos-2.jpg)
+
+</div>
 
 The first instance was of midnight demos started off strong with a packet sniffer written in C. This inspired more people to share, and soon the ball began rolling: 90 minutes later, people were still sharing projects. I was especially excited by the nontechnical projects: to me, this was a sign that we had overcome the barrier of intimidation that typically plagues demo sessions like this, especially since they were intertwined with highly impressive technical projects.
 
-But the cracks began to show immediately: demos did not run again until [Hack Night 4.3](https://events.purduehackers.com/hack-night-40) on March 22nd, 2024, over a full month after 4.0—and then they never ran again.
+But the cracks began to show immediately: demos did not run again until [Hack Night 4.3](https://events.purduehackers.com/hack-night-40) on March 22nd, 2024, over a full month after 4.0—and after that, they never ran again.
 
-Part of the problem was that Hack Night 4.x significantly ramped up the number of sub-events that required top-down effort to organize. Before Hack Night 4.0, we only ran one Session; after 4.0, we needed to facilitate Circles, Sessions, passport-making ceremonies, and midnight demos.
+Part of the problem was that Hack Night 4.x significantly ramped up the number of sub-events that required top-down effort to organize. Before Hack Night 4.0, we only ran one 10pm Session; after 4.0, we needed to facilitate Circles, Sessions, passport-making ceremonies, and midnight demos.
 
-[passport ceremony]
+<div className="grid grid-cols-2 gap-2">
 
-The passport-making ceremonies, in particular, proved to be far more intense than we expected. The first few were more than 2 hours of intense work, and often ended after midnight. Even when they ended earlier, we would be too tired to transition immediately into demos. Sometimes we simply forgot. Ultimately, demos failed to become an expectation of Hack Night, and we stopped trying to run them after [Hack Night 4.3](https://events.purduehackers.com/hack-night-43).
+![](/posts/how-we-cracked-demos/passport-ceremony-1.jpg)
+
+![](/posts/how-we-cracked-demos/passport-ceremony-2.jpg)
+
+</div>
+
+Passport-making ceremonies, in particular, proved to be far more intense than we expected. The first few were over 2 hours of intense work, and often ended after midnight. Even when they ended earlier, we would be too tired to transition immediately into demos. Sometimes we simply forgot. Ultimately, demos failed to become an expectation of Hack Night, and we stopped trying to run them after [Hack Night 4.3](https://events.purduehackers.com/hack-night-43).
 
 # Attempt 3: If you’re going to do it, do it
 
 A few things happened in tandem between Hack Night 4.0 and 5.0 that led to the third attempt.
 
-First, we began to question why we were so afraid of commanding attention for an event. We ran 4.0 demos in the Session corner so as not do disturb anyone who didn’t want to see them—but why? Maybe everyone _should_ see what everyone else is working on. Bechtel Center–era Hack Night was increasingly fragmented, and folks had been asking for ways to bring everyone together. Midnight demos, beginning right after the countdown to `0~0~0` which already brings everyone to the same section of the space, seemed like a great way to help accomplish that.
+First, we began to question why we were so afraid of commanding attention for an event. We ran 4.0 demos in the Session corner so as not do disturb anyone who didn’t want to see them—but why? Maybe everyone _should_ see what everyone else is working on. Bechtel Center–era Hack Night was increasingly fragmented, and folks had been asking for ways to bring everyone together. Midnight demos, beginning right after [the countdown to `0~0~0`](https://youtu.be/i6dzI7AhH40) which already brings everyone to the front of the space, seemed like a great way to help accomplish that.
 
 Second, an obvious-in-retrospect flaw of 4.0-era demos was that we didn’t enforce a time limit, which led to some demos lasting 10 minutes & the event as a whole lasting up to 90 minutes. This made them needlessly exhausting to run and killed excitement for attendees to participate.
 
 With these in mind, [Hack Night 5.0](https://events.purduehackers.com/hack-night-50) kicked off the Fall 2024 semester on August 30th, 2024 with new and improved demos. Just after the countdown to `0~0~0`, we turned the lights off and invited folks to share anything they built that summer. The only rule: keep it under 2 minutes.
 
-[pics]
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/how-we-cracked-demos/5.0-demos-1.jpg)
+
+![](/posts/how-we-cracked-demos/5.0-demos-2.jpg)
+
+![](/posts/how-we-cracked-demos/5.0-demos-3.jpg)
+
+![](/posts/how-we-cracked-demos/5.0-demos-4.jpg)
+
+</div>
 
 Demos at Hack Night 5.0 were electric. Lots of folks shared things they had built over the summer, and these demos inspired other demos, including those from first-time attendees and those who shared works in progress. It felt like we had nailed it.
 
@@ -149,23 +210,31 @@ Despite these flaws, we felt like we had finally gotten something right; it just
 At [Hack Night 5.2](https://events.purduehackers.com/hack-night-52), on September 13th, 2024, we changed 3 things about midnight demos:
 
 1. We rebranded “midnight demos” to **🏁&nbsp;Checkpoints**, the goal being to reframe its purpose from “demoing” a finished project to “checking in” on what you’re working on.
-2. In addition to the 2-minute limit, we added a new rule that you can only share something you’ve worked on within the last week.
+2. We added a new rule that you can only share something you’ve worked on within the last week.
 3. We bought a microphone and speaker for folks to use during Checkpoints.
 
-[pics]
+We also improved our transition from the count. Starting with Checkpoints, we brought the speaker to the front, turned off the lights the moment it became `0~0~0`, and immediately began Checkpoints before anyone had a chance to leave. The goal of this instant transition was to make it require activation energy to *not* stay for Checkpoints.
+
+<div className="grid grid-cols-2 gap-2">
+
+![](/posts/how-we-cracked-demos/checkpoints-1.jpg)
+
+![](/posts/how-we-cracked-demos/checkpoints-2.jpg)
+
+</div>
 
 5 months later, these have proven to be the final ingredients necessary for making “demos” work at Hack Night. They can sometimes remain intimidating for beginners—public speaking and sharing your work require some vulnerability that can scare people—but we’ve seen a massive overall increase in people sharing works-in-progress over complete and polished projects.
 
-I think the second rule is the most load-bearing of the three. One of the most intimidating things for new people at Hack Night 5.0 was seeing the incredible polished apps and games some had made over the summer. By limiting checkpoints to projects that had been worked on in the past week, we cut out a lot of the more polished projects, which moved the vibe a lot closer to scrappy works-in-progress. Many also led by example by sharing very unpolished projects.
+I think the second change is the most load-bearing of the three. One of the most intimidating things for new people at Hack Night 5.0 was seeing the incredible polished apps and games some had made over the summer; by banning “backlog projects” and encouraging scrappy works-in-progress, we removed this source of intimidation.
+
+I was also surprised by how much of an effect the simple name change to “Checkpoints” had. The more accessible name changed who shared an update and what they shared. Undemoable projects suddenly become Checkpointable, and as people took notice, Checkpoints began to look very different from Demos despite being structurally the exact same.
 
 # 2 years and 3.5 attempts
 
-When we explain Hack Night, we like to call it a “mini-hackathon”. This is a good way to get the general vibe across: many people have heard of a hackathon, and even if they’ve never been to one, they probably know that it involves building a technical project with friends.
-
-But Hack Night differs from traditional hackathons in a few key ways. Unlike a hackathon, Hack Night is not competitive in nature. Hack Night also has an indeterminate length which is a lot shorter than most hackathons—the average Hack Night attendee stays for about 4 hours. And, perhaps most importantly, Hack Night is a weekly event rather than a yearly one, like most hackathons.
+When we explain Hack Night, we like to call it a “mini-hackathon”. This is a good way to get the general vibe across, but Hack Night differs from traditional hackathons in a few key ways. Hack Night is not competitive in nature, has an indeterminate and much shorter length, and—perhaps most importantly—Hack Night is a weekly event rather than a yearly one.
 
 These differences change what people do at Hack Night significantly compared to a hackathon. At a hackathon, people form teams and compete against each other to build the best project, which they share to judges at the end of the event. At Hack Night, people learn and build in public with friends and work on fun, creatively fulfilling projects together.
 
 The story of Checkpoints’ success is the story of how we finally discovered this purpose. Every attempt is a milestone: Hack Night 1.0 was our attempt to run it like a “mini-hackathon”; Hack Nights 2.0 and 3.0 were when Hack Night formed a distinct identity and scaled up dramatically; Hack Night 4.0 represents growing pains and concerns over scaling the soul; Hack Night 5.0 and 5.2 are when we finally figured it out.
 
-Today, Hack Night is the strongest it’s ever been: every Friday night, 80 people come to [our local makerspace](https://www.purdue.edu/bidc/), grab a badge, stamp their passport, learn a new topic within a domain at the two Circles, share something they’ve learned at the 10pm Session, and share a project they’ve worked on in the past week at Checkpoints. It’s a magical experience that took 2 and a half years to build. If you go to Purdue, [you should stop by sometime.](https://events.purduehackers.com)
+Today, Hack Night is the strongest it’s ever been: every Friday night, 80 people come to [our local makerspace](https://www.purdue.edu/bidc/), grab a badge, assemble & stamp their passport, learn a new topic within a domain at the two Circles, share something they’ve learned at the 10pm Session, and share a project they’ve worked on in the past week at Checkpoints. It’s a magical experience that took 2 and a half years to build. If you go to Purdue, [you should stop by sometime.](https://events.purduehackers.com)
