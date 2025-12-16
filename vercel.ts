@@ -10,5 +10,10 @@ export const config: VercelConfig = {
   "trailingSlash": false,
   redirects: [
     routes.redirect('/home', 'https://purduehackers.com')
-  ]
+  ],
+  build: {
+    env: {
+      VERCEL_DEBUG: '1'
+    }
+  }
 }
