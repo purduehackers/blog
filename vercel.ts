@@ -11,9 +11,9 @@ export const config: VercelConfig = {
   redirects: [
     routes.redirect('/home', 'https://purduehackers.com')
   ],
-  build: {
-    env: {
-      VERCEL_DEBUG: '1'
-    }
-  }
+  // build: {
+  //   env: {
+  //     VERCEL_DEBUG: '1'
+  //   }
+  // }
 }
