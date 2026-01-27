@@ -21,8 +21,14 @@ export default {
       {...props}
       width={0}
       height={0}
-      className="w-full md:w-[50vw] lg:w-[33vw] xl:w-[22vw] rounded-lg"
+      className={
+        props.className ||
+        "w-full md:w-[50vw] lg:w-[33vw] xl:w-[22vw] rounded-lg"
+      }
     />
+  ),
+  WideImage: (props) => (
+    <img {...props} className="w-full h-auto rounded-lg mx-auto" />
   ),
   ul: (props) => (
     <ul className="list-disc list-outside ml-6 sm:ml-0">{props.children}</ul>
