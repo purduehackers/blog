@@ -1,0 +1,1375 @@
+Welcome to the Astro blog development environment!
+Node.js v20.19.6
+pnpm 9.12.1
+
+> blog-astro@0.0.1 dev /home/kart/phackers/blog
+> astro dev
+
+19:48:14 [types] Generated 1ms
+
+ astro  v4.16.7 ready in 489 ms
+
+┃ Local    http://localhost:3000/
+┃ Network  use --host to expose
+
+19:48:14 watching for file changes...
+Browserslist: browsers data (caniuse-lite) is 15 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+19:48:17 [200] / 63ms
+19:48:33 [watch] src/content/blog/commit-overflow-2025.mdx
+19:48:34 [200] / 74ms
+19:48:39 [200] /posts/commit-overflow-2025 186ms
+19:49:14 [watch] src/content/blog/commit-overflow-2025.mdx
+19:49:14 [200] /posts/commit-overflow-2025 57ms
+19:49:16 [watch] src/content/blog/commit-overflow-2025.mdx
+19:49:16 [200] /posts/commit-overflow-2025 33ms
+19:49:53 [watch] src/content/blog/commit-overflow-2025.mdx
+19:49:53 [200] /posts/commit-overflow-2025 32ms
+19:49:55 [watch] src/content/blog/commit-overflow-2025.mdx
+19:49:55 [200] /posts/commit-overflow-2025 35ms
+19:50:02 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:02 [200] /posts/commit-overflow-2025 34ms
+19:50:02 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:02 [200] /posts/commit-overflow-2025 28ms
+19:50:02 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:03 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:03 [200] /posts/commit-overflow-2025 27ms
+19:50:51 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:51 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:52 [200] /posts/commit-overflow-2025 94ms
+19:50:52 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:52 [200] /posts/commit-overflow-2025 29ms
+19:50:52 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:53 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:53 [200] /posts/commit-overflow-2025 26ms
+19:50:55 [watch] src/content/blog/commit-overflow-2025.mdx
+19:50:55 [200] /posts/commit-overflow-2025 26ms
+19:50:56 [watch] src/content/blog/commit-overflow-2025.mdx
+19:51:01 [watch] src/content/blog/commit-overflow-2025.mdx
+19:51:01 [200] /posts/commit-overflow-2025 25ms
+19:51:02 [200] / 7ms
+19:51:05 [200] /posts/vip-newsletter-2 48ms
+19:51:26 [200] /posts/commit-overflow-2023 34ms
+19:51:50 [200] /posts/commit-overflow-2025 16ms
+19:52:51 [watch] src/content/blog/commit-overflow-2025.mdx
+19:52:52 [200] /posts/commit-overflow-2025 28ms
+19:53:00 [watch] src/content/blog/commit-overflow-2025.mdx
+19:53:00 [200] /posts/commit-overflow-2025 58ms
+19:53:00 [watch] src/content/blog/commit-overflow-2025.mdx
+19:53:01 [watch] src/content/blog/commit-overflow-2025.mdx
+19:53:01 [200] /posts/commit-overflow-2025 59ms
+19:53:02 [watch] src/content/blog/commit-overflow-2025.mdx
+19:53:02 [200] /posts/commit-overflow-2025 26ms
+19:53:03 [watch] src/content/blog/commit-overflow-2025.mdx
+19:53:04 [200] /posts/commit-overflow-2025 25ms
+19:54:14 [watch] src/content/blog/commit-overflow-2025.mdx
+19:54:15 [200] /posts/commit-overflow-2025 47ms
+19:55:12 [200] /posts/galactic-empire 123ms
+19:55:18 [200] /posts/commit-overflow-2025 12ms
+19:56:18 [watch] src/lib/components.tsx
+19:56:18 [200] /posts/commit-overflow-2025 13ms
+19:56:27 [200] /posts/commit-overflow-2023 15ms
+19:56:35 [200] /posts/commit-overflow-2025 15ms
+19:56:38 [watch] src/content/blog/commit-overflow-2025.mdx
+19:56:38 [watch] src/content/blog/commit-overflow-2025.mdx
+19:56:38 [200] /posts/commit-overflow-2025 57ms
+19:56:40 [watch] src/content/blog/commit-overflow-2025.mdx
+19:56:40 [200] /posts/commit-overflow-2025 26ms
+19:57:08 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:08 [ERROR] Expected a closing tag for `<>` (6:1-6:3)
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:12 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:12 [ERROR] Expected a closing tag for `<W>` (6:1-6:4)
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:12 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:12 [ERROR] Expected a closing tag for `<Wi>` (6:1-6:5)
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:12 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:13 [ERROR] Expected a closing tag for `<Wide>` (6:1-6:7)
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:13 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:13 [ERROR] Expected a closing tag for `<WideI>` (6:1-6:8)
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:13 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:13 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:13 [ERROR] Expected a closing tag for `<WideImage>` (15:1-15:13)
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:14 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:14 [ERROR] Expected a closing tag for `<WideImage>` (6:1-6:14)
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:14 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:14 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:15 [ERROR] Expected a closing tag for `<WideImage>` (6:1-6:16)
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:15 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:15 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:15 [ERROR] Unexpected character `"` (U+0022) in attribute name, expected an attribute name character such as letters, digits, `$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:16 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:16 [ERROR] Unexpected character `"` (U+0022) in attribute name, expected an attribute name character such as letters, digits, `$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:12:49
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:16 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:16 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:16 [ERROR] Unexpected character `"` (U+0022) in attribute name, expected an attribute name character such as letters, digits, `$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:17 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:17 [ERROR] Unexpected character `"` (U+0022) in attribute name, expected an attribute name character such as letters, digits, `$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:12:49
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:17 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:17 [ERROR] Unexpected character `"` (U+0022) in attribute name, expected an attribute name character such as letters, digits, `$`, or `_`; `=` to initialize a value; whitespace before attributes; or the end of the tag
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:18 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:18 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:22 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:22 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:23 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:23 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:23 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:23 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:23 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:23 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:23 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:23 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:24 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:24 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:24 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:24 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:28 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:28 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:28 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:29 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:29 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:29 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:29 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:29 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:29 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:29 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:30 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:30 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:30 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:30 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:31 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:31 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:31 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:31 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:32 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:32 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:32 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:32 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:32 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:33 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:43 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:43 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:43 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:43 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:43 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:43 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:44 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:44 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:44 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:45 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:45 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:45 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:45 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:45 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:45 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:45 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:46 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:46 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:46 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:47 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:47 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:47 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:47 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:47 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:47 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:47 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:48 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:48 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:48 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:48 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:48 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:48 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:48 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:48 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:49 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:49 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:49 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:49 [watch] src/content/blog/commit-overflow-2025.mdx
+19:57:49 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:57:53 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at /home/kart/phackers/blog/src/content/blog/commit-overflow-2025.mdx:8:2
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:58:07 [watch] src/content/blog/commit-overflow-2025.mdx
+19:58:08 [ERROR] Unexpected closing slash `/` in tag, expected an open tag first
+  Stack trace:
+    at TransformPluginContext.transform (file:///home/kart/phackers/blog/node_modules/.pnpm/@astrojs+mdx@3.1.8_astro@4.16.7_@types+node@22.5.0_lightningcss@1.27.0_rollup@4.24.3_terser@5.36.0_typescript@5.6.3_/node_modules/@astrojs/mdx/dist/vite-plugin-mdx.js:51:15)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+19:58:19 [watch] src/content/blog/commit-overflow-2025.mdx
+19:58:19 [200] /posts/commit-overflow-2025 51ms
+19:59:13 [watch] src/content/blog/commit-overflow-2025.mdx
+19:59:13 [watch] src/content/blog/commit-overflow-2025.mdx
+19:59:14 [200] /posts/commit-overflow-2025 89ms
+19:59:14 [WARN] [router] A `getStaticPaths()` route pattern was matched, but no matching static path was found for requested path `/posts/commit-overflow-2025/wack-hacker-d.png`.
+
+Possible dynamic routes being matched: src/pages/posts/[...slug].astro.
+19:59:14 [404] /posts/commit-overflow-2025/wack-hacker-d.png 1ms
+19:59:14 [watch] src/content/blog/commit-overflow-2025.mdx
+19:59:14 [WARN] [router] A `getStaticPaths()` route pattern was matched, but no matching static path was found for requested path `/posts/commit-overflow-2025/wack-hacker-d.png`.
+
+Possible dynamic routes being matched: src/pages/posts/[...slug].astro.
+19:59:14 [404] /posts/commit-overflow-2025/wack-hacker-d.png 0ms
+19:59:14 [200] /posts/commit-overflow-2025 31ms
+19:59:15 [watch] src/content/blog/commit-overflow-2025.mdx
+19:59:15 [200] /posts/commit-overflow-2025 28ms
+19:59:48 [200] /posts/commit-overflow-2025 9ms
+19:59:54 [watch] src/content/blog/commit-overflow-2025.mdx
+19:59:54 [200] /posts/commit-overflow-2025 28ms
+19:59:56 [watch] src/content/blog/commit-overflow-2025.mdx
+19:59:56 [200] /posts/commit-overflow-2025 37ms
+20:00:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:00:01 [200] /posts/commit-overflow-2025 46ms
+20:00:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:00:02 [200] /posts/commit-overflow-2025 27ms
+20:00:15 [200] /posts/commit-overflow-2025 9ms
+20:03:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:33 [200] /posts/commit-overflow-2025 58ms
+20:03:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:34 [200] /posts/commit-overflow-2025 31ms
+20:03:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:35 [200] /posts/commit-overflow-2025 31ms
+20:03:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:35 [200] /posts/commit-overflow-2025 25ms
+20:03:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:36 [200] /posts/commit-overflow-2025 27ms
+20:03:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:36 [200] /posts/commit-overflow-2025 26ms
+20:03:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:37 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:37 [200] /posts/commit-overflow-2025 26ms
+20:03:37 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:38 [200] /posts/commit-overflow-2025 33ms
+20:03:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:38 [200] /posts/commit-overflow-2025 28ms
+20:03:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:38 [200] /posts/commit-overflow-2025 25ms
+20:03:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:39 [200] /posts/commit-overflow-2025 25ms
+20:03:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:39 [200] /posts/commit-overflow-2025 25ms
+20:03:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:40 [200] /posts/commit-overflow-2025 24ms
+20:03:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:41 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:41 [200] /posts/commit-overflow-2025 25ms
+20:03:41 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:41 [200] /posts/commit-overflow-2025 27ms
+20:03:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:42 [200] /posts/commit-overflow-2025 50ms
+20:03:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:42 [200] /posts/commit-overflow-2025 26ms
+20:03:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:43 [200] /posts/commit-overflow-2025 27ms
+20:03:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:43 [200] /posts/commit-overflow-2025 27ms
+20:03:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:44 [200] /posts/commit-overflow-2025 25ms
+20:03:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:44 [200] /posts/commit-overflow-2025 24ms
+20:03:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:44 [200] /posts/commit-overflow-2025 25ms
+20:03:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:45 [200] /posts/commit-overflow-2025 30ms
+20:03:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:45 [200] /posts/commit-overflow-2025 27ms
+20:03:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:46 [200] /posts/commit-overflow-2025 26ms
+20:03:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:47 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:48 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:48 [200] /posts/commit-overflow-2025 27ms
+20:03:50 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:50 [200] /posts/commit-overflow-2025 28ms
+20:03:50 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:50 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:50 [200] /posts/commit-overflow-2025 30ms
+20:03:50 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:51 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:51 [200] /posts/commit-overflow-2025 28ms
+20:03:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:52 [200] /posts/commit-overflow-2025 26ms
+20:03:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:52 [200] /posts/commit-overflow-2025 26ms
+20:03:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:53 [200] /posts/commit-overflow-2025 28ms
+20:03:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:54 [200] /posts/commit-overflow-2025 50ms
+20:03:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:55 [200] /posts/commit-overflow-2025 69ms
+20:03:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:56 [200] /posts/commit-overflow-2025 27ms
+20:03:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:57 [200] /posts/commit-overflow-2025 27ms
+20:03:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:57 [200] /posts/commit-overflow-2025 26ms
+20:03:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:58 [200] /posts/commit-overflow-2025 26ms
+20:03:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:58 [200] /posts/commit-overflow-2025 33ms
+20:03:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:59 [200] /posts/commit-overflow-2025 28ms
+20:03:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:03:59 [200] /posts/commit-overflow-2025 26ms
+20:03:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:00 [200] /posts/commit-overflow-2025 28ms
+20:04:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:00 [200] /posts/commit-overflow-2025 26ms
+20:04:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:01 [200] /posts/commit-overflow-2025 25ms
+20:04:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:02 [200] /posts/commit-overflow-2025 30ms
+20:04:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:02 [200] /posts/commit-overflow-2025 26ms
+20:04:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:03 [200] /posts/commit-overflow-2025 59ms
+20:04:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:04 [200] /posts/commit-overflow-2025 24ms
+20:04:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:04 [200] /posts/commit-overflow-2025 25ms
+20:04:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:05 [200] /posts/commit-overflow-2025 34ms
+20:04:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:05 [200] /posts/commit-overflow-2025 26ms
+20:04:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:06 [200] /posts/commit-overflow-2025 29ms
+20:04:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:06 [200] /posts/commit-overflow-2025 25ms
+20:04:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:07 [200] /posts/commit-overflow-2025 26ms
+20:04:07 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:07 [200] /posts/commit-overflow-2025 27ms
+20:04:08 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:09 [200] /posts/commit-overflow-2025 42ms
+20:04:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:09 [200] /posts/commit-overflow-2025 26ms
+20:04:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:09 [200] /posts/commit-overflow-2025 26ms
+20:04:10 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:10 [200] /posts/commit-overflow-2025 24ms
+20:04:11 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:11 [200] /posts/commit-overflow-2025 27ms
+20:04:11 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:11 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:12 [200] /posts/commit-overflow-2025 31ms
+20:04:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:12 [200] /posts/commit-overflow-2025 27ms
+20:04:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:13 [200] /posts/commit-overflow-2025 27ms
+20:04:13 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:13 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:13 [200] /posts/commit-overflow-2025 26ms
+20:04:13 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:13 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:14 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:14 [200] /posts/commit-overflow-2025 24ms
+20:04:14 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:14 [200] /posts/commit-overflow-2025 26ms
+20:04:14 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:17 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:17 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:17 [200] /posts/commit-overflow-2025 88ms
+20:04:17 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:18 [200] /posts/commit-overflow-2025 27ms
+20:04:18 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:18 [200] /posts/commit-overflow-2025 25ms
+20:04:18 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:18 [200] /posts/commit-overflow-2025 31ms
+20:04:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:19 [200] /posts/commit-overflow-2025 28ms
+20:04:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:19 [200] /posts/commit-overflow-2025 31ms
+20:04:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:21 [200] /posts/commit-overflow-2025 26ms
+20:04:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:52 [200] /posts/commit-overflow-2025 62ms
+20:04:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:54 [200] /posts/commit-overflow-2025 35ms
+20:04:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:55 [200] /posts/commit-overflow-2025 28ms
+20:04:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:56 [200] /posts/commit-overflow-2025 27ms
+20:04:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:56 [200] /posts/commit-overflow-2025 28ms
+20:04:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:57 [200] /posts/commit-overflow-2025 30ms
+20:04:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:57 [200] /posts/commit-overflow-2025 29ms
+20:04:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:58 [200] /posts/commit-overflow-2025 38ms
+20:04:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:04:59 [200] /posts/commit-overflow-2025 27ms
+20:04:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:00 [200] /posts/commit-overflow-2025 27ms
+20:05:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:00 [200] /posts/commit-overflow-2025 27ms
+20:05:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:01 [200] /posts/commit-overflow-2025 29ms
+20:05:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:01 [200] /posts/commit-overflow-2025 25ms
+20:05:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:02 [200] /posts/commit-overflow-2025 26ms
+20:05:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:02 [200] /posts/commit-overflow-2025 30ms
+20:05:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:03 [200] /posts/commit-overflow-2025 43ms
+20:05:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:03 [200] /posts/commit-overflow-2025 31ms
+20:05:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:04 [200] /posts/commit-overflow-2025 31ms
+20:05:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:04 [200] /posts/commit-overflow-2025 28ms
+20:05:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:05 [200] /posts/commit-overflow-2025 27ms
+20:05:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:05 [200] /posts/commit-overflow-2025 32ms
+20:05:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:06 [200] /posts/commit-overflow-2025 26ms
+20:05:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:06 [200] /posts/commit-overflow-2025 30ms
+20:05:07 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:07 [200] /posts/commit-overflow-2025 27ms
+20:05:07 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:07 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:07 [200] /posts/commit-overflow-2025 33ms
+20:05:08 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:08 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:08 [200] /posts/commit-overflow-2025 28ms
+20:05:08 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:08 [200] /posts/commit-overflow-2025 26ms
+20:05:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:09 [200] /posts/commit-overflow-2025 31ms
+20:05:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:10 [200] /posts/commit-overflow-2025 57ms
+20:05:10 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:10 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:10 [200] /posts/commit-overflow-2025 66ms
+20:05:10 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:10 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:10 [200] /posts/commit-overflow-2025 31ms
+20:05:11 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:11 [200] /posts/commit-overflow-2025 26ms
+20:05:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:12 [200] /posts/commit-overflow-2025 28ms
+20:05:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:12 [200] /posts/commit-overflow-2025 27ms
+20:05:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:13 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:13 [200] /posts/commit-overflow-2025 26ms
+20:05:13 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:21 [200] /posts/commit-overflow-2025 26ms
+20:05:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:22 [200] /posts/commit-overflow-2025 27ms
+20:05:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:22 [200] /posts/commit-overflow-2025 28ms
+20:05:23 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:23 [200] /posts/commit-overflow-2025 25ms
+20:05:24 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:24 [200] /posts/commit-overflow-2025 24ms
+20:05:24 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:24 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:24 [200] /posts/commit-overflow-2025 27ms
+20:05:25 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:25 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:25 [200] /posts/commit-overflow-2025 28ms
+20:05:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:26 [200] /posts/commit-overflow-2025 25ms
+20:05:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:26 [200] /posts/commit-overflow-2025 26ms
+20:05:27 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:27 [200] /posts/commit-overflow-2025 25ms
+20:05:27 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:27 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:28 [200] /posts/commit-overflow-2025 60ms
+20:05:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:28 [200] /posts/commit-overflow-2025 28ms
+20:05:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:29 [200] /posts/commit-overflow-2025 33ms
+20:05:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:29 [200] /posts/commit-overflow-2025 29ms
+20:05:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:32 [200] /posts/commit-overflow-2025 25ms
+20:05:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:40 [200] /posts/commit-overflow-2025 29ms
+20:05:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:44 [200] /posts/commit-overflow-2025 25ms
+20:05:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:44 [200] /posts/commit-overflow-2025 61ms
+20:05:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:45 [200] /posts/commit-overflow-2025 32ms
+20:05:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:45 [200] /posts/commit-overflow-2025 28ms
+20:05:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:46 [200] /posts/commit-overflow-2025 56ms
+20:05:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:46 [200] /posts/commit-overflow-2025 33ms
+20:05:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:47 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:47 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:47 [200] /posts/commit-overflow-2025 34ms
+20:05:47 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:47 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:47 [200] /posts/commit-overflow-2025 32ms
+20:05:47 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:48 [200] /posts/commit-overflow-2025 30ms
+20:05:48 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:48 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:48 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:48 [200] /posts/commit-overflow-2025 56ms
+20:05:48 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:49 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:49 [200] /posts/commit-overflow-2025 60ms
+20:05:49 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:49 [200] /posts/commit-overflow-2025 28ms
+20:05:51 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:51 [200] /posts/commit-overflow-2025 28ms
+20:05:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:55 [200] /posts/commit-overflow-2025 25ms
+20:05:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:55 [200] /posts/commit-overflow-2025 26ms
+20:05:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:05:56 [200] /posts/commit-overflow-2025 26ms
+20:05:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:09 [200] /posts/commit-overflow-2025 28ms
+20:06:10 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:11 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:11 [200] /posts/commit-overflow-2025 23ms
+20:06:11 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:11 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:11 [200] /posts/commit-overflow-2025 31ms
+20:06:11 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:11 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:12 [200] /posts/commit-overflow-2025 28ms
+20:06:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:12 [200] /posts/commit-overflow-2025 26ms
+20:06:12 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:13 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:13 [200] /posts/commit-overflow-2025 24ms
+20:06:13 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:13 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:13 [200] /posts/commit-overflow-2025 26ms
+20:06:14 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:14 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:14 [200] /posts/commit-overflow-2025 27ms
+20:06:14 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:15 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:15 [200] /posts/commit-overflow-2025 25ms
+20:06:15 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:16 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:16 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:16 [200] /posts/commit-overflow-2025 58ms
+20:06:16 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:16 [200] /posts/commit-overflow-2025 27ms
+20:06:17 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:17 [watch] src/content/blog/commit-overflow-2025.mdx
+20:06:17 [200] /posts/commit-overflow-2025 58ms
+20:08:14 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:14 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:14 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:14 [200] /posts/commit-overflow-2025 110ms
+20:08:15 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:15 [200] /posts/commit-overflow-2025 32ms
+20:08:15 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:15 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:15 [200] /posts/commit-overflow-2025 28ms
+20:08:16 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:16 [200] /posts/commit-overflow-2025 30ms
+20:08:17 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:17 [200] /posts/commit-overflow-2025 27ms
+20:08:17 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:17 [200] /posts/commit-overflow-2025 26ms
+20:08:18 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:18 [200] /posts/commit-overflow-2025 29ms
+20:08:18 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:20 [200] /posts/commit-overflow-2025 38ms
+20:08:20 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:20 [200] /posts/commit-overflow-2025 43ms
+20:08:20 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:20 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:20 [200] /posts/commit-overflow-2025 28ms
+20:08:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:21 [200] /posts/commit-overflow-2025 27ms
+20:08:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:22 [200] /posts/commit-overflow-2025 41ms
+20:08:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:22 [200] /posts/commit-overflow-2025 29ms
+20:08:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:22 [200] /posts/commit-overflow-2025 33ms
+20:08:23 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:23 [200] /posts/commit-overflow-2025 26ms
+20:08:23 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:28 [200] /posts/commit-overflow-2025 25ms
+20:08:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:28 [200] /posts/commit-overflow-2025 26ms
+20:08:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:29 [200] /posts/commit-overflow-2025 23ms
+20:08:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:30 [200] /posts/commit-overflow-2025 25ms
+20:08:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:31 [200] /posts/commit-overflow-2025 27ms
+20:08:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:32 [200] /posts/commit-overflow-2025 45ms
+20:08:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:33 [200] /posts/commit-overflow-2025 24ms
+20:08:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:33 [200] /posts/commit-overflow-2025 31ms
+20:08:34 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:34 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:34 [200] /posts/commit-overflow-2025 58ms
+20:08:34 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:35 [200] /posts/commit-overflow-2025 24ms
+20:08:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:35 [200] /posts/commit-overflow-2025 26ms
+20:08:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:36 [200] /posts/commit-overflow-2025 36ms
+20:08:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:36 [200] /posts/commit-overflow-2025 58ms
+20:08:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:37 [200] /posts/commit-overflow-2025 29ms
+20:08:37 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:37 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:37 [200] /posts/commit-overflow-2025 35ms
+20:08:37 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:37 [200] /posts/commit-overflow-2025 27ms
+20:08:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:38 [200] /posts/commit-overflow-2025 56ms
+20:08:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:39 [200] /posts/commit-overflow-2025 25ms
+20:08:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:40 [200] /posts/commit-overflow-2025 25ms
+20:08:47 [watch] src/content/blog/commit-overflow-2025.mdx
+20:08:47 [200] /posts/commit-overflow-2025 24ms
+20:09:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:01 [200] /posts/commit-overflow-2025 54ms
+20:09:24 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:25 [200] /posts/commit-overflow-2025 57ms
+20:09:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:26 [200] /posts/commit-overflow-2025 31ms
+20:09:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:27 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:27 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:27 [200] /posts/commit-overflow-2025 32ms
+20:09:27 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:27 [200] /posts/commit-overflow-2025 30ms
+20:09:27 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:27 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:27 [200] /posts/commit-overflow-2025 36ms
+20:09:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:28 [200] /posts/commit-overflow-2025 27ms
+20:09:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:29 [200] /posts/commit-overflow-2025 27ms
+20:09:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:29 [200] /posts/commit-overflow-2025 37ms
+20:09:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:30 [200] /posts/commit-overflow-2025 60ms
+20:09:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:30 [200] /posts/commit-overflow-2025 25ms
+20:09:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:31 [200] /posts/commit-overflow-2025 26ms
+20:09:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:31 [200] /posts/commit-overflow-2025 27ms
+20:09:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:32 [200] /posts/commit-overflow-2025 27ms
+20:09:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:32 [200] /posts/commit-overflow-2025 61ms
+20:09:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:35 [200] /posts/commit-overflow-2025 31ms
+20:09:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:38 [200] /posts/commit-overflow-2025 36ms
+20:09:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:43 [200] /posts/commit-overflow-2025 27ms
+20:09:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:46 [200] /posts/commit-overflow-2025 37ms
+20:09:49 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:49 [200] /posts/commit-overflow-2025 27ms
+20:09:49 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:49 [200] /posts/commit-overflow-2025 52ms
+20:09:50 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:50 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:50 [200] /posts/commit-overflow-2025 27ms
+20:09:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:52 [200] /posts/commit-overflow-2025 28ms
+20:09:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:53 [200] /posts/commit-overflow-2025 26ms
+20:09:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:53 [200] /posts/commit-overflow-2025 35ms
+20:09:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:54 [200] /posts/commit-overflow-2025 30ms
+20:09:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:55 [200] /posts/commit-overflow-2025 24ms
+20:09:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:09:56 [200] /posts/commit-overflow-2025 26ms
+20:10:24 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:24 [200] /posts/commit-overflow-2025 55ms
+20:10:25 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:25 [200] /posts/commit-overflow-2025 35ms
+20:10:25 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:26 [200] /posts/commit-overflow-2025 29ms
+20:10:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:26 [200] /posts/commit-overflow-2025 28ms
+20:10:27 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:27 [200] /posts/commit-overflow-2025 28ms
+20:10:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:28 [200] /posts/commit-overflow-2025 28ms
+20:10:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:31 [200] /posts/commit-overflow-2025 26ms
+20:10:37 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:37 [200] /posts/commit-overflow-2025 43ms
+20:10:37 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:37 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:38 [200] /posts/commit-overflow-2025 30ms
+20:10:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:38 [200] /posts/commit-overflow-2025 24ms
+20:10:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:39 [200] /posts/commit-overflow-2025 36ms
+20:10:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:39 [200] /posts/commit-overflow-2025 27ms
+20:10:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:39 [200] /posts/commit-overflow-2025 28ms
+20:10:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:40 [200] /posts/commit-overflow-2025 59ms
+20:10:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:40 [200] /posts/commit-overflow-2025 26ms
+20:10:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:41 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:41 [200] /posts/commit-overflow-2025 27ms
+20:10:41 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:41 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:41 [200] /posts/commit-overflow-2025 36ms
+20:10:41 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:42 [200] /posts/commit-overflow-2025 27ms
+20:10:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:42 [200] /posts/commit-overflow-2025 27ms
+20:10:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:43 [200] /posts/commit-overflow-2025 28ms
+20:10:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:43 [200] /posts/commit-overflow-2025 32ms
+20:10:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:44 [200] /posts/commit-overflow-2025 32ms
+20:10:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:44 [200] /posts/commit-overflow-2025 26ms
+20:10:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:45 [200] /posts/commit-overflow-2025 56ms
+20:10:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:45 [200] /posts/commit-overflow-2025 33ms
+20:10:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:46 [200] /posts/commit-overflow-2025 28ms
+20:10:46 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:46 [200] /posts/commit-overflow-2025 30ms
+20:10:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:52 [200] /posts/commit-overflow-2025 35ms
+20:10:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:54 [200] /posts/commit-overflow-2025 26ms
+20:10:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:54 [200] /posts/commit-overflow-2025 34ms
+20:10:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:55 [200] /posts/commit-overflow-2025 43ms
+20:10:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:55 [200] /posts/commit-overflow-2025 27ms
+20:10:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:56 [200] /posts/commit-overflow-2025 27ms
+20:10:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:56 [200] /posts/commit-overflow-2025 27ms
+20:10:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:56 [200] /posts/commit-overflow-2025 29ms
+20:10:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:58 [200] /posts/commit-overflow-2025 43ms
+20:10:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:59 [200] /posts/commit-overflow-2025 25ms
+20:10:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:10:59 [200] /posts/commit-overflow-2025 27ms
+20:10:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:00 [200] /posts/commit-overflow-2025 27ms
+20:11:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:01 [200] /posts/commit-overflow-2025 24ms
+20:11:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:02 [200] /posts/commit-overflow-2025 34ms
+20:11:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:02 [200] /posts/commit-overflow-2025 26ms
+20:11:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:03 [200] /posts/commit-overflow-2025 34ms
+20:11:41 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:42 [200] /posts/commit-overflow-2025 65ms
+20:11:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:42 [200] /posts/commit-overflow-2025 32ms
+20:11:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:43 [200] /posts/commit-overflow-2025 28ms
+20:11:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:43 [200] /posts/commit-overflow-2025 30ms
+20:11:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:44 [200] /posts/commit-overflow-2025 26ms
+20:11:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:54 [200] /posts/commit-overflow-2025 28ms
+20:11:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:11:55 [200] /posts/commit-overflow-2025 28ms
+20:12:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:12:05 [200] /posts/commit-overflow-2025 50ms
+20:12:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:12:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:12:06 [200] /posts/commit-overflow-2025 29ms
+20:12:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:12:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:12:06 [200] /posts/commit-overflow-2025 28ms
+20:12:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:12:07 [200] /posts/commit-overflow-2025 33ms
+20:16:20 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:20 [200] /posts/commit-overflow-2025 62ms
+20:16:20 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:21 [200] /posts/commit-overflow-2025 32ms
+20:16:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:22 [200] /posts/commit-overflow-2025 30ms
+20:16:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:22 [200] /posts/commit-overflow-2025 29ms
+20:16:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:23 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:23 [200] /posts/commit-overflow-2025 27ms
+20:16:23 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:23 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:23 [200] /posts/commit-overflow-2025 29ms
+20:16:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:26 [200] /posts/commit-overflow-2025 32ms
+20:16:26 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:27 [200] /posts/commit-overflow-2025 34ms
+20:16:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:29 [200] /posts/commit-overflow-2025 36ms
+20:16:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:29 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:29 [200] /posts/commit-overflow-2025 29ms
+20:16:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:30 [200] /posts/commit-overflow-2025 35ms
+20:16:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:30 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:31 [200] /posts/commit-overflow-2025 26ms
+20:16:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:31 [200] /posts/commit-overflow-2025 29ms
+20:16:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:32 [200] /posts/commit-overflow-2025 28ms
+20:16:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:34 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:34 [200] /posts/commit-overflow-2025 27ms
+20:16:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:45 [200] /posts/commit-overflow-2025 25ms
+20:16:51 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:52 [200] /posts/commit-overflow-2025 54ms
+20:16:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:52 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:52 [200] /posts/commit-overflow-2025 66ms
+20:16:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:53 [200] /posts/commit-overflow-2025 28ms
+20:16:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:53 [200] /posts/commit-overflow-2025 29ms
+20:16:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:53 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:54 [200] /posts/commit-overflow-2025 27ms
+20:16:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:54 [200] /posts/commit-overflow-2025 59ms
+20:16:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:54 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:55 [200] /posts/commit-overflow-2025 29ms
+20:16:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:55 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:55 [200] /posts/commit-overflow-2025 29ms
+20:16:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:56 [200] /posts/commit-overflow-2025 26ms
+20:16:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:56 [200] /posts/commit-overflow-2025 25ms
+20:16:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:56 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:57 [200] /posts/commit-overflow-2025 26ms
+20:16:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:57 [200] /posts/commit-overflow-2025 29ms
+20:16:57 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:58 [200] /posts/commit-overflow-2025 24ms
+20:16:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:58 [200] /posts/commit-overflow-2025 28ms
+20:16:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:59 [200] /posts/commit-overflow-2025 26ms
+20:16:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:59 [200] /posts/commit-overflow-2025 26ms
+20:16:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:16:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:00 [200] /posts/commit-overflow-2025 29ms
+20:17:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:00 [200] /posts/commit-overflow-2025 25ms
+20:17:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:01 [200] /posts/commit-overflow-2025 26ms
+20:17:01 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:02 [200] /posts/commit-overflow-2025 28ms
+20:17:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:02 [200] /posts/commit-overflow-2025 61ms
+20:17:02 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:03 [200] /posts/commit-overflow-2025 35ms
+20:17:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:03 [200] /posts/commit-overflow-2025 28ms
+20:17:07 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:07 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:07 [200] /posts/commit-overflow-2025 30ms
+20:17:07 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:07 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:07 [200] /posts/commit-overflow-2025 25ms
+20:17:09 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:09 [200] /posts/commit-overflow-2025 24ms
+20:17:10 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:10 [200] /posts/commit-overflow-2025 26ms
+20:17:18 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:18 [200] /posts/commit-overflow-2025 26ms
+20:17:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:19 [200] /posts/commit-overflow-2025 24ms
+20:17:20 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:20 [200] /posts/commit-overflow-2025 22ms
+20:17:28 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:28 [200] /posts/commit-overflow-2025 25ms
+20:17:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:31 [200] /posts/commit-overflow-2025 24ms
+20:17:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:31 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:31 [200] /posts/commit-overflow-2025 24ms
+20:17:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:32 [200] /posts/commit-overflow-2025 25ms
+20:17:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:32 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:32 [200] /posts/commit-overflow-2025 30ms
+20:17:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:33 [200] /posts/commit-overflow-2025 28ms
+20:17:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:33 [200] /posts/commit-overflow-2025 28ms
+20:17:33 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:34 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:34 [200] /posts/commit-overflow-2025 25ms
+20:17:34 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:34 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:34 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:35 [200] /posts/commit-overflow-2025 25ms
+20:17:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:35 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:35 [200] /posts/commit-overflow-2025 27ms
+20:17:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:36 [200] /posts/commit-overflow-2025 27ms
+20:17:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:36 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:36 [200] /posts/commit-overflow-2025 28ms
+20:17:37 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:37 [200] /posts/commit-overflow-2025 27ms
+20:17:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:38 [200] /posts/commit-overflow-2025 34ms
+20:17:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:38 [200] /posts/commit-overflow-2025 25ms
+20:17:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:39 [200] /posts/commit-overflow-2025 33ms
+20:17:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:39 [200] /posts/commit-overflow-2025 26ms
+20:17:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:40 [200] /posts/commit-overflow-2025 25ms
+20:17:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:41 [200] /posts/commit-overflow-2025 26ms
+20:17:41 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:41 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:41 [200] /posts/commit-overflow-2025 26ms
+20:17:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:42 [200] /posts/commit-overflow-2025 26ms
+20:17:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:43 [200] /posts/commit-overflow-2025 29ms
+20:17:43 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:43 [200] /posts/commit-overflow-2025 27ms
+20:17:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:44 [200] /posts/commit-overflow-2025 26ms
+20:17:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:44 [200] /posts/commit-overflow-2025 29ms
+20:17:44 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:45 [200] /posts/commit-overflow-2025 30ms
+20:17:45 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:45 [200] /posts/commit-overflow-2025 26ms
+20:17:58 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:58 [200] /posts/commit-overflow-2025 25ms
+20:17:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:59 [200] /posts/commit-overflow-2025 26ms
+20:17:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:17:59 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:00 [200] /posts/commit-overflow-2025 26ms
+20:18:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:00 [200] /posts/commit-overflow-2025 60ms
+20:18:00 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:00 [200] /posts/commit-overflow-2025 26ms
+20:18:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:03 [200] /posts/commit-overflow-2025 25ms
+20:18:03 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:04 [200] /posts/commit-overflow-2025 26ms
+20:18:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:04 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:04 [200] /posts/commit-overflow-2025 25ms
+20:18:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:05 [200] /posts/commit-overflow-2025 24ms
+20:18:05 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:06 [200] /posts/commit-overflow-2025 32ms
+20:18:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:06 [200] /posts/commit-overflow-2025 27ms
+20:18:06 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:07 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:07 [200] /posts/commit-overflow-2025 24ms
+20:18:08 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:08 [200] /posts/commit-overflow-2025 25ms
+20:18:15 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:16 [200] /posts/commit-overflow-2025 25ms
+20:18:17 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:17 [200] /posts/commit-overflow-2025 28ms
+20:18:17 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:18 [200] /posts/commit-overflow-2025 29ms
+20:18:18 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:18 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:18 [200] /posts/commit-overflow-2025 26ms
+20:18:18 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:18 [200] /posts/commit-overflow-2025 27ms
+20:18:18 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:19 [200] /posts/commit-overflow-2025 32ms
+20:18:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:19 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:19 [200] /posts/commit-overflow-2025 30ms
+20:18:20 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:20 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:20 [200] /posts/commit-overflow-2025 30ms
+20:18:20 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:21 [200] /posts/commit-overflow-2025 30ms
+20:18:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:21 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:21 [200] /posts/commit-overflow-2025 31ms
+20:18:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:22 [200] /posts/commit-overflow-2025 27ms
+20:18:22 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:23 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:23 [200] /posts/commit-overflow-2025 28ms
+20:18:23 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:23 [200] /posts/commit-overflow-2025 25ms
+20:18:23 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:38 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:38 [200] /posts/commit-overflow-2025 37ms
+20:18:39 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:39 [200] /posts/commit-overflow-2025 41ms
+20:18:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:40 [200] /posts/commit-overflow-2025 34ms
+20:18:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:40 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:41 [200] /posts/commit-overflow-2025 26ms
+20:18:42 [watch] src/content/blog/commit-overflow-2025.mdx
+20:18:43 [200] /posts/commit-overflow-2025 29ms
