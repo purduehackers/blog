@@ -7,4 +7,150 @@ authors:
   ]
 description: A 308-page long parody journal of work done over the summer (and sometimes the fall, but we don't talk about that timeline overrun.)
 ---
-<iframe src="sighorse/foreword.pdf" width="100%" height="2000px" />
+
+## TLDR
+
+Purdue Hackers worked on projects over the summer and fall, and _their efforts were collated into a 308-page parody journal_. Articles range from purely humor to possibly making novel contributions to the field of puzzle theory.
+
+Read it at https://sig.horse/book.pdf.
+
+The foreword follows.
+
+---
+
+# Foreword
+
+Hi! I'm Kart. I came up with SIGHORSE, [made the website](https://sig.horse), and (sometimes) reviewed submissions from authors. I was, of course, helped immeasurably by many people without whom SIGHORSE would not be possible.
+
+I'd like to talk about SIGHORSE for a bit.
+
+There are three parts to this foreword:
+1. Why the word "horse"? Why is it relevant? What does it mean to Purdue Hackers?
+2. Why work on this journal? What forces made us want to create SIGHORSE?
+3. Can we see the process of making the cover? Surely it wasn't too much work.
+
+## Bringing forth a longing for horsing into the world
+
+> Purdue Hackers: a community of students who collaborate, learn, and build kick-ass technical projects.
+> — _Purdue Hackers website, but I removed the emojis_
+
+Since forever, horses have been intertwined with the Purdue Hackers brand.
+
+Discord<sup>[1](#footnote-1)</sup> archaeology points to a particular person starting the conversation off in September 2022 with messages like:
+
+> - our mascot should be an 8-bit horse
+> - Also the horse should be yellow
+> - Here's every horse: https://every.horse/
+> - Here's a horse that's shaking: https://shakingmy.horse/
+
+The discussion significantly escalated on the next day, when the same person posted:
+
+> Today I forked my personal link shortener to use it for Purdue Hackers. Introducing `puhack.horse`<sup>[2](#footnote-2)</sup> ...
+
+This person then served as the President of Purdue Hackers for three years, and led its rise from a 20 person meetup to a 80-100 person organization with sprawling projects, ideas, and coolness.
+
+Is it any surprise that a club that emphasizes engaging in whimsy and creating things that bring joy would latch on to "horse"?
+
+## Putting the Special Interest Group in the Horse
+
+We've established the importance of horses. Now, let's explore how the Special Interest Group part came about.
+
+### BURSTing from creativity
+
+In Fall 2024, Purdue Hackers hosted a showcase for a bunch of projects that members had created. They called it [BURST](https://burst.purduehackers.com/). It was glorious. Seriously. Here're some photos from BURST to show you just how glorious it was. _I strongly encourage you to check out the website for more photos and information on the exhibits._
+
+<figure className="text-sm text-center font-main">
+    <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem"}}>
+        <img src="/posts/sighorse/burst-image-1.jpg" alt="Photo from BURST event" />
+        <img src="/posts/sighorse/burst-image-2.png" alt="Photo from BURST event" style={{width: "100%", height: "auto"}} />
+        <img src="/posts/sighorse/burst-image-3.png" alt="Photo from BURST event" />
+        <img src="/posts/sighorse/burst-image-4.jpg" alt="Photo from BURST event" />
+    </div>
+    <figcaption>Photos from the BURST showcase.</figcaption>
+</figure>
+
+BURST included (among other things) (in clockwise order):
+- a phone bell whose insides had been replaced with a Raspberry Pi;
+- the Purdue Hackers logo as a meter tall sign;
+- a receipt printer; and
+- an indie video game about running a boba shop.
+
+It was so glorious, in fact, that it challenged my imagination to think of it _could_ even get more glorious. How could we ever top the projects that we'd showcased this year? How could we inspire more members of Hackers to make contributions to the next showcase we hosted?
+
+_How could I engage more members and spread the joy of creating and presenting?_
+
+### Commit Overflow
+
+For the past two years, Purdue Hackers has hosted the "Commit Overflow" event during Purdue University's winter break.
+
+> Winter break is here; it's the perfect time to make the things you didn't have time to make this semester.
+>
+> During the last 10 days of the year, we're running Commit Overflow. The challenge: every day, commit to GitHub & post an update of what you're working on in #checkpoints<sup>[3](#footnote-3)</sup>
+>
+> If you make it all 10 days, we'll send you stickers and a custom laser-cut badge that will never be made or distributed again.
+> — _The first Commit Overflow announcement in 2022_
+
+This event saw great participation from the community: people shipped commits and maintained a sense of connection over the break. I personally wrote a lot of documentation for [keymashed](https://github.com/kartva/keymashed), a project I'd showcased at BURST.
+
+### SIGBOVIK
+
+Now to talk about something completely different: [SIGBOVIK](https://sigbovik.org/) (Special Interest Group in Harry Quark Bovik) is a yearly joke journal organized primarily by grad students from Carnegie Mellon University with clearly too much time on their hands.
+
+Their name plays on the [Association for Computing Machinery's many conferences](https://www.acm.org/special-interest-groups/alphabetical-listing) that start with SIG: SIGPLAN (Special Interest Group on Programming Languages), SIGGRAPH (Special Interest Group on Graphics), SIGMICRO (Special Interest Group on Microarchitecture), etc.
+
+The latest edition is just over 400 pages long. Papers published in this illustrious journal have had titles such as _"An Empirically Verified Lower Bound for The Number Of Empty Pages Allowed In a SIGBOVIK Paper"_ or _"A Genius Solution: Applications of the Sprague-Grundy Theorem to Korean Reality TV"_.
+
+The decision tree below shows how SIGHORSE relates to SIGBOVIK:
+
+<figure className="text-sm text-center font-main">
+    <img src="/posts/sighorse/sigbovik-diagram.png" alt="Decision tree showing relationships between reading SIGHORSE and SIGBOVIK" style={{width: "100%", height: "auto"}} />
+</figure>
+
+## Messily pushing the horsing out to the world
+
+### Defining SIGHORSE
+
+Finally, we can unify the two topics we discussed in the previous sections: SIGHORSE was proposed as "what if we ran something like Commit Overflow but in the summer and with a focus on whimsy and silliness?" Our tenets would be:
+- encourage people to build cool things over the summer!
+- talk about said things!
+- get those things to a presentable state so we could put them in the journal!
+
+To give an idea of the things SIGHORSE would cover, I produced the following diagram:
+
+<figure className="text-sm text-center font-main">
+    <img src="/posts/sighorse/sighorse-vs-all-other-conferences.png" alt="SIGHORSE positioning diagram showing it overlaps with various research domains and conferences" style={{width: "100%", height: "auto"}} />
+    <figcaption>SIGHORSE positioning relative to other conferences and research domains.</figcaption>
+</figure>
+
+Simply put, SIGHORSE was to be inclusive.
+
+(Before you ask, someone did measure the size of the horses and found it to be around 8.7× larger than the "every other scientific journal" cloud.)
+
+### Enough about SIGHORSE, what about the cover?
+
+I'm so glad you asked about the cover! I first learned [Blender](https://www.blender.org/), then [Krita](https://krita.org/en/), then [Inkscape](https://inkscape.org/), and then finally handed it off to an artist to finish because I sure couldn't.
+
+<figure className="text-sm text-center font-main">
+    <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem"}}>
+        <img src="/posts/sighorse/blender-storm.png" alt="First Blender draft of SIGHORSE cover" />
+        <div style={{gridRow: "span 2", display: "flex", alignItems: "center"}}>
+            <img src="/posts/sighorse/sighorse-krita-3.jpg" alt="Krita draft of SIGHORSE cover" style={{width: "100%", height: "auto"}} />
+        </div>
+        <img src="/posts/sighorse/blender-paper-wings.png" alt="Alternate Blender draft of SIGHORSE cover" />
+    </div>
+    <figcaption>Counterclockwise: first Blender draft, alternate Blender draft, Krita draft. You can find the final version by looking at the cover.</figcaption>
+</figure>
+
+## As the show curtains descend on the horse
+
+SIGHORSE has been a blast. I hope you'll enjoy reading the submissions as much as the authors enjoyed creating them.
+
+Read the rest of SIGHORSE on https://sig.horse/
+
+---
+
+## Footnotes
+
+1. <span id="footnote-1">Discord is an online group messaging platform used by Purdue Hackers. It is a centerpiece of the community, and many important discussions happen there.</span>
+2. <span id="footnote-2">It redirects to https://www.purduehackers.com/</span>
+3. <span id="footnote-3">#checkpoints is a "channel" in Discord; a channel is a discrete subdivision within a server which members send messages to. #checkpoints, in particular, is a channel where people can showcase their in-progress creations.</span>

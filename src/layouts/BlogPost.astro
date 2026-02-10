@@ -21,7 +21,6 @@ const {
 
 const ogImage = getOgImage({ title: title, authors });
 
-const isHorse = title == 'SIGHORSE 🦓';
 ---
 
 <html lang="en">
@@ -49,16 +48,11 @@ const isHorse = title == 'SIGHORSE 🦓';
       type={type}
     />
 
-    {isHorse ? (<article>
-      <slot />
-    </article>)
-    :
-(    <article
+    <article
       class="mt-8 sm:mt-12 mb-8 sm:mb-12 text-lg font-serif flex flex-col items-start gap-y-4 justify-center w-11/12 sm:w-full max-w-2xl mx-auto"
     >
       <slot />
-    </article>)
-    }
+    </article>
     <Footer />
   </main>
 </html>
