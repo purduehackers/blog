@@ -88,4 +88,10 @@
   .blockquote > p {
     @apply italic pl-3;
   }
+  .blockquote > ul {
+    @apply pl-8;
+  }
+  .blockquote > ul > li {
+    @apply italic;
+  }
 }
