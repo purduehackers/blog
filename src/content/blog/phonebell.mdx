@@ -1,0 +1,71 @@
+---
+title: Home Phone, Phone Home
+pubDate: 2026-12-29
+authors:
+  [
+    "[Jack Hogan](https://github.com/ImTheSquid.png)",
+    "[Hazel Roeder](https://github.com/FizzyApple12.png)",
+  ]
+description: Overhauling our access control system for Hack Night with a new, vintage touch.
+---
+# Home Phone, Phone Home
+TAGLINE: Overhauling our access control system for Hack Night with a new, vintage touch.
+
+OUTLINE:
+- Intro
+- Doorbell
+- Problem: hassle
+- Door opener
+- Problem: Only works for passport holders
+- 
+
+Every Friday night, a seemingly nonstop stream of people want to enter Hack Night, our flagship weekly hacker festival where people make cool shit, to join in on the relentless building. However, our venue, the Bechtel Center, presents us with a problem: restrictive access control. Only a select few members of Purdue Hackers are allowed access to the building through the built-in systems.
+
+We’ve had this problem ever since we moved into the space, and over time we’ve come up with two solutions. The first was the doorbell, a web page that, when rung, would also ring every other browser on that page. When paired with a device on loudspeakers where everyone was working and a QR code on the front doors to the venue, this worked reasonably well. The big drawback was that it was always a hassle to run downstairs to manually open the door.
+
+[DOORBELL + QR CODE IF WE HAVE IT]
+
+Later down the line, we started the Passports initiative [LINK], small faux leather booklets modeled after real passports that contain an NFC chip. One of the benefits of these passports is any device could read them on its own to determine if the holder is a valid member of Purdue Hackers. Out of this concept came the door opener. The door opener is a Raspberry Pi-powered, NFC-enabled device that is suction cupped onto the front doors. When a passport holder aligns their passport with the device, the door opener opens the door automatically with the help of a small linear actuator on the nearby ADA button.
+
+[DOOR OPENER]
+
+We’ve updated the door opener multiple times at this point, switching from a servo to a linear actuator, making the button pusher wireless using an ESP32, and overhauling the enclosure to accommodate a Pi 5 instead of a Pi 3B, a much bigger display, and a camera.
+
+[THE NEW DOOR OPENER ENCLOSURE]
+
+The door opener made our lives so much easier. Regular members could just scan their passport and come in without us having to send someone downstairs to open the door. However, there was one big issue with our new system: what about the members who don’t have passports? Passports are in high demand and short supply, so we couldn’t just give one to everyone who wanted one. Instead, we would have to think outside the box, to a completely different technology.
+
+---
+
+When Matthew was participating in Pursuit [LINK], he saw the rotary phones they used for one of their missions. Inspired, Matthew told Purdue Hackers about it, and Hazel, notorious hardware hacker, took on the task of finding a pair. She eventually came across a pair of black and beige rotary phones in an antique shop in Bloomington:
+
+[ORIGINAL ROTARY PHONE PHOTO]
+
+After a quick impulse purchase, Hazel proposed a great idea to the rest of the team: what if people could call us to be let into Hack Night? This wasn’t a new idea, with a previous president Matthew giving out his number in case the doorbell didn’t work. However, the dedicated, vintage hardware put a spin on the idea that got everyone really excited. This was the birth of the phone bell project.
+
+# Building a Prototype
+Hazel quickly got to work building out an MVP to see if the idea was feasible.
+
+# WebRTC Hell
+
+
+# Rebirth
+- new idea: open the door from the inside
+- iroh
+
+As the phone bells sat in storage, Hack Night members became more and more annoyed at constantly having to run downstairs to open the door. Eventually, I cracked and decided to take another stab at finishing the project.
+
+There were multiple problems to deal with, but the most pressing was WebRTC. My friend Ray told me about Iroh [LINK], a barebones peer-to-peer data exchange system. Iroh turned out to be perfect for our use case; we had just two devices sending audio to each other, so no need for complicated switching and mixing systems. With Claude Code’s help I moved the phone bells from WebRTC to Iroh, setting up a relay server for exchanging peer info aiding the Iroh Foundation’s discovery server in connecting the phones.  Hearing the first bits of audio come over the line was amazing, but there was still a long road ahead.
+
+Audio is complicated. Audio over the network, even more so. I rediscovered this fact after Hazel had and it certainly got me into the weeds. I had various issues including audio becoming more delayed over time, dropped packets, and weird distortions. I traced all of the aforementioned issues to the way I was handling the microphone. The microphone was special due to how it was wired into the Pi, so there was specific processing code to get a precise audio signal from the handset. This code didn’t account for proper channel handling procedures (causing the distortions and occasional dropped packets) and was often starved by the other handset constantly transmitting packets (causing an accumulating delay).
+
+Phones don’t just transmit voice, though. You usually hear a dial tone when you first pick up, a ringback tone waiting for the other person to pick up, and an off hook tone if you leave the phone off the hook for too long. We obviously didn’t have a professional phone routing system for this project, so all of the audio needed to be injected by us. This wasn’t too hard to do – injecting the tones works the same way as pushing voice through the handset. However, there was one thing I didn’t realize: the phone bells were configured for 16 bit wav files *only*. When I went to add another sound, I got a nasty surprise, or more accurately, nothing. I would play the sound on loop but no audio would come from the speaker. After wasting about thirty minutes on this problem, I put Claude Code on the case. After surprisingly few dead ends it figured out the resolution difference and successfully played the tone.
+
+After getting the main audio system working, we could’ve deployed them and called it a day. Dial 0 on the outside phone, the inside phone rings, and once it’s picked up a two way voice channel activates. There was one thing missing, however: what about actually opening the door? This was the actual value add of the phone bells, the ability to let callers in without leaving Hack Night. Thankfully, most of the work had been done for me thanks to the door opener. All I needed to do was to tell the door opener to open when the inside caller dialed 0, and it worked!
+
+# Connection
+Letting people into Hack Night used to be such a pain that we were devising a paging system to put people on rotation for going down and opening the door. Now, that was all behind us.
+
+[DEMO VIDEO]
+
+I absolutely love the phone bells. The distinctiveness of a old rotary phone combined with the technology inside is a quintessential Purdue Hackers project, and thanks to the efforts of many people including Hazel, Ray, Eric, and myself, Hack Night is a million times better for both the members and the organizers.
