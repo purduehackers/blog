@@ -17,7 +17,7 @@ OUTLINE:
 - Problem: hassle
 - Door opener
 - Problem: Only works for passport holders
-- 
+-
 
 Every Friday night, a seemingly nonstop stream of people want to enter Hack Night, our flagship weekly hacker festival where people make cool shit, to join in on the relentless building. However, our venue, the Bechtel Center, presents us with a problem: restrictive access control. Only a select few members of Purdue Hackers are allowed access to the building through the built-in systems.
 
@@ -45,9 +45,9 @@ After a quick impulse purchase, Hazel proposed a great idea to the rest of the t
 
 # Building a Prototype
 
-{JACK START REVIEW HERE}
+[JACK START REVIEW HERE]
 
-There were two main methods we could have used to control the phones, we could make a module that plugs in to the phone line to convert any phone, or we could tightly integrate the electronics in to the phone. We discussed this, and the idea of making the phones simple units you plug a USB cord in to was both appealing from the standpoint of making them simple to use, and funny from the standpoint of telling people that we have "USB rotary phones". Given this, the first thing she did was to disassemble the phones and figure out how to hook up to them internally. 
+There were two main methods we could have used to control the phones, we could make a module that plugs in to the phone line to convert any phone, or we could tightly integrate the electronics in to the phone. We discussed this, and the idea of making the phones simple units you plug a USB cord in to was both appealing from the standpoint of making them simple to use, and funny from the standpoint of telling people that we have "USB rotary phones". Given this, the first thing she did was to disassemble the phones and figure out how to hook up to them internally.
 
 Rotary phones come from an era of a significantly simpler telephone exchanges. The dials used a method called pulse dialing, where the phone would send the number of pluses corresponding to each number. The phone would send one pulse for the number one, two pulses for two, and so on up to ten pulses for the number zero. Combined with some basic electronics inside the phone that would change the voltages on the telephone lines according to what the handset was doing, the phone would physically move parts inside a telephone exchange to connect a call. When you picked up the phone, the voltage on the line would trigger a mechanism to connect you to a machine called a "step-by-step switch". This switch had a mechanism that would listen for the number of pulses and connect you to an open telephone line. Each switch had a tier of telephone lines that would correspond to the number you dialed, and each pulse told the switch to move to the next tier. This repeated process of moving to the correct tier, sweeping across the lines on that tier to find an open one, and repeating until a whole number was dialed would eventually get the switch to physically connect you to the person who you were calling, at which point the phones would switch internally and connect their microphones and speakers together to the other end until the call was ended.
 
@@ -88,7 +88,7 @@ Once the boards and components arrived, she sat down and assembled a pair so she
 
 At this point there were two solutions, either she could design more test boards and perfect the boost converter, or she could solder an existing boost converter to some of the pins to make it work. She originally started down the path of trying to make demo boards she could do testing with, but was cut short due to Purdue Hackers wanting to showcase the phone bells at their annual show, [BURST ✷](http://burst.purduehackers.com/). After realizing that she had 3 projects to prepare for BURST ✷, she decided to temporarily solder in an off-the-shelf boost converter and come back to making a revision two later. Once the boost converters arrived, she had to figure out how to connect them. She ended up piggybacking off the the trim potentiometer connections and the fan output to get all the power it needed. Finally, the phone bell was able to take inputs, handle audio, and ring the bell as a (mostly) fully integrated system.
 
-{JACK STOP REVIEW HERE}
+[JACK STOP REVIEW HERE]
 
 - ~~initial gpio interface~~
   - ~~disassembling the original circuitry~~
@@ -108,7 +108,7 @@ At this point there were two solutions, either she could design more test boards
     - ~~boost converter problems~~
 - ~~proposed v2 vs janking it~~
   - ~~we decided to jank the phone bells by adding an off the shelf boost converter unit that uses the existing pads to connect to the system~~
-  
+
 # Revision One Software
 
 The original software for the phone bells ended up being delayed due to the other BURST ✷ projects until there was only a day left before BURST ✷ started. With no software even close to working, she started a sprint. The first task on the agenda was getting the server code working. The phones needed some way to centrally manage the state of calls. She had previously written a server for other Purdue Hackers' services like the doorbell and events site in Rust with Axum. Instead of reinventing the wheel, she decided to add another endpoint that the phone bells could use. First was websocket upgrading. She setup an endpoint that phones could connect to, added the example code Axum provided for websocket upgrading, and had a basic server setup. Now came managing the sockets. In order to make it easy to schedule multiple parallel tokio tasks to handle each phone, she set up a pair of channels for sending and receiving data that would be handled by tokio tasks that other tasks could read from to make the logic modular. She then added a task that would occasionally send pings to the phones to keep the socket alive. Now came the logic, she set up a central tokio watch channel that would hold the state of the call, and a listener task that would communicate call state changes to the phones to make them do actions like ringing and muting and un-muting their microphones.
