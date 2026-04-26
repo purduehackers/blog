@@ -29,14 +29,14 @@ const { authors, pubDate, updatedDate, title, color, type } = Astro.props;
       class="bg-white rounded-md border-2 border-black inline-block text-base mb-5"
     >
       <FormattedDate date={pubDate} size="base" />
-      {
-        updatedDate && (
-          <div class="last-updated-on flex items-center pl-2 gap-1 [&>time]:pl-0">
-            Last updated on <FormattedDate date={updatedDate} />
-          </div>
-        )
-      }
     </div>
+    {
+      updatedDate && (
+        <div class="last-updated-on -mt-3 mb-2 text-sm text-gray-500 italic flex items-center gap-1 [&>time]:pl-0">
+          Last updated on <FormattedDate date={updatedDate} />
+        </div>
+      )
+    }
     <h1 class="text-5xl sm:text-7xl font-bold sm:w-11/12 sm:tracking-tight">
       {title}
     </h1>
