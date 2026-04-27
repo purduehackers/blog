@@ -6,43 +6,50 @@ import {
   SiDiscord,
 } from "@icons-pack/react-simple-icons";
 
+const linkClass = "text-amber-500 hover:text-amber-400 transition";
+
 export default function FooterLinks() {
   return (
     <div className="flex flex-row justify-center gap-x-5">
       <a
         href="https://purduehackers.com"
-        className="hover:text-gray-600 transition text-black"
+        className={linkClass}
         target="_blank"
+        aria-label="Purdue Hackers homepage"
       >
-        <Home height={27} width={27} />
+        <Home height={22} width={22} />
       </a>
       <a
         href="https://blog.purduehackers.com/rss.xml"
-        className="hover:text-gray-600 transition text-black"
+        className={linkClass}
         target="_blank"
+        aria-label="RSS feed"
       >
-        <SiRss height={27} width={27} />
+        <SiRss height={22} width={22} />
       </a>
       <a
         href="https://github.com/purduehackers"
-        className="hover:text-gray-600 transition text-black"
+        className={linkClass}
         target="_blank"
+        aria-label="GitHub"
       >
-        <SiGithub height={27} width={27} />
+        <SiGithub height={22} width={22} />
       </a>
       <a
         href="https://instagram.com/purduehackers"
-        className="hover:text-gray-600 transition text-black"
+        className={linkClass}
         target="_blank"
+        aria-label="Instagram"
       >
-        <SiInstagram height={27} width={27} />
+        <SiInstagram height={22} width={22} />
       </a>
       <a
         href="https://puhack.horse/discord"
-        className="hover:text-gray-600 transition text-black"
+        className={linkClass}
         target="_blank"
+        aria-label="Discord"
       >
-        <SiDiscord height={27} width={27} />
+        <SiDiscord height={22} width={22} />
       </a>
     </div>
   );

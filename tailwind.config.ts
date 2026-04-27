@@ -2,48 +2,28 @@ import type { Config } from "tailwindcss";
 
 const config = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  darkMode: "class",
   theme: {
     fontFamily: {
-      main: '"Space Grotesk", system-ui, Roboto, sans-serif',
-      serif: '"IBM Plex Serif", serif',
-      mono: '"Space Mono", monospace',
+      main: ['"PolySans"', "system-ui", "sans-serif"],
+      mono: ['"Inconsolata"', '"JetBrains Mono"', "monospace"],
+      pixel: ['"DepartureMono"', "monospace"],
+      display: ['"Silkscreen"', "monospace"],
     },
     extend: {
-      boxShadow: {
-        blocks: "2px 2px",
-      },
       colors: {
-        post: "var(--postMain)",
-        "post-light": "var(--postLight)",
-        discord: {
-          vibrant: "#5864f4",
+        yellow: { DEFAULT: "#fdfa4a", 400: "#fdfa4a" },
+        amber: { 400: "#fbbf24", 500: "#FFA600" },
+        purple: { 400: "#c497ff", 700: "#8B33FF" },
+        gray: {
+          100: "#f5f5f5",
+          800: "#1e1e23",
+          900: "#101013",
         },
+        discord: { vibrant: "#5864f4" },
       },
     },
   },
-  safelist: [
-    "bg-red-200",
-    "bg-red-100",
-    "hover:bg-[#f87171]",
-    "bg-orange-200",
-    "bg-orange-100",
-    "hover:bg-[#fb923c]",
-    "bg-amber-200",
-    "bg-amber-100",
-    "hover:bg-[#fbbf24]",
-    "bg-green-200",
-    "bg-green-100",
-    "hover:bg-[#4ade80]",
-    "bg-teal-200",
-    "bg-teal-100",
-    "hover:bg-[#2dd4bf]",
-    "bg-violet-200",
-    "bg-violet-100",
-    "hover:bg-[#a78bfa]",
-    "bg-pink-200",
-    "bg-pink-100",
-    "hover:bg-[#f472b6]",
-  ],
   plugins: [],
 } satisfies Config;
 

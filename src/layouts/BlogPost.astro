@@ -1,10 +1,11 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { ExternalLinkIcon } from "astro-feather";
 import BaseHead from "components/BaseHead.astro";
 import Header from "components/Header.astro";
+import Nav from "components/Nav.astro";
 import Footer from "components/Footer.astro";
 
-import colors from "lib/colors";
 import { getOgImage } from "lib/utils";
 
 type Props = CollectionEntry<"blog">["data"];
@@ -15,43 +16,77 @@ const {
   pubDate,
   updatedDate,
   authors,
-  color = colors[0],
   type,
+  externalUrl,
 } = Astro.props;
 
-const ogImage = getOgImage({ title: title, authors });
+const isExternal = !!externalUrl;
+const externalHostname = isExternal ? new URL(externalUrl).hostname : null;
+const headTitle = isExternal ? `${title} (External)` : title;
+const headDescription = isExternal
+  ? `${description} (External post on ${externalHostname})`
+  : description;
+
+const ogImage = getOgImage({ title, authors });
 ---
 
 <html lang="en">
   <head>
     <BaseHead
-      title={`${title} | Purdue Hackers`}
-      description={description}
+      title={`${headTitle} | Purdue Hackers`}
+      description={headDescription}
       image={ogImage}
     />
+    {externalUrl && <meta http-equiv="refresh" content={`3;url=${externalUrl}`} />}
   </head>
 
-  <main
-    class="w-screen flex flex-col"
-    style={{
-      "--postMain": color!.main,
-      "--postLight": color!.mainLight,
-    }}
-  >
-    <Header
-      authors={authors}
-      pubDate={pubDate}
-      updatedDate={updatedDate}
-      title={title}
-      color={color!}
-      type={type}
-    />
+  <body>
+    <script>
+      import { Fancybox } from "@fancyapps/ui";
+      import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
-    <article
-      class="mt-8 sm:mt-12 mb-8 sm:mb-12 text-lg font-serif flex flex-col items-start gap-y-4 justify-center w-11/12 sm:w-full max-w-2xl mx-auto"
-    >
-      <slot />
-    </article>
-    <Footer />
-  </main>
+      Fancybox.bind('[data-fancybox="post"]');
+    </script>
+    <Nav />
+    <main class="w-screen flex flex-col min-h-screen">
+      <Header
+        authors={authors}
+        pubDate={pubDate}
+        updatedDate={isExternal ? undefined : updatedDate}
+        title={title}
+        type={type}
+      />
+
+      {
+        isExternal ? (
+          <section class="mt-10 sm:mt-14 mb-10 sm:mb-14 w-11/12 sm:w-full max-w-2xl mx-auto">
+            <div class="border-2 border-dashed border-purple-700 dark:border-yellow p-5 sm:p-6 rounded-sm flex items-start gap-4 bg-yellow/30 dark:bg-purple-700/15">
+              <ExternalLinkIcon size={28} customClasses="mt-1 shrink-0 text-purple-700 dark:text-yellow" />
+              <div class="flex flex-col gap-2">
+                <p class="font-pixel uppercase text-base sm:text-lg">
+                  This post is hosted externally on{" "}
+                  <span class="text-amber-500 dark:text-yellow">{externalHostname}</span>.
+                </p>
+                <p class="font-main text-sm sm:text-base">
+                  Redirecting automatically, or{" "}
+                  <a
+                    href={externalUrl}
+                    class="text-amber-500 hover:text-amber-400 underline decoration-2 underline-offset-4 transition"
+                  >
+                    click here to read it now
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+          </section>
+        ) : (
+          <article class="mt-8 sm:mt-12 mb-8 sm:mb-12 text-base sm:text-lg font-main flex flex-col items-start gap-y-4 justify-center w-11/12 sm:w-full max-w-2xl mx-auto">
+            <slot />
+          </article>
+        )
+      }
+      <Footer />
+    </main>
+  </body>
 </html>
