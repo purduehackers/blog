@@ -15,6 +15,7 @@ export default function FooterLinks() {
         href="https://purduehackers.com"
         className={linkClass}
         target="_blank"
+        rel="noopener noreferrer"
         aria-label="Purdue Hackers homepage"
       >
         <Home height={22} width={22} />
@@ -23,6 +24,7 @@ export default function FooterLinks() {
         href="https://blog.purduehackers.com/rss.xml"
         className={linkClass}
         target="_blank"
+        rel="noopener noreferrer"
         aria-label="RSS feed"
       >
         <SiRss height={22} width={22} />
@@ -31,6 +33,7 @@ export default function FooterLinks() {
         href="https://github.com/purduehackers"
         className={linkClass}
         target="_blank"
+        rel="noopener noreferrer"
         aria-label="GitHub"
       >
         <SiGithub height={22} width={22} />
@@ -39,6 +42,7 @@ export default function FooterLinks() {
         href="https://instagram.com/purduehackers"
         className={linkClass}
         target="_blank"
+        rel="noopener noreferrer"
         aria-label="Instagram"
       >
         <SiInstagram height={22} width={22} />
@@ -47,6 +51,7 @@ export default function FooterLinks() {
         href="https://puhack.horse/discord"
         className={linkClass}
         target="_blank"
+        rel="noopener noreferrer"
         aria-label="Discord"
       >
         <SiDiscord height={22} width={22} />

@@ -14,7 +14,7 @@ const { data } = post;
 const isExternal = !!data.externalUrl;
 const href = isExternal
   ? data.externalUrl!
-  : `${type === "blog" ? "posts" : "vip-newsletter"}/${post.slug}`;
+  : `/${type === "blog" ? "posts" : "vip-newsletter"}/${post.slug}`;
 const externalHostname = isExternal ? new URL(data.externalUrl!).hostname : null;
 
 const month = data.pubDate

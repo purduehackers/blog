@@ -3,7 +3,7 @@ import SunIcon from "components/icons/Sun.astro";
 import MoonIcon from "components/icons/Moon.astro";
 ---
 
-<button class="p-0 cursor-pointer" aria-hidden="true" id="theme-selector">
+<button class="p-0 cursor-pointer" id="theme-selector" type="button">
   <span class="sr-only">
     Enable <span class="dark:hidden">light</span>
     <span class="hidden dark:inline">dark</span> mode
@@ -47,6 +47,8 @@ import MoonIcon from "components/icons/Moon.astro";
     setTheme();
   }
 
+  let mediaQuery = null;
+
   function initializeListeners() {
     const themeSelector = document.getElementById("theme-selector");
     if (themeSelector) {
@@ -54,10 +56,10 @@ import MoonIcon from "components/icons/Moon.astro";
       themeSelector.onauxclick = resetPreferences;
     }
 
-    // Periodically refresh theme if system preferences changes
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", setTheme);
+    if (!mediaQuery) {
+      mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      mediaQuery.addEventListener("change", setTheme);
+    }
   }
 
   function mount() {
@@ -65,9 +67,6 @@ import MoonIcon from "components/icons/Moon.astro";
     setTheme();
   }
 
-  // Initial mount
   mount();
-
-  // Remount after view transition
   document.addEventListener("astro:after-swap", mount);
 </script>
