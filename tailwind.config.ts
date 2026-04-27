@@ -7,7 +7,7 @@ const config = {
     fontFamily: {
       main: ['"PolySans"', "system-ui", "sans-serif"],
       mono: ['"Inconsolata"', '"JetBrains Mono"', "monospace"],
-      pixel: ['"DepartureMono"', "monospace"],
+      pixel: ['"PixelHackers"', "monospace"],
       display: ['"Silkscreen"', "monospace"],
     },
     extend: {

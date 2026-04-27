@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "DepartureMono";
-  src: url("../assets/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-family: "PixelHackers";
+  src: url("../assets/fonts/PixelHackers.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
