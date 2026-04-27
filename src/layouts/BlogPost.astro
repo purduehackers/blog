@@ -8,7 +8,9 @@ import Footer from "components/Footer.astro";
 
 import { getOgImage } from "lib/utils";
 
-type Props = CollectionEntry<"blog">["data"];
+type Props = CollectionEntry<"blog">["data"] & {
+  slug: string;
+};
 
 const {
   title,
@@ -17,6 +19,8 @@ const {
   updatedDate,
   authors,
   externalUrl,
+  type,
+  slug,
 } = Astro.props;
 
 const isExternal = !!externalUrl;
@@ -26,7 +30,7 @@ const headDescription = isExternal
   ? `${description} (External post on ${externalHostname})`
   : description;
 
-const ogImage = getOgImage({ title, authors });
+const ogImage = getOgImage({ type, slug });
 ---
 
 <html lang="en">

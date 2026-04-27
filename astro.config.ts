@@ -37,6 +37,10 @@ export default defineConfig({
   vite: {
     ssr: {
       noExternal: ["@purduehackers/time"], // Force Vite to treat this package as ESM
+      external: ["@resvg/resvg-js", "satori", "wawoff2"],
+    },
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-js"],
     },
   },
 });

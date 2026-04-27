@@ -23,6 +23,6 @@ const isExternal = !!post.data.externalUrl;
 const Content = isExternal ? null : (await post.render()).Content;
 ---
 
-<BlogPost {...post.data}>
+<BlogPost {...post.data} slug={post.slug}>
   {Content && <Content components={components} />}
 </BlogPost>
