@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import FormattedDate from "./FormattedDate.astro";
-import colors from "../lib/colors";
+import { ExternalLinkIcon } from "astro-feather";
+import { parseMarkdownLink } from "lib/utils";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -10,17 +10,73 @@ interface Props {
 
 const { post, type } = Astro.props;
 const { data } = post;
-const { color = colors[0] } = data;
+
+const isExternal = !!data.externalUrl;
+const href = isExternal
+  ? data.externalUrl!
+  : `/${type === "blog" ? "posts" : "vip-newsletter"}/${post.slug}`;
+const externalHostname = isExternal ? new URL(data.externalUrl!).hostname : null;
+
+const month = data.pubDate
+  .toLocaleDateString("en-us", { month: "short", timeZone: "UTC" })
+  .toUpperCase();
+const dayYear = `${data.pubDate.getUTCDate()}, ${data.pubDate.getUTCFullYear()}`;
 ---
 
 <a
-  href={`${type === "blog" ? "posts" : "vip-newsletter"}/${post.slug}`}
-  class={`flex py-4 px-3 gap-2 flex-col justify-center rounded-lg border-[3px] border-black bg-${color!.bg} hover:bg-[${color!.mainLight}] transition duration-100 no-underline text-black hover:text-black`}
+  href={href}
+  target={isExternal ? "_blank" : undefined}
+  rel={isExternal ? "noopener noreferrer" : undefined}
+  class="flex flex-row gap-4 sm:gap-5 p-4 sm:p-5 rounded-sm border border-black dark:border-white/30 bg-white dark:bg-gray-800 no-underline text-black dark:text-gray-100"
 >
-  <div class="rounded-md mx-auto bg-white border-2 border-black">
-    <FormattedDate date={data.pubDate} monthFormat="short" size="sm" />
+  <div class="shrink-0 flex flex-col">
+    <div class="w-16 sm:w-20 bg-black dark:bg-yellow text-white dark:text-black rounded-sm font-pixel uppercase flex flex-col items-center justify-center px-2 py-1.5 leading-none overflow-hidden">
+      <span class="text-2xl sm:text-3xl tracking-tight">{month}</span>
+      <span class="mt-1 text-[10px] sm:text-[11px] tracking-wide whitespace-nowrap">
+        {dayYear}
+      </span>
+    </div>
+    {
+      externalHostname && (
+        <span class="mt-1 font-pixel uppercase text-[10px] tracking-wide text-black/60 dark:text-white/60 break-all">
+          {externalHostname}
+        </span>
+      )
+    }
   </div>
-  <h2 class="text-center text-3xl sm:text-2xl md:text-3xl font-bold">
-    {data.title}
-  </h2>
+  <div class="flex-1 min-w-0 flex flex-col gap-2">
+    <h2 class="font-pixel uppercase text-2xl sm:text-3xl leading-[1.05] flex items-start gap-2">
+      <span>{data.title}</span>
+      {
+        isExternal && (
+          <ExternalLinkIcon size={18} customClasses="mt-1 shrink-0" />
+        )
+      }
+    </h2>
+    {
+      data.authors.length > 0 && (
+        <div class="flex flex-row flex-wrap gap-x-3 gap-y-1">
+          {data.authors.map((author: string) => {
+            const { avatarUrl, author: name } = parseMarkdownLink(author);
+            return (
+              <span class="flex items-center gap-1.5 font-pixel uppercase text-[10px] sm:text-[11px] tracking-wide text-black/70 dark:text-white/70">
+                <img
+                  src={avatarUrl}
+                  width={16}
+                  height={16}
+                  alt={`Avatar for ${name}`}
+                  class="rounded-full border border-black/30"
+                  onerror="this.onerror=null;this.src='/logo.svg';"
+                />
+                {name}
+              </span>
+            );
+          })}
+        </div>
+      )
+    }
+    <p class="text-sm text-black/70 dark:text-white/70 line-clamp-2">
+      {data.description}
+    </p>
+  </div>
 </a>

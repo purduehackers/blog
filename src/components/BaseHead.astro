@@ -5,19 +5,26 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  canonical?: string | undefined;
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const vercelEnv = process.env.PUBLIC_VERCEL_ENV;
 
-const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
+const {
+  title,
+  description,
+  image = "/blog-placeholder-1.jpg",
+  canonical,
+} = Astro.props;
+const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/logo.svg" />
 <link
-  rel="icon"
+  rel="alternate icon"
   href={vercelEnv === "production"
     ? "/favicon.ico"
     : vercelEnv === "preview"
@@ -33,7 +40,7 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
-<meta name="theme-color" content="#D97706" />
+<meta name="theme-color" content="#8B33FF" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:site_name" content="Purdue Hackers" />

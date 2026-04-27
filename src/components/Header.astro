@@ -1,43 +1,32 @@
 ---
 import Author from "./Author.astro";
 import FormattedDate from "./FormattedDate.astro";
-import Nav from "./Nav.astro";
 
 interface Props {
   authors: string[];
   pubDate: Date;
   updatedDate?: Date | undefined;
   title: string;
-  color: {
-    main: string;
-    mainLight: string;
-    bg: string;
-    bgLight: string;
-  };
-  type: "blog" | "vip-newsletter";
 }
 
-const { authors, pubDate, updatedDate, title, color, type } = Astro.props;
+const { authors, pubDate, updatedDate, title } = Astro.props;
 ---
 
-<header class={`border-b-4 border-black bg-${color.bgLight}`}>
-  <Nav type={type} />
+<header class="relative overflow-hidden bg-grid-animated [--grid-size:26px] [--grid-color:rgba(0,0,0,0.06)] dark:[--grid-color:rgba(255,255,255,0.08)] border-b border-black/10 dark:border-white/10">
   <div
-    class="w-full container py-8 md:pt-12 md:pb-16 flex flex-col items-start gap-y-4 mx-auto px-4 sm:px-8 md:px-14"
+    class="container relative z-10 mx-auto pt-20 pb-12 md:pt-28 md:pb-16 flex flex-col items-start gap-y-5 px-4 sm:px-8 md:px-14"
   >
-    <div
-      class="bg-white rounded-md border-2 border-black inline-block text-base mb-5"
-    >
-      <FormattedDate date={pubDate} size="base" />
+    <div class="bg-white dark:bg-gray-800 text-black dark:text-gray-100 border border-black dark:border-white/30 rounded-sm font-pixel uppercase text-xs sm:text-sm">
+      <FormattedDate date={pubDate} size="sm" />
       {
         updatedDate && (
-          <div class="last-updated-on flex items-center pl-2 gap-1 [&>time]:pl-0">
+          <div class="last-updated-on flex items-center pl-2 gap-1 [&>time]:pl-0 border-t border-black/30 dark:border-white/20">
             Last updated on <FormattedDate date={updatedDate} />
           </div>
         )
       }
     </div>
-    <h1 class="text-5xl sm:text-7xl font-bold sm:w-11/12 sm:tracking-tight">
+    <h1 class="font-pixel uppercase text-4xl sm:text-6xl md:text-7xl leading-[1.05] sm:w-11/12 dark:text-yellow">
       {title}
     </h1>
     <div class="flex flex-row gap-4 md:gap-x-5 flex-wrap w-10/12 md:max-w-2xl">

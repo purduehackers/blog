@@ -1,27 +1,128 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Serif:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=Silkscreen:wght@400;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --boltColor: #000000;
-  --zapColor: #000000;
-  --sparkColor: #000000;
+@font-face {
+  font-family: "DepartureMono";
+  src: url("../assets/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
-  --postMain: #f59e0b;
-  --postLight: #fbbf24;
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-Slim.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-SlimItalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-Neutral.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-NeutralItalic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-Median.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-MedianItalic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-Relax.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-RelaxItalic.woff2") format("woff2");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-Bulky.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-BulkyItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-Inky.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PolySans";
+  src: url("../assets/fonts/PolySans-InkyItalic.woff2") format("woff2");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --yellow: #fdfa4a;
+  --amber: #ffa600;
+  --purple-400: #c497ff;
+  --purple-700: #8b33ff;
+  --gray-100: #f5f5f5;
+  --gray-800: #1e1e23;
+  --gray-900: #101013;
+  --highlight-bg: #fdd34a;
+  --highlight-fg: black;
+
+  background-color: white;
+}
+:root.dark {
+  background-color: var(--gray-900);
 }
 
 @layer base {
   body {
-    @apply font-main;
+    @apply font-main text-black dark:text-gray-100;
   }
   pre {
-    @apply bg-gray-100 w-full mx-auto rounded-lg p-2 text-base overflow-x-auto max-w-xl font-mono;
+    @apply bg-gray-100 dark:bg-gray-800 w-full mx-auto rounded-sm p-2 text-base overflow-x-auto max-w-xl font-mono border border-black/10 dark:border-white/10;
   }
   :not(pre) > code {
-    @apply bg-gray-200 rounded-lg px-1 py-0.5 text-base font-mono;
+    @apply font-mono text-amber-500 bg-gray-100 dark:bg-gray-800 rounded-sm px-1;
   }
   h1 {
     @apply text-3xl;
@@ -30,43 +131,25 @@
     @apply text-2xl;
   }
   ul {
-    @apply marker:text-post;
+    @apply marker:text-amber-500 dark:marker:text-amber-400;
   }
   li > ul > li {
     @apply sm:ml-6;
   }
   ol li::marker {
-    color: var(--postMain);
+    color: var(--amber);
     @apply font-bold;
   }
   ::selection {
-    background: #fcd34d;
+    background: var(--highlight-bg);
+    color: var(--highlight-fg);
   }
 }
 
 @layer components {
-  .lightning-gradient {
-    @apply font-bold;
-    background: linear-gradient(
-      to right,
-      var(--boltColor),
-      var(--zapColor),
-      var(--sparkColor)
-    );
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .bolt {
-    @apply font-bold;
-    color: var(--boltColor);
-  }
-  .zap {
-    @apply font-bold;
-    color: var(--zapColor);
-  }
-  .spark {
-    @apply font-bold;
-    color: var(--sparkColor);
+  .desc {
+    @apply text-amber-500 hover:text-amber-400 transition;
+    word-break: break-word;
   }
 
   .youtubeContainer {
@@ -74,7 +157,7 @@
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   .youtubeContainer iframe {
@@ -93,5 +176,50 @@
   }
   .blockquote > ul > li {
     @apply italic;
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: linear-gradient(
+        var(--grid-color, rgba(0, 0, 0, 0.1)) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        var(--grid-color, rgba(0, 0, 0, 0.1)) 1px,
+        transparent 1px
+      );
+    background-size: var(--grid-size, 30px) var(--grid-size, 30px);
+    background-position: 50% -50%;
+    background-repeat: repeat;
+  }
+  .bg-grid-animated {
+    background-image: linear-gradient(
+        var(--grid-color, rgba(0, 0, 0, 0.05)) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        var(--grid-color, rgba(0, 0, 0, 0.05)) 1px,
+        transparent 1px
+      );
+    background-size: var(--grid-size, 30px) var(--grid-size, 30px);
+    background-position: 50% -50%;
+    background-repeat: repeat;
+    animation: bg-grid-scroll 8s linear infinite;
+  }
+  @keyframes bg-grid-scroll {
+    from {
+      background-position: 50% -50%;
+    }
+    to {
+      background-position:
+        50% calc(-50% + var(--grid-size, 30px)),
+        calc(50% + var(--grid-size, 30px)) -50%;
+    }
+  }
+  .text-shadow-amber {
+    text-shadow: 0 0 6px #fbbf24;
   }
 }
