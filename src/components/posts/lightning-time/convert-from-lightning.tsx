@@ -34,7 +34,7 @@ const convertFromLightning = () => {
         background: `linear-gradient(to right, ${colors[0]}, ${colors[1]}, ${colors[2]})`,
       }}
     >
-      <div className="rounded-lg p-4 flex flex-col justify-center bg-white h-full">
+      <div className="rounded-lg p-4 flex flex-col justify-center bg-white dark:bg-gray-900 h-full">
         <p className="text-2xl text-center font-bold">
           Convert from Lightning Time
         </p>
@@ -46,8 +46,10 @@ const convertFromLightning = () => {
           autoCapitalize="off"
           autoComplete="off"
           autoCorrect="off"
-          className={`border-2 border-black rounded mt-4 w-7/12 mx-auto outline-none text-center ${
-            !valid ? "bg-red-100" : ""
+          className={`border-2 border-black dark:border-white/30 rounded mt-4 w-7/12 mx-auto outline-none text-center ${
+            !valid
+              ? "bg-red-100 dark:bg-red-900/40"
+              : "bg-white dark:bg-gray-800"
           }`}
           onChange={(e) => {
             if (e.target.value.length > 7) return setValid(false);

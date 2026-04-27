@@ -13,7 +13,7 @@ const ConvertToLightning = () => {
         background: `linear-gradient(to right, ${colors[0]}, ${colors[1]}, ${colors[2]})`,
       }}
     >
-      <div className="rounded-lg p-4 flex flex-col justify-center bg-white">
+      <div className="rounded-lg p-4 flex flex-col justify-center bg-white dark:bg-gray-900">
         <p className="text-2xl text-center font-bold">
           Convert to Lightning
           <br />
@@ -22,7 +22,7 @@ const ConvertToLightning = () => {
         <input
           type="time"
           step={1}
-          className="border-2 border-black rounded mt-4 w-7/12 mx-auto outline-none pl-1"
+          className="border-2 border-black dark:border-white/30 bg-white dark:bg-gray-800 rounded mt-4 w-7/12 mx-auto outline-none pl-1"
           defaultValue="12:00"
           onChange={(e) => {
             if (e.target.value) {
