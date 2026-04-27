@@ -17,13 +17,17 @@ export default {
       {props.children}
     </h3>
   ),
-  a: (props) => (
-    <a
-      target="_blank"
-      className="text-amber-500 hover:text-amber-400 underline decoration-2 underline-offset-4 transition"
-      {...props}
-    ></a>
-  ),
+  a: (props) => {
+    const isExternal = /^https?:\/\//i.test(props.href ?? "");
+    return (
+      <a
+        className="text-amber-500 hover:text-amber-400 underline decoration-2 underline-offset-4 transition"
+        {...props}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+      />
+    );
+  },
   img: (props) => (
     <a
       href={props.src}
@@ -33,8 +37,6 @@ export default {
     >
       <img
         {...props}
-        width={0}
-        height={0}
         className={
           props.className ||
           "w-full md:w-[50vw] lg:w-[33vw] xl:w-[22vw] rounded-sm border border-black/10"

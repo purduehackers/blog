@@ -16,7 +16,6 @@ const {
   pubDate,
   updatedDate,
   authors,
-  type,
   externalUrl,
 } = Astro.props;
 
@@ -36,6 +35,7 @@ const ogImage = getOgImage({ title, authors });
       title={`${headTitle} | Purdue Hackers`}
       description={headDescription}
       image={ogImage}
+      canonical={isExternal ? externalUrl : undefined}
     />
     {externalUrl && <meta http-equiv="refresh" content={`3;url=${externalUrl}`} />}
   </head>
@@ -54,7 +54,6 @@ const ogImage = getOgImage({ title, authors });
         pubDate={pubDate}
         updatedDate={isExternal ? undefined : updatedDate}
         title={title}
-        type={type}
       />
 
       {

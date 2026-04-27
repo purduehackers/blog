@@ -5,12 +5,18 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  canonical?: string | undefined;
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const vercelEnv = process.env.PUBLIC_VERCEL_ENV;
 
-const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
+const {
+  title,
+  description,
+  image = "/blog-placeholder-1.jpg",
+  canonical,
+} = Astro.props;
+const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 ---
 
 <!-- Global Metadata -->

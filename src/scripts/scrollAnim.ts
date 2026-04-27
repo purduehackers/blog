@@ -4,12 +4,14 @@
  */
 
 if (typeof window !== "undefined") {
+  const cleanups: Array<() => void> = [];
+
   function run() {
-    // Get target elements to change on scroll
+    while (cleanups.length) cleanups.pop()!();
+
     const scrollThresholdEls = document.querySelectorAll<HTMLElement>("[data-scroll-threshold]");
     const sentinelEls = document.querySelectorAll<HTMLElement>("[data-sentinel]");
 
-    // Scroll threshold update
     if (scrollThresholdEls.length > 0) {
       let rafId: number | null = null;
       const state = new Map<HTMLElement, boolean>();
@@ -32,11 +34,14 @@ if (typeof window !== "undefined") {
       }
 
       window.addEventListener("scroll", onScroll, { passive: true });
+      cleanups.push(() => {
+        window.removeEventListener("scroll", onScroll);
+        if (rafId !== null) cancelAnimationFrame(rafId);
+      });
       update();
     }
 
-    // Sticky sentinel
-    // Set data-past-sentinel when the sentinel’s top has passed the viewport top
+    // Set data-past-sentinel when the sentinel's top has passed the viewport top
     if (sentinelEls.length > 0) {
       const bySelector = new Map<string, HTMLElement[]>();
       sentinelEls.forEach((el) => {
@@ -54,8 +59,6 @@ if (typeof window !== "undefined") {
           const sentinel = document.querySelector(selector);
           if (!sentinel) return;
           const rect = sentinel.getBoundingClientRect();
-          
-          // Past = section top has passed viewport top (label is stuck)
           const past = rect.top <= 0;
           if (sentinelState.get(selector) !== past) {
             sentinelState.set(selector, past);
@@ -72,6 +75,10 @@ if (typeof window !== "undefined") {
       }
 
       window.addEventListener("scroll", onSentinelScroll, { passive: true });
+      cleanups.push(() => {
+        window.removeEventListener("scroll", onSentinelScroll);
+        if (sentinelRafId !== null) cancelAnimationFrame(sentinelRafId);
+      });
       updateSentinels();
     }
   }
@@ -82,4 +89,7 @@ if (typeof window !== "undefined") {
     run();
   }
   document.addEventListener("astro:page-load", run);
+  document.addEventListener("astro:before-swap", () => {
+    while (cleanups.length) cleanups.pop()!();
+  });
 }
