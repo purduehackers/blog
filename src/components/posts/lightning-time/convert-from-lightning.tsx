@@ -46,7 +46,7 @@ const convertFromLightning = () => {
           autoCapitalize="off"
           autoComplete="off"
           autoCorrect="off"
-          className={`border-2 border-black dark:border-white/30 rounded mt-4 w-7/12 mx-auto outline-none text-center ${
+          className={`border-2 border-black dark:border-white/30 text-black dark:text-gray-100 placeholder:text-black/40 dark:placeholder:text-white/40 rounded mt-4 w-7/12 mx-auto outline-none text-center ${
             !valid
               ? "bg-red-100 dark:bg-red-900/40"
               : "bg-white dark:bg-gray-800"

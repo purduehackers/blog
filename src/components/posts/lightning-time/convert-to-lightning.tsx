@@ -22,7 +22,7 @@ const ConvertToLightning = () => {
         <input
           type="time"
           step={1}
-          className="border-2 border-black dark:border-white/30 bg-white dark:bg-gray-800 rounded mt-4 w-7/12 mx-auto outline-none pl-1"
+          className="border-2 border-black dark:border-white/30 bg-white dark:bg-gray-800 text-black dark:text-gray-100 [color-scheme:light_dark] rounded mt-4 w-7/12 mx-auto outline-none pl-1"
           defaultValue="12:00"
           onChange={(e) => {
             if (e.target.value) {
