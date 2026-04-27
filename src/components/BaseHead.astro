@@ -16,21 +16,14 @@ const {
   image = "/blog-placeholder-1.jpg",
   canonical,
 } = Astro.props;
-const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+const canonicalURL =
+  canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="/logo.svg" />
-<link
-  rel="alternate icon"
-  href={vercelEnv === "production"
-    ? "/favicon.ico"
-    : vercelEnv === "preview"
-      ? "/favicon_preview.ico"
-      : "/favicon_dev.ico"}
-/>
+<link rel="icon" type="image/svg+xml" href="/glider.svg" />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Canonical URL -->
