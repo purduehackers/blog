@@ -85,7 +85,7 @@ BLE for short. Wi-Fi was briefly considered but was decided against because it
 might become a security risk for Bechtel, the building that we were hosting
 Hack Night at.
 
-## Updating the codebase for the next revision
+## Updating the codebase
 
 While waiting for the hardware parts to arrive, I also started work on updating
 the repository and the dependencies required. For example, the repository in the
@@ -114,4 +114,48 @@ and started to take measurements. After sketching out a rough idea of what I
 wanted, I opened Autodesk Inventor for the first time and made a rudimentary
 enclosure that would hold the parts together like a test bench:
 
-![First prototype enclosure design](/posts/door-opener-2/first-prototype-enclosure.png)
+![First prototype enclosure design](/posts/door-opener-2/first-enclosure-design.png)
+
+And that wrapped up Fall 2025, and the rest of the semester was quite busy.
+After winter break, things picked back up again during the Spring 2026 semester.
+
+
+## What do we name the thing that pushes the ADA button? Some sort of ADA pusher?
+
+Several things happened in parallel as we raced to get this project complete.
+We finally had the proper linear actuator that had the specifications we needed,
+shipped all the way from China. It needed 12V of power to operate, and we had
+an ESP32 board to interface via BLE and send signals to the linear actuator.
+
+At first, I thought that I would only need one USB-PD trigger board and one
+step-down converter, to change the voltage from 12V to 5V for the ESP32. The
+trigger board would negotiate 12V from the power source and cleanly power
+everything.
+
+Unfortunately, if you are familiar with the USB consortium, they actually made
+the 12V Power Delivery profile optional, which meant a lot of chargers flat-out
+do not support it. The justification was lack of use: phones usually topped up
+at around 9V, while laptops and tablets usually went up to 15V and 20V. Thus,
+the 9V profile was out of the question, even though it would've been perfect for
+our use case.
+
+We couldn't rely on specific chargers supporting it, because there
+was a chance that the charger we were using broke and the replacement wouldn't
+have the optional profile. And if the charger didn't support it, rather than
+risk frying the downstream device, the negotiation automatically shifted down
+to the next lower voltage profile, which was either 9V or 5V.
+
+Thus, the new plan was to use two step-down converters and bring the 15V voltage
+negotiated by the trigger board down, to 12V and 5V, respectively.
+
+After waiting a couple more days for all the parts to arrive, the first
+prototype of `ada-pusher` also materialized on the dining table:
+
+![ada-pusher first prototype](/posts/door-opener-2/ada-pusher-first-prototype.jpg)
+
+Through this test, we confirmed that the linear actuator module worked, and that
+the ESP32 board could properly send the signals when prompted.
+
+Then came the topic of mounting the `ada-pusher`. We came up with several design
+ideas, including utilizing the wall panel gaps just above the `ada-pusher`:
+
