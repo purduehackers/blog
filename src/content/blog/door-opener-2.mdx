@@ -107,7 +107,7 @@ I quickly connected together the loose parts on my desk and loaded up the same
 build from revision one. The visuals were messed up, as expected, but at least
 we had somewhere to start from!
 
-![First prototype booting and showing the opener app!](/posts/door-opener-2/first-prototype.jpg)
+![First prototype booting and showing the opener app](/posts/door-opener-2/first-prototype.jpg)
 
 And since I had all the parts sitting in front of me, I took out the calipers
 and started to take measurements. After sketching out a rough idea of what I
@@ -159,3 +159,183 @@ the ESP32 board could properly send the signals when prompted.
 Then came the topic of mounting the `ada-pusher`. We came up with several design
 ideas, including utilizing the wall panel gaps just above the `ada-pusher`:
 
+<div className="grid grid-cols-2 gap-2">
+
+    ![ADA pusher mount idea 1](/posts/door-opener-2/ada-pusher-mount-ideas/1.png)
+
+    ![ADA pusher mount idea 2](/posts/door-opener-2/ada-pusher-mount-ideas/2.png)
+
+</div>
+
+Ultimately, we decided not to move forward with these designs. For the first
+design, the plastic perimeter around the button was thin and brittle, and we
+were worried that the contraption hanging off of it could snap it. For the
+second one, the work to model it in 3D was honestly intimidating to me, as I
+didn't have that much experience with CAD software.
+
+So the lazy but surprisingly effective (?) solution: the original had two
+suction cups. What if we have four of them?
+
+But before we could even start designing how that would look like, we first had
+to measure the distances and the dimensions of the actual ADA button. So I went
+on over to Bechtel with my calipers and spent half an hour measuring it.
+
+<figure className="text-sm text-center font-main">
+
+![Bechtel ADA button with dimensions sketched on above](/posts/door-opener-2/bechtel-measurements.png)
+
+<figcaption>Sorry, Bechtel, now the world knows how big your ADA buttons are</figcaption>
+
+</figure>
+
+Since I had such a terrible time dealing with Autodesk licensing at this point,
+I switched on over to FreeCAD, which worked just as well, given that my project
+was simple in scale.
+
+<div className="grid grid-cols-2 gap-2">
+
+    ![ADA pusher CAD design on FreeCAD](/posts/door-opener-2/ada-pusher-cad-design.png)
+
+    ![ADA pusher initial print fit on button](/posts/door-opener-2/ada-pusher-initial-fit.png)
+
+</div>
+
+For the electronics part, Bechtel had an electronics lab with good soldering
+equipment. However, the circuit for `ada-pusher` required two step-downs and a
+big driver board for the linear actuator, and since we didn't have time for a
+custom PCB, everything was hastily put together on a perfboard.
+
+<div className="grid grid-cols-2 gap-2">
+
+    ![Bechtel's electronics lab](/posts/door-opener-2/bechtel-electronics-lab.jpg)
+
+    ![ADA pusher perfboard circuit](/posts/door-opener-2/first-ada-pusher-pcb.jpeg)
+
+</div>
+
+Meanwhile, on the software side, everything was written atop Rust. The ESP32
+platform had good enough support for Rust, although you did have to install a
+custom toolchain for Xtensa-based boards, which was what I was using. But the
+`nimble` crate made BLE connections quite easy, and before long I had a working
+contraption sitting on my desk!
+
+![First working prototype of ada-pusher](/posts/door-opener-2/first-working-ada-pusher-prototype.jpg)
+
+On the `door-opener` side, the `btleplug` crate (yes, it really is named that)
+reached out to `ada-pusher` whenever someone tapped their valid passport. Once
+the integration tests worked, the entire caboodle was put in for real-world
+testing at [Hack Night 6.18][hack-night-6.18].
+
+[hack-night-6.18]: https://events.purduehackers.com/events/hack-night/6.18
+
+Unfortunately, after an hour or two, someone sent us a photo of the mount
+failing. Adding insult to injury, because I forgot to put in fillets,
+one of the legs cleanly sheared off:
+
+![The broken ada-pusher](/posts/door-opener-2/first-working-ada-pusher-dies.jpg)
+
+Thankfully, adding the fillets was enough to give the next print structural
+integrity, and with that, the `ada-pusher` spinoff project was complete!
+
+## Back to the new `door-opener`
+
+My focus went back to completing `door-opener-v2`, which also required its fair
+share of revisions to the CAD. Even though Purdue has plenty of 3D printers
+scattered around campus, trying to find one that isn't in use was difficult.
+At some point, Bechtel's printers were constantly in use, so I had to go over
+to the 3D Printing Club and use their printers to print and test the final few
+revisions.
+
+Most of the revisions had to do with tolerances. 3D prints expand on a heated
+bed and shrink when cool down. 3D printers have different tolerances and prints
+differ from one another, even with the same Gcode. This made it difficult to
+tune in the dimensions exactly, such that all the parts fit together with the
+screws tightly holding them together.
+
+<figure className="text-sm text-center font-main">
+
+<div className="grid grid-cols-2 gap-2">
+
+    ![door-opener-v2 print front](/posts/door-opener-2/door-opener-v2-prints/test-front.jpg)
+
+    ![door-opener-v2 print back](/posts/door-opener-2/door-opener-v2-prints/test-back.jpg)
+
+</div>
+
+<figcaption>One of the failed prints being used to test the overall fit of components</figcaption>
+
+</figure>
+
+<figure className="text-sm text-center font-main">
+
+![The screw hole of the door-opener-v2 not lining up with the display module](/posts/door-opener-2/door-opener-v2-prints/dimensions-off.jpg)
+
+<figcaption>This happened over, and over, and over again. 3D printing is cursed</figcaption>
+
+</figure>
+
+Meanwhile, the software also needed some patches. Besides integrating with
+`ada-pusher`, it had to be adapted to work with the new LCD module of
+`door-opener-v2`. The first revision had hardcoded values for the square LCD
+module, which meant that elements were either stretched out, squashed in, or
+even off-screen entirely on the new rectangular display.
+
+<figure className="text-sm text-center font-main">
+
+![door-opener app UI changes with the text overflowing](/posts/door-opener-2/door-opener-app-ui-changes.png)
+
+<figcaption>This wasn't the actual message, but a test for more text overflowing the dialog box</figcaption>
+
+</figure>
+
+But after the design revisions and the software patches, `door-opener-v2` was 
+finally completed in April and put into service at Hack Night 6.25. For context,
+we cut it so close that the Hack Night in question was one day before the
+[BENTO talk][bento-talk-event-link].
+
+[bento-talk-event-link]: https://www.purduehackers.com/events/show/bento
+
+The software saw a ton of improvements and new features, which were shown off at
+BENTO, but here are some of the major ones again:
+
+- Auto-updater for updating the `door-opener` app on boot
+- Builds moving from the slow Pi to GitHub Actions runners
+- Integration with `ada-pusher`
+- Websocket support, which enabled...
+  - Opening the door using `phone-bell`
+  - Opening the door using Discord commands (this was the remote control functionality)
+- Robust connectivity and health checks and improved user-facing error messages
+
+After BENTO, one last modification was required when we realized that the Pi and
+power circuit was overheating. Thus, the back plate was modified for a small
+40 mm fan to sit in:
+
+![door-opener-v2 backplate with fan cavity and holes](/posts/door-opener-2/last-mod-to-backplate.png)
+
+And on the software side, one feature that unfortunately didn't make it in time
+for testing was the camera module. The idea was that organizers could take a
+photo through the camera to see who was in front of the door, then issue the
+door open command remotely. Most of the client-side code was implemented
+relatively quickly thanks to the `nokhwa` crate, but the semester ended before
+we could start working on the server-side and integration testing.
+
+# Retrospective and the future
+
+So that was, in a way, two hardware projects in a trenchcoat. I'm quite happy
+with the results and the improvements made to the original revision, and the
+valuable lessons learned working on physical hardware.
+
+With the [documentation][door-opener-docs] on the
+[`door-opener` repository][door-opener-repo], anybody should be able to
+contribute and add new features to `door-opener`. That's exactly how I got
+started with Purdue Hackers back in 2024, contributing patches to things that
+I found each Hack Night while having a great time with the community. Hopefully,
+you'll see `door-opener` when you visit one of our Hack Nights and think of
+something fun, silly, or cool to add to it!
+
+[door-opener-docs]: https://github.com/purduehackers/door-opener/tree/main/docs
+[door-opener-repo]: https://github.com/purduehackers/door-opener
+
+Also, many thanks to the other organizers and various community members in
+helping with the new revision of `door-opener`! I'm quite hopeful and excited
+to see where the project goes next semester.
