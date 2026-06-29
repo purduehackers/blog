@@ -67,9 +67,8 @@ opportunity to use a bigger screen.
 
 ## Branching off a sub-project
 
-While we worked on the new revision for `door-opener`, we also focused on the
-idea where the servo that sat on top of the ADA button would be made more
-independent compared to how it was before. Previously, an organizer had to run a
+While we worked on the new revision for `door-opener`, there was another
+pressing issue we had to resolve. Previously, an organizer had to run a
 microUSB cable between the servo module and `door-opener`, and depending on how
 it was plugged in, the servo would fail to be initialized and require a power
 cycle on the Pi's side. Unfortunately, this wasn't immediately apparent to the
@@ -77,12 +76,20 @@ organizer setting things up, and because they had several other tasks to
 complete in order to get Hack Night ready, attendees would often show up to a
 `door-opener` that wouldn't actually open the door.
 
-So the spin-off project got the name `ada-pusher`, and we took the opportunity
-to swap out the servo with a linear actuator for better reliabilty. For the
-connection back to `door-opener`, we decided to use Bluetooth Low Energy, or
-BLE for short. Wi-Fi was briefly considered but was decided against because it
-might become a security risk for Bechtel, the building that we were hosting
-Hack Night at.
+So to solve this idea, we spun out a side project named `ada-pusher`, which
+focused on the idea of making the servo that sat on top of the ADA button much
+more independent from the rest of the system. `ada-pusher` thus received its
+own little microcontroller, and communicated back to `door-opener` via Bluetooth
+Low Energy, or BLE for short. Wi-Fi was briefly considered, but was decided
+against because it might become a security risk for Bechtel, the building that
+we were hosting Hack Night at.
+
+Finally, for better reliability, we also decided to swap out the servo with a
+linear actuator, which would lessen the shearing forces on the servo that
+usually caused the horn, or the little plastic piece sitting atop the brass
+fitting, to detach from the rest of the servo. Because the linear actuator
+was designed to move back and forth along the axis where the button was
+depressed, it would minimize any shearing forces involved.
 
 ## Updating the codebase
 
