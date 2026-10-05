@@ -31,3 +31,5 @@ pnpm-debug.log*
 .vercel
 
 src/content/blog/remixing.mdx
+src/content/blog/bits-newsletter-1.md
+src/content/blog/bits-newsletter-1.mdx
