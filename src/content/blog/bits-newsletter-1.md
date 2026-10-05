@@ -1,4 +1,9 @@
-# edition 1
+---
+title: "Bits Newsletter 1"
+description: "the first edition of the Purdue Hackers Bits Newsletter"
+pubDate: 2026-10-04
+authors: ["[Ved Joshi](https://github.com/thevmous.png)"]
+---
 
 Hello!
 
@@ -8,31 +13,31 @@ $$
 ✦
 $$
 
-# **Bit 0: Hack Night 7.0**
+# **Bit 0000: Hack Night 7.0**
 
 Our first Hack Night of the year was our biggest yet with over 120 people! With so many new faces, it was exciting to see the groups forming and the creative juices flowing. We had multiple groups of freshmen meet each other for the first time, hit it off, and start planning projects together. We even had many newcomers along with regulars present their work during checkpoints.
 
 Here are some photos!
 
-![Project ideas we were working on](edition%201/Screenshot_2026-09-21_at_8.15.36_PM.png)
+![Project ideas we were working on](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_8.15.36_PM.png)
 
 Project ideas we were working on
 
-![One member wrote a shader, shader editor, and displayed the Purdue Hackers Logo on a CRT monitor](edition%201/Screenshot_2026-09-21_at_8.18.49_PM.png)
+![One member wrote a shader, shader editor, and displayed the Purdue Hackers Logo on a CRT monitor](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_8.18.49_PM.png)
 
 One member wrote a shader, shader editor, and displayed the Purdue Hackers Logo on a CRT monitor
 
-![Another member programmed a robot arm to pour and make pancakes using a pancake maker](edition%201/fa88b602-975b-4a69-bc0e-e88518c36b70.png)
+![Another member programmed a robot arm to pour and make pancakes using a pancake maker](/posts/bits-newsletter-1/fa88b602-975b-4a69-bc0e-e88518c36b70.png)
 
 Another member programmed a robot arm to pour and make pancakes using a pancake maker
 
-![Hitting record numbers (at 12:00am)!](edition%201/3350b14a-e9b1-4b80-b4e1-8f207d3e1f79.png)
+![Hitting record numbers (at 12:00am)!](/posts/bits-newsletter-1/3350b14a-e9b1-4b80-b4e1-8f207d3e1f79.png)
 
 Hitting record numbers (at 12:00am)!
 
 ---
 
-# **Bit 1: Summer/Early Fall Ships**
+# **Bit 0001: Summer/Early Fall Ships**
 
 Here’s what our hackers have been building since last school year!
 
@@ -57,83 +62,83 @@ For even more, visit our discord! ([https://phack.rs/discord](https://phack.rs/d
 
 ---
 
-# **Bit 2: Sound Galaxy Workshop**
+# **Bit 0010: Sound Galaxy Workshop**
 
 Earlier this semester, we hosted our Sound Galaxy Workshop where we taught people how to use p5.js to make cool interactive sound/visual experiences right in the browser! Through the workshop, many members created a lot of cool projects that they posted in our discord, see a few of them below!
 
-![Everyone working hard during the workshop :)](edition%201/Screenshot_2026-09-21_at_8.29.07_PM.png)
+![Everyone working hard during the workshop :)](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_8.29.07_PM.png)
 
 Everyone working hard during the workshop :)
 
-![Super cool animation that ‘skips’ whenever someone snaps their fingers!](edition%201/Screenshot_2026-09-21_at_8.29.45_PM.png)
+![Super cool animation that ‘skips’ whenever someone snaps their fingers!](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_8.29.45_PM.png)
 
 Super cool animation that ‘skips’ whenever someone snaps their fingers!
 
-![Nyan cat using Sound Galaxy templates](edition%201/Screenshot_2026-09-21_at_8.30.10_PM.png)
+![Nyan cat using Sound Galaxy templates](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_8.30.10_PM.png)
 
 Nyan cat using Sound Galaxy templates
 
-![The colors in [this](https://editor.p5js.org/cdyvig/full/HB7HzmJ7h) one change dynamically given the volume of your environment!](edition%201/Screenshot_2026-09-21_at_8.30.40_PM.png)
+![The colors in [this](https://editor.p5js.org/cdyvig/full/HB7HzmJ7h) one change dynamically given the volume of your environment!](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_8.30.40_PM.png)
 
 The colors in [this](https://editor.p5js.org/cdyvig/full/HB7HzmJ7h) one change dynamically given the volume of your environment!
 
 ---
 
-# **Bit 3: Our Webring**
+# **Bit 0011: Our Webring**
 
 First, what’s a webring? A webring is a group of separate sites linked together, usually a hobby group or friend group’s sites. This was popular during the early days of the internet and personal homepages (like on GeoCities).
 
 Of course, we at Purdue Hackers have our own webring (at [https://ring.purduehackers.com/](https://ring.purduehackers.com/)) and 5 people recently joined us with their new sites!
 
-![Our new sleek homepage where you can preview every member’s site (randomized)!](edition%201/Screenshot_2026-09-21_at_8.31.32_PM.png)
+![Our new sleek homepage where you can preview every member’s site (randomized)!](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_8.31.32_PM.png)
 
 Our new sleek homepage where you can preview every member’s site (randomized)!
 
 Here are just a few of the cool sites our hackers have built! Visit more through the webring!
 
-![Screenshot 2026-09-21 at 9.08.07 PM.png](edition%201/Screenshot_2026-09-21_at_9.08.07_PM.png)
+![Screenshot 2026-09-21 at 9.08.07 PM.png](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_9.08.07_PM.png)
 
-![Screenshot 2026-09-21 at 9.09.17 PM.png](edition%201/Screenshot_2026-09-21_at_9.09.17_PM.png)
+![Screenshot 2026-09-21 at 9.09.17 PM.png](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_9.09.17_PM.png)
 
-![Screenshot 2026-09-21 at 9.08.33 PM.png](edition%201/Screenshot_2026-09-21_at_9.08.33_PM.png)
+![Screenshot 2026-09-21 at 9.08.33 PM.png](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_9.08.33_PM.png)
 
-![Screenshot 2026-09-21 at 9.10.02 PM.png](edition%201/Screenshot_2026-09-21_at_9.10.02_PM.png)
+![Screenshot 2026-09-21 at 9.10.02 PM.png](/posts/bits-newsletter-1/Screenshot_2026-09-21_at_9.10.02_PM.png)
 
 Planning or working on a personal site? Join our webring!
 
 ---
 
-# **Bit 4: Partner Events**
+# **Bit 0100: Partner Events**
 
 We’ve held a couple of small events with companies like Walmart, SpaceX, and OpenAI this month, bringing hackers and partner representatives together to explore career possibilities and more! (We also have an event with Neuralink coming up this week)
 
 ## Pizza and Chat with Walmart
 
-![image.png](edition%201/image.png)
+![image.png](/posts/bits-newsletter-1/image.png)
 
-![1549918436807671818-recovered-IMG_3416.webp](edition%201/1549918436807671818-recovered-IMG_3416.webp)
+![1549918436807671818-recovered-IMG_3416.webp](/posts/bits-newsletter-1/1549918436807671818-recovered-IMG_3416.webp)
 
-![1549918436807671818-IMG_3409.webp](edition%201/1549918436807671818-IMG_3409.webp)
+![1549918436807671818-IMG_3409.webp](/posts/bits-newsletter-1/1549918436807671818-IMG_3409.webp)
 
 ## Codex Cafe
 
-![image.png](edition%201/image%201.png)
+![image.png](/posts/bits-newsletter-1/image%201.png)
 
-![image.png](edition%201/image%202.png)
+![image.png](/posts/bits-newsletter-1/image%202.png)
 
-![image.png](edition%201/image%203.png)
+![image.png](/posts/bits-newsletter-1/image%203.png)
 
-![image.png](edition%201/image%204.png)
+![image.png](/posts/bits-newsletter-1/image%204.png)
 
 ## SpaceX Mixer
 
-![image.png](edition%201/image%205.png)
+![image.png](/posts/bits-newsletter-1/image%205.png)
 
-![1550200914525159458-IMG_3434.webp](edition%201/1550200914525159458-IMG_3434.webp)
+![1550200914525159458-IMG_3434.webp](/posts/bits-newsletter-1/1550200914525159458-IMG_3434.webp)
 
-![1550200914525159458-IMG_3441.webp](edition%201/1550200914525159458-IMG_3441.webp)
+![1550200914525159458-IMG_3441.webp](/posts/bits-newsletter-1/1550200914525159458-IMG_3441.webp)
 
-![1550200914525159458-IMG_3433.webp](edition%201/1550200914525159458-IMG_3433.webp)
+![1550200914525159458-IMG_3433.webp](/posts/bits-newsletter-1/1550200914525159458-IMG_3433.webp)
 
 ---
 
@@ -158,6 +163,6 @@ And if you haven’t been to a Hack Night in a while, come visit us, Fridays at 
 With 💛,
 Ved
 
-![Climbing turned my life upside down ;)](edition%201/Screenshot_2026-10-01_at_10.54.37_AM.png)
+![Climbing turned my life upside down ;)](/posts/bits-newsletter-1/Screenshot_2026-10-01_at_10.54.37_AM.png)
 
 Climbing turned my life upside down ;)
