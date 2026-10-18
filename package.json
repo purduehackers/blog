@@ -5,9 +5,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && node scripts/configure-vercel-runtime.mjs",
     "preview": "astro preview",
     "astro": "astro"
+  },
+  "engines": {
+    "node": "22.x"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

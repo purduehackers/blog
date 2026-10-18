@@ -4,12 +4,12 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel/static";
+import vercel from "@astrojs/vercel/serverless";
 // import playformCompress from "@playform/compress";
 
 export default defineConfig({
   site: "https://blog.purduehackers.com",
-  output: "static",
+  output: "hybrid",
   adapter: vercel({
     webAnalytics: {
       enabled: true,
