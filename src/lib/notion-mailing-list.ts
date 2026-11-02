@@ -12,19 +12,19 @@ interface NotionProperty {
 
 export function getNewsletterConfig(): NewsletterConfig {
   return {
-    apiKey: process.env.NOTION_API_KEY || import.meta.env.NOTION_API_KEY || "",
+    apiKey: process.env.NOTION_API_KEY || import.meta.env?.NOTION_API_KEY || "",
     databaseId:
       process.env.NOTION_DATABASE_ID ||
-      import.meta.env.NOTION_DATABASE_ID ||
+      import.meta.env?.NOTION_DATABASE_ID ||
       "346181f3b6ed800586cfdd7c42d0ac65",
     dataSourceId:
       process.env.NOTION_DATA_SOURCE_ID ||
-      import.meta.env.NOTION_DATA_SOURCE_ID,
+      import.meta.env?.NOTION_DATA_SOURCE_ID,
     nameProperty:
-      process.env.NOTION_NAME_PROPERTY || import.meta.env.NOTION_NAME_PROPERTY,
+      process.env.NOTION_NAME_PROPERTY || import.meta.env?.NOTION_NAME_PROPERTY,
     emailProperty:
       process.env.NOTION_EMAIL_PROPERTY ||
-      import.meta.env.NOTION_EMAIL_PROPERTY,
+      import.meta.env?.NOTION_EMAIL_PROPERTY,
   };
 }
 

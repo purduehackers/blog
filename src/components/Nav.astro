@@ -4,12 +4,10 @@ import Glider from "./icons/Glider.astro";
 
 const currentPath = Astro.url.pathname;
 const isPost = /^\/posts\/[^/]+/.test(currentPath);
-const isNewsletter =
-  /^\/vip-newsletter\/[^/]+/.test(currentPath) &&
-  !/^\/vip-newsletter\/?$/.test(currentPath);
+const isNewsletter = /^\/(vip-newsletter|newsletter)\/[^/]+/.test(currentPath);
 const showBack = isPost || isNewsletter;
 const backLabel = isNewsletter ? "All Newsletters" : "All Posts";
-const backHref = isNewsletter ? "/vip-newsletter" : "/";
+const backHref = isNewsletter ? (currentPath.startsWith("/newsletter/") ? "/newsletter" : "/vip-newsletter") : "/";
 ---
 
 <script>

@@ -1,0 +1,121 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import { listEditions } from "../../lib/admin/campaigns";
+export const prerender = false;
+let editions: Awaited<ReturnType<typeof listEditions>> = [];
+let unavailable = false;
+try {
+  editions = await listEditions(true);
+} catch {
+  unavailable = true;
+  Astro.response.status = 503;
+}
+Astro.response.headers.set(
+  "Cache-Control",
+  unavailable ? "no-store" : "public, max-age=60, s-maxage=60",
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head
+    ><BaseHead
+      title="Newsletter | Purdue Hackers"
+      description="News, projects, and upcoming events from Purdue Hackers."
+    /></head
+  >
+  <body>
+    <Nav />
+    <main class="archive">
+      <a href="/">&lt;&lt; Blog</a>
+      <p class="eyebrow">From the collective</p>
+      <h1>Our newsletter</h1>
+      <p class="intro">
+        News, projects, and what’s coming up at Purdue Hackers.
+      </p>
+      {
+        unavailable ? (
+          <p role="status">
+            The archive is temporarily unavailable. Please try again shortly.
+          </p>
+        ) : editions.length ? (
+          <ol>
+            {editions.map((page) => (
+              <li>
+                <a href={`/newsletter/${page.id}`}>
+                  <span>{page.title}</span>
+                  <time datetime={page.publishedAt}>
+                    {new Date(page.publishedAt!).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      timeZone: "America/Indiana/Indianapolis",
+                    })}
+                  </time>
+                </a>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p>
+            Our next edition will appear here. Subscribe below to get it in your
+            inbox.
+          </p>
+        )
+      }
+    </main>
+    <Footer />
+  </body>
+</html>
+<style>
+  .archive {
+    max-width: 800px;
+    margin: auto;
+    min-height: 65vh;
+    padding: 96px 24px 72px;
+  }
+  .eyebrow {
+    font-family: PixelHackers, monospace;
+    font-size: 13px;
+    color: #9333ea;
+    margin-top: 48px;
+  }
+  h1 {
+    font-family: PixelHackers, monospace;
+    font-size: clamp(32px, 6vw, 56px);
+    margin: 16px 0;
+  }
+  .intro {
+    opacity: 0.7;
+    margin-bottom: 48px;
+  }
+  li {
+    border-top: 1px solid #a78bfa55;
+  }
+  li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    padding: 24px 0;
+  }
+  li a:hover span {
+    text-decoration: underline;
+  }
+  li span {
+    font-size: 24px;
+  }
+  time {
+    font-family: monospace;
+    white-space: nowrap;
+    opacity: 0.6;
+  }
+  @media (max-width: 500px) {
+    li a {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+</style>

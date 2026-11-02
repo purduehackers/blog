@@ -5,9 +5,9 @@ where we share our magic with the world ✨💛⚡️, now with more Astro!
 ## Newsletter signup
 
 The form in the shared footer submits names and email addresses to the Notion
-mailing list through `/api/subscribe`. Blog pages stay prerendered; only this
-endpoint runs as a Vercel serverless function. Signing up adds a Notion entry;
-sending newsletters still happens through your existing mailing workflow.
+mailing list through `/api/subscribe`. Existing MDX blog pages stay prerendered; subscription endpoints, the admin,
+and the new newsletter archive run as Vercel serverless routes. Signing up adds a Notion entry;
+the newsletter admin below handles importing, publishing, and sending editions.
 
 Use Node.js 22. The build's final step updates the generated Vercel function
 metadata to `nodejs22.x` with a 60-second timeout. This is needed because the
@@ -71,3 +71,157 @@ exclude rows where `Unsubscribed` is checked.
 Run all subscription tests with
 `node --experimental-strip-types --test tests/*.test.ts`. These use mocked
 Notion requests and never modify real mailing list entries.
+
+
+## Newsletter administration
+
+Existing posts are **static MDX** in `src/content/blog`; there was no runtime
+blog-upload backend. The new `/admin` imports Notion editions into durable
+storage and publishes them under `/newsletter/{edition-id}`. The `/newsletter`
+archive is linked from the homepage. Publishing takes effect without a rebuild;
+the archive can cache results for up to 60 seconds. Existing MDX posts, VIP
+newsletters, and their RSS feed retain their current workflow.
+
+The sender defaults to **phackers@purdue.edu**. Admin access requires Purdue
+Hackers ID's **organizer** role, which ID also grants to admins. The role is
+verified through ID's user-info endpoint on every privileged request, including
+each send continuation. Missing roles, expired sessions, and provider failures
+never authorize an admin action. Sign-in uses authorization code + PKCE S256,
+a single-use state bound to an HTTP-only cookie, and server-side sessions. Tokens
+are encrypted with AES-256-GCM; no token is returned to the browser.
+
+### 1. Configure storage and the ID application
+
+1. Create a dedicated [Upstash Redis](https://upstash.com/docs/redis/features/restapi)
+   database. Disable eviction and enable backups: this database holds published
+   editions, permanent image copies, delivery records, and encrypted credentials.
+   Losing it would lose the newsletter archive and delivery history.
+2. Set `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, and
+   `NEWSLETTER_REDIS_PREFIX`. Use a **separate database or prefix** for local
+   development and previews. Never point a preview at production delivery data.
+3. Generate `NEWSLETTER_ENCRYPTION_KEY` with `openssl rand -base64 32`. Store it
+   in Vercel and in your local `.env` used by the capture script. Keep the key
+   stable and backed up separately; changing it invalidates stored credentials
+   and sessions. It must never use a `PUBLIC_` prefix.
+4. Set `NEWSLETTER_SITE_URL=https://blog.purduehackers.com`. For local testing,
+   use `http://localhost:3000` and a separate Redis prefix/database. Absolute
+   email/image/unsubscribe links use this configured origin rather than request
+   headers. If the public domain changes, reimport future editions with the new
+   origin; existing emails continue referencing their original domain.
+5. In [Purdue Hackers ID](https://id.purduehackers.com), create a confidential
+   OAuth application with authorization-code grant, PKCE, **client_secret_post**
+   token authentication, and the `openid`, `profile`, and `roles` scopes. Register
+   `https://blog.purduehackers.com/admin/callback` as an exact redirect URI.
+   Register a separate localhost client/redirect for development if needed.
+6. Set `PH_ID_CLIENT_ID`, `PH_ID_CLIENT_SECRET`, and
+   `PH_ID_REQUIRED_ROLE=organizer`. ID currently defines `alumni`, `organizer`,
+   and `admin`; an admin has both `organizer` and `admin` grants.
+7. Add the variables to Vercel and redeploy. Protected pages and APIs use
+   `private, no-store`; they are excluded from search indexing. The ID session
+   lasts at most one hour; sign in again to continue a longer delivery.
+
+### 2. Connect the Purdue mailbox once
+
+This follows BuildPurdue's delegated Microsoft Graph/device-code pattern, using
+separate Purdue Hackers credentials and storage. It sends through
+`/me/sendMail` as the connected mailbox, without SMTP passwords.
+
+1. Create a Microsoft Entra application in the appropriate Purdue tenant. Set
+   **Allow public client flows** to **Yes**. Add Microsoft Graph **delegated**
+   permissions `Mail.Send` and `User.Read`. `offline_access` is requested during
+   login to receive a refresh token. Purdue's tenant policy may require IT
+   approval; follow the consent response from Microsoft.
+2. Set `MICROSOFT_CLIENT_ID`, `MICROSOFT_TENANT_ID`, and
+   `MICROSOFT_SENDER_EMAIL=phackers@purdue.edu` in Vercel and local `.env`.
+   The app must be a public client; this flow does not use a client secret.
+3. With Node.js 22, run `npm run newsletter:connect` (or
+   `pnpm newsletter:connect`). Follow Microsoft's displayed login instructions
+   and sign in **as phackers@purdue.edu**. The script verifies the account using
+   Graph `/me` and refuses a different mailbox. It stores the encrypted refresh
+   token in Redis without printing or saving tokens to a local file. It sends
+   no email. Local `.env` must target the same storage/prefix/encryption key as
+   the deployment you are connecting.
+4. The server persists rotated refresh tokens before sending. Rerun the script
+   if Microsoft revokes consent, requires interaction, or the grant expires.
+
+This implementation expects phackers@purdue.edu to be the signed-in user's
+primary mailbox. If it is a **shared mailbox** accessed through another user's
+account, it needs a different setup (`Mail.Send.Shared`, mailbox Send As rights,
+and `/users/{mailbox}/sendMail`) before sending; the script intentionally refuses
+a different primary mailbox.
+
+Microsoft Graph's [sendMail API](https://learn.microsoft.com/en-us/graph/api/user-sendmail?view=graph-rest-1.0)
+returns **202 Accepted**, which means queued for processing, not confirmed inbox
+delivery. Purdue/Exchange sending limits and tenant anti-spam policies still
+apply; this is suitable for the club's mailing workflow, not an unlimited bulk
+mailer.
+
+### 3. Import, review, publish, and send
+
+1. Give the Notion integration **Read content** access and connect the edition
+   page through its **Connections** menu. It must also retain its existing
+   mailing-list permissions. The supplied page link is accepted directly:
+   `https://app.notion.com/p/purduehackers/edition-1-3e3181f3b6ed80c6b392cdfb4bf9a3ef`.
+2. Visit `/admin`, sign in with an organizer/admin ID, paste the page URL, and
+   choose **Import edition**. This creates an immutable draft snapshot, not a
+   public page or a send. Changes in Notion require a fresh import. A new
+   import is a distinct edition with its own delivery history.
+3. Preview the edition and **Send test** to your own address. Test emails are
+   labeled `[TEST]` and do not modify the subscriber delivery record.
+4. **Publish edition** makes the saved copy available on the website. Review
+   it through **View published edition**. Publication is idempotent.
+5. Type `SEND` and choose **Send newsletter**. The audience is read from the
+   existing Notion mailing list, deduplicated, and frozen for that edition.
+   Only rows with `Unsubscribed=false` are eligible. A duplicate unsubscribed
+   row suppresses that address. Each subscription is rechecked immediately
+   before sending; removed/unsubscribed contacts are skipped. A subscription
+   change after that check may still race the email request.
+6. Keep the tab open. Delivery runs one recipient per server request and saves
+   each result. **Pause** stops after the current request. After a closed tab,
+   expired sign-in, or interruption, reopen the edition and **Resume delivery**.
+   Newly subscribed readers are not added to an already-started audience.
+
+Recipients never see the list: each email has exactly one To address and its own
+encoded unsubscribe link. Subscription GET links still require confirmation,
+so mail scanners do not unsubscribe readers just by opening a link.
+
+A durable per-recipient claim is saved **before** calling Microsoft. Accepted
+and skipped recipients are never resent automatically. If Microsoft times out,
+a server crashes after submitting mail, or saving the result fails, delivery
+stops rather than guessing. Review the sender's **Sent Items** for that recipient,
+then **Skip recipient** if it was sent or **Retry after review** if it was not.
+Rejected requests (including rate limits) also pause until reviewed. Avoid
+repeated test clicks after an ambiguous test-send timeout; tests have no durable
+recipient history. A failed request can leave a lease for up to two minutes;
+wait and refresh if another operation appears to be running.
+
+### Supported Notion content and limits
+
+Imports preserve rich text, safe links, headings, nested lists, quotes,
+callouts, code, dividers, images, checklists, tables, columns, toggles, and
+readable synced-block children. Columns/toggles become a single-column email
+layout; embeds, bookmarks, videos, and external files become links. Unsupported
+blocks and expiring file attachments fail the import with an actionable message
+instead of silently dropping content. Convert them to text, an image, or a
+permanent public link first.
+
+Notion-hosted PNG/JPEG/GIF/WebP images are copied into Redis and served from
+permanent site URLs, so signed Notion URLs do not expire in old emails. External
+HTTPS images remain external; their availability depends on the original host.
+Unpublished test images have unguessable public URLs so email clients can load
+them; avoid importing sensitive images. Limits: 500 blocks, 10 nesting levels,
+60 Notion reads, 180 KB rendered HTML, 2 MB per copied image, 8 MB total images,
+and 10,000 mailing-list rows. Failed imports may leave unreferenced image keys;
+there is no automated media cleanup. The admin/archive show the newest 100
+editions; older direct edition URLs continue working. This version has no draft
+editing, deletion, scheduler, or background delivery worker.
+
+### Verify without sending real mail
+
+Run `npm test` for mocked signup, unsubscribe, OAuth/roles, token encryption and
+rotation, Notion import, publication, subscription suppression, and delivery
+interruption tests. They never call live Notion or Microsoft services. Run
+`npm run build` for Astro checks and the Vercel production build. The final
+runtime compatibility step still sets Node.js 22 and a 60-second function limit.
+A real organizer sign-in and a deliberate test email remain deployment checks
+once the app registrations and storage are configured.
