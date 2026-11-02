@@ -13,8 +13,7 @@ import {
 } from "../../../lib/admin/campaigns";
 import { importNotionPage } from "../../../lib/admin/notion";
 import { sender } from "../../../lib/admin/config";
-import { read } from "../../../lib/admin/store";
-import type { MicrosoftCredential } from "../../../lib/admin/microsoft";
+import { getMicrosoftCredential } from "../../../lib/admin/store";
 
 export const prerender = false;
 function json(value: unknown, status = 200) {
@@ -29,9 +28,9 @@ function json(value: unknown, status = 200) {
 export const GET: APIRoute = async ({ locals }) => {
   if (!locals.admin) throw new AdminError("Sign in to continue.", 401);
   const editions = (await listEditions()).map(
-    ({ html: _html, createdBy: _createdBy, ...page }) => page,
+    ({ createdBy: _createdBy, ...page }) => page,
   );
-  const credential = await read<MicrosoftCredential>("microsoft");
+  const credential = await getMicrosoftCredential();
   return json({
     editions,
     sender: sender(),

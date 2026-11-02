@@ -4,10 +4,10 @@ import Glider from "./icons/Glider.astro";
 
 const currentPath = Astro.url.pathname;
 const isPost = /^\/posts\/[^/]+/.test(currentPath);
-const isNewsletter = /^\/(vip-newsletter|newsletter)\/[^/]+/.test(currentPath);
+const isNewsletter = /^\/vip-newsletter\/[^/]+/.test(currentPath);
 const showBack = isPost || isNewsletter;
 const backLabel = isNewsletter ? "All Newsletters" : "All Posts";
-const backHref = isNewsletter ? (currentPath.startsWith("/newsletter/") ? "/newsletter" : "/vip-newsletter") : "/";
+const backHref = isNewsletter ? "/vip-newsletter" : "/";
 ---
 
 <script>
@@ -20,23 +20,29 @@ const backHref = isNewsletter ? (currentPath.startsWith("/newsletter/") ? "/news
   class="fixed top-0 z-[100] w-full h-8 flex justify-between items-center transition-[background-color] duration-500 bg-transparent data-[scrolled=true]:bg-purple-700 data-[scrolled=true]:dark:bg-purple-700 text-black dark:text-white data-[scrolled=true]:text-white"
   aria-hidden="false"
 >
-  <div class="w-full px-2 md:px-3 mx-auto flex justify-between items-center sm:grid sm:grid-cols-3">
-    {showBack ? (
-      <a href={backHref} class="justify-self-start flex items-center gap-x-2 uppercase text-sm font-pixel">
-        {'<<'} <span>{backLabel}</span>
-      </a>
-    ) : (
-      <a class="h-fit self-center justify-self-start"
-        href="https://purduehackers.com"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Glider class="w-4 h-4" />
-      </a>
-    )}
-    <div
-      class="flex gap-2 justify-center"
-    >
+  <div
+    class="w-full px-2 md:px-3 mx-auto flex justify-between items-center sm:grid sm:grid-cols-3"
+  >
+    {
+      showBack ? (
+        <a
+          href={backHref}
+          class="justify-self-start flex items-center gap-x-2 uppercase text-sm font-pixel"
+        >
+          {"<<"} <span>{backLabel}</span>
+        </a>
+      ) : (
+        <a
+          class="h-fit self-center justify-self-start"
+          href="https://purduehackers.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Glider class="w-4 h-4" />
+        </a>
+      )
+    }
+    <div class="flex gap-2 justify-center">
       <a
         href="https://purduehackers.com"
         target="_blank"

@@ -277,3 +277,11 @@
     height: 480px;
   }
 }
+
+.newsletter-admin[data-ready="true"] .loading-controls {
+  display: none;
+}
+.loading-controls {
+  margin: 0 0 20px;
+  font-size: 14px;
+}

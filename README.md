@@ -5,8 +5,9 @@ where we share our magic with the world ✨💛⚡️, now with more Astro!
 ## Newsletter signup
 
 The form in the shared footer submits names and email addresses to the Notion
-mailing list through `/api/subscribe`. Existing MDX blog pages stay prerendered; subscription endpoints, the admin,
-and the new newsletter archive run as Vercel serverless routes. Signing up adds a Notion entry;
+mailing list through `/api/subscribe`. The blog homepage, posts, RSS feed,
+subscription endpoints, and admin run as Vercel serverless routes. Existing VIP
+newsletter pages stay prerendered. Signing up adds a Notion entry;
 the newsletter admin below handles importing, publishing, and sending editions.
 
 Use Node.js 22. The build's final step updates the generated Vercel function
@@ -75,12 +76,12 @@ Notion requests and never modify real mailing list entries.
 
 ## Newsletter administration
 
-Existing posts are **static MDX** in `src/content/blog`; there was no runtime
-blog-upload backend. The new `/admin` imports Notion editions into durable
-storage and publishes them under `/newsletter/{edition-id}`. The `/newsletter`
-archive is linked from the homepage. Publishing takes effect without a rebuild;
-the archive can cache results for up to 60 seconds. Existing MDX posts, VIP
-newsletters, and their RSS feed retain their current workflow.
+Existing posts are **static MDX** in `src/content/blog`. The `/admin` imports
+Notion pages into Turso and publishes them as blog posts under `/posts/{edition-id}`.
+The homepage combines published imports and regular MDX blog posts in date order.
+VIP newsletters retain their separate `/vip-newsletter` section; RSS includes both. Publishing takes effect without a rebuild; public
+pages cache results for up to 60 seconds. Imported posts use the existing blog
+layout. The `/newsletter` addresses added for imports redirect to the blog.
 
 The sender defaults to **phackers@purdue.edu**. Admin access requires Purdue
 Hackers ID's **organizer** role, which ID also grants to admins. The role is
@@ -92,33 +93,66 @@ are encrypted with AES-256-GCM; no token is returned to the browser.
 
 ### 1. Configure storage and the ID application
 
-1. Create a dedicated [Upstash Redis](https://upstash.com/docs/redis/features/restapi)
-   database. Disable eviction and enable backups: this database holds published
-   editions, permanent image copies, delivery records, and encrypted credentials.
-   Losing it would lose the newsletter archive and delivery history.
-2. Set `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, and
-   `NEWSLETTER_REDIS_PREFIX`. Use a **separate database or prefix** for local
-   development and previews. Never point a preview at production delivery data.
+1. In the Vercel project's **Storage / Marketplace**, install and connect
+   [Turso](https://vercel.com/marketplace/tursocloud/database). The native
+   integration is configured with the `BLOG_STORAGE_` prefix, supplying
+   `BLOG_STORAGE_TURSO_DATABASE_URL` and `BLOG_STORAGE_TURSO_AUTH_TOKEN`.
+   These names take precedence; unprefixed `TURSO_DATABASE_URL` and
+   `TURSO_AUTH_TOKEN` are also supported as a pair. The server
+   uses the official `@libsql/client` SDK over HTTPS, with no local replica in
+   Vercel's temporary filesystem. Use a **separate database** for development
+   and previews so test deliveries never touch production history.
+2. Pull the project's development variables with `vercel env pull .env.local`
+   (or copy the two Turso values to your ignored local `.env`). Both newsletter
+   scripts load `.env`, then `.env.local` as overrides. Run
+   `npm run newsletter:setup` once against the intended database **before**
+   connecting Microsoft or opening the admin. This idempotent setup creates
+   the `newsletter_*` tables in one transaction and preserves existing rows.
+   It is an explicit setup step, not part of the build or public page requests.
+   For production setup, use that environment's credentials deliberately.
 3. Generate `NEWSLETTER_ENCRYPTION_KEY` with `openssl rand -base64 32`. Store it
    in Vercel and in your local `.env` used by the capture script. Keep the key
    stable and backed up separately; changing it invalidates stored credentials
    and sessions. It must never use a `PUBLIC_` prefix.
 4. Set `NEWSLETTER_SITE_URL=https://blog.purduehackers.com`. For local testing,
-   use `http://localhost:3000` and a separate Redis prefix/database. Absolute
+   use `http://localhost:3000` and a separate development database. Absolute
    email/image/unsubscribe links use this configured origin rather than request
    headers. If the public domain changes, reimport future editions with the new
    origin; existing emails continue referencing their original domain.
 5. In [Purdue Hackers ID](https://id.purduehackers.com), create a confidential
-   OAuth application with authorization-code grant, PKCE, **client_secret_post**
+   OAuth application with authorization-code grant, PKCE, **client_secret_basic**
    token authentication, and the `openid`, `profile`, and `roles` scopes. Register
    `https://blog.purduehackers.com/admin/callback` as an exact redirect URI.
-   Register a separate localhost client/redirect for development if needed.
+   Register `http://localhost:3000/admin/callback` for local development.
+   The ID app-creation UI uses `client_secret_basic`, which is the blog default.
+   Only set `PH_ID_TOKEN_AUTH_METHOD=client_secret_post` if an application was
+   explicitly registered with that different authentication method. Token
+   exchange uses server HTTPS without browser Fetch Metadata or cookies, as
+   required by ID's server OAuth endpoint protection.
 6. Set `PH_ID_CLIENT_ID`, `PH_ID_CLIENT_SECRET`, and
    `PH_ID_REQUIRED_ROLE=organizer`. ID currently defines `alumni`, `organizer`,
    and `admin`; an admin has both `organizer` and `admin` grants.
 7. Add the variables to Vercel and redeploy. Protected pages and APIs use
    `private, no-store`; they are excluded from search indexing. The ID session
    lasts at most one hour; sign in again to continue a longer delivery.
+
+Turso stores editions, frozen audiences, recipient delivery results, credentials,
+images, OAuth states, sessions, and short-lived leases in separate SQLite tables.
+Image copies remain bounded to 2 MB each and 8 MB per edition. They use BLOB
+columns rather than base64 text in the database. Session and OAuth expiry is
+checked by SQL; subsequent sign-ins remove expired rows. A write transaction
+atomically consumes each OAuth state. Audience creation commits all recipients
+or none, and a unique `(edition_id, email)` key plus conditional updates makes
+recipient claims atomic across serverless instances. Reads used by the admin
+run in short write-mode transactions to observe primary database state. No
+transaction is held open while contacting Notion or Microsoft.
+
+For fully local development, set `BLOG_STORAGE_TURSO_DATABASE_URL=file:./newsletter.local.db`
+in `.env.local`, then run `npm run newsletter:setup`. No Turso token is required
+for a local file. Local database/journal files are ignored by Git. File URLs are
+rejected when running on Vercel. Keep backups of the remote database and the
+separate encryption key; this database holds the published archive and delivery
+history.
 
 ### 2. Connect the Purdue mailbox once
 
@@ -128,7 +162,9 @@ separate Purdue Hackers credentials and storage. It sends through
 
 1. Create a Microsoft Entra application in the appropriate Purdue tenant. Set
    **Allow public client flows** to **Yes**. Add Microsoft Graph **delegated**
-   permissions `Mail.Send` and `User.Read`. `offline_access` is requested during
+   permissions `Mail.Send`, `User.Read`, and `Calendars.ReadWrite`. The calendar
+   permission prepares this same mailbox connection for future event features.
+   `offline_access` is requested during
    login to receive a refresh token. Purdue's tenant policy may require IT
    approval; follow the consent response from Microsoft.
 2. Set `MICROSOFT_CLIENT_ID`, `MICROSOFT_TENANT_ID`, and
@@ -138,11 +174,24 @@ separate Purdue Hackers credentials and storage. It sends through
    `pnpm newsletter:connect`). Follow Microsoft's displayed login instructions
    and sign in **as phackers@purdue.edu**. The script verifies the account using
    Graph `/me` and refuses a different mailbox. It stores the encrypted refresh
-   token in Redis without printing or saving tokens to a local file. It sends
-   no email. Local `.env` must target the same storage/prefix/encryption key as
+   token in Turso without printing or saving tokens to a local file. It sends
+   no email. Local `.env` must target the same database/encryption key as
    the deployment you are connecting.
 4. The server persists rotated refresh tokens before sending. Rerun the script
    if Microsoft revokes consent, requires interaction, or the grant expires.
+   If the mailbox was connected before calendar access was added, add the
+   delegated `Calendars.ReadWrite` permission to the Entra app and rerun
+   `npm run newsletter:connect` to grant it. Changing the code alone does not
+   expand an existing Microsoft grant.
+
+The capture script requests mail, profile verification, and calendar consent
+in one login, matching BuildPurdue's setup. Newsletter token refreshes still
+request only `Mail.Send`, `User.Read`, and `offline_access`, so an older grant
+without calendar consent can keep sending mail. The captured broad access token
+is not reused for newsletter sends; the first send redeems a narrower mail
+access token. Future calendar code can redeem the same rotating refresh token
+for `Calendars.ReadWrite` with a separate access-token cache. No calendar event
+creation or updates are implemented or performed by this setup.
 
 This implementation expects phackers@purdue.edu to be the signed-in user's
 primary mailbox. If it is a **shared mailbox** accessed through another user's
@@ -199,28 +248,42 @@ wait and refresh if another operation appears to be running.
 
 Imports preserve rich text, safe links, headings, nested lists, quotes,
 callouts, code, dividers, images, checklists, tables, columns, toggles, and
-readable synced-block children. Columns/toggles become a single-column email
-layout; embeds, bookmarks, videos, and external files become links. Unsupported
+readable synced-block children. Text columns/toggles become a single-column
+layout. Adjacent images form responsive two-column galleries (three across for
+groups of exactly three), including across empty paragraphs and Notion columns.
+Captions stay with each image; standalone images use the blog's image sizing.
+The same gallery grouping applies to existing snapshots, admin previews, and
+email HTML. Email galleries use presentation tables with a mobile stacking rule;
+website images use the existing click-to-enlarge lightbox.
+Embeds, bookmarks, videos, and external files become links. Unsupported
 blocks and expiring file attachments fail the import with an actionable message
 instead of silently dropping content. Convert them to text, an image, or a
 permanent public link first.
 
-Notion-hosted PNG/JPEG/GIF/WebP images are copied into Redis and served from
+Equation blocks and inline equations preserve their source as escaped text
+(including decorative symbols); LaTeX is not typeset in emails.
+
+Notion-hosted PNG/JPEG/GIF/WebP images are stored as SQLite BLOBs in Turso and served from
 permanent site URLs, so signed Notion URLs do not expire in old emails. External
 HTTPS images remain external; their availability depends on the original host.
+Still images over 200 KB are automatically resized to fit within 1280 × 2400 pixels
+and optimized as JPEG (PNG when transparent). Original images must be under 20 MB and 40 megapixels when
+resizing; animated GIFs must be under 2 MB to preserve their animation.
 Unpublished test images have unguessable public URLs so email clients can load
 them; avoid importing sensitive images. Limits: 500 blocks, 10 nesting levels,
 60 Notion reads, 180 KB rendered HTML, 2 MB per copied image, 8 MB total images,
-and 10,000 mailing-list rows. Failed imports may leave unreferenced image keys;
+and 10,000 mailing-list rows. Failed imports may leave unreferenced media rows;
 there is no automated media cleanup. The admin/archive show the newest 100
 editions; older direct edition URLs continue working. This version has no draft
 editing, deletion, scheduler, or background delivery worker.
 
 ### Verify without sending real mail
 
-Run `npm test` for mocked signup, unsubscribe, OAuth/roles, token encryption and
+Run `npm test` for signup, unsubscribe, OAuth/roles, token encryption and
 rotation, Notion import, publication, subscription suppression, and delivery
-interruption tests. They never call live Notion or Microsoft services. Run
+interruption tests. Storage tests use disposable local SQLite databases through
+the same libSQL SDK, including real transactions and constraints. External
+Notion and Microsoft requests remain mocked; no live emails are sent. Run
 `npm run build` for Astro checks and the Vercel production build. The final
 runtime compatibility step still sets Node.js 22 and a 60-second function limit.
 A real organizer sign-in and a deliberate test email remain deployment checks

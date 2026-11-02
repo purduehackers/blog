@@ -1,4 +1,5 @@
 import { defineMiddleware } from "astro:middleware";
+import { AdminSetupError } from "./lib/admin/config";
 import { AdminError, requireAdmin, requireSameOrigin } from "./lib/admin/auth";
 
 export const onRequest = defineMiddleware(async (context, next) => {
@@ -33,7 +34,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   } catch (error) {
     const status = error instanceof AdminError ? error.status : 503;
     const message =
-      error instanceof AdminError
+      error instanceof AdminError || error instanceof AdminSetupError
         ? error.message
         : "Newsletter administration is unavailable. Check the server configuration and try again.";
     return new Response(JSON.stringify({ message }), {

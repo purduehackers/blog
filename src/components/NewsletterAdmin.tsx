@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import type { ImportedPage } from "../lib/admin/notion";
 import type { progress } from "../lib/admin/campaigns";
 import "../styles/newsletter-admin.css";
+import { imageLayout } from "../lib/admin/image-layout";
+import notionImageStyles from "../styles/notion-images.css?inline";
 
 type Progress = Awaited<ReturnType<typeof progress>>;
 type Summary = Omit<ImportedPage, "html" | "createdBy">;
@@ -17,6 +19,7 @@ export default function NewsletterAdmin() {
   const [url, setUrl] = useState("");
   const [testEmail, setTestEmail] = useState("");
   const [confirmation, setConfirmation] = useState("");
+  const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState("");
@@ -67,6 +70,7 @@ export default function NewsletterAdmin() {
   }
   useEffect(() => {
     mounted.current = true;
+    setReady(true);
     (async () => {
       try {
         const response = await fetch("/api/admin/newsletters");
@@ -131,12 +135,18 @@ export default function NewsletterAdmin() {
       if (mounted.current) setSending(false);
     }
   }
-  const disabled = busy || sending;
+  const disabled = !ready || busy || sending;
   const preview = page
-    ? `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial,sans-serif;color:#241632;background:#faf8fc;margin:0;padding:28px;line-height:1.65;overflow-wrap:anywhere}h1{font-size:32px;line-height:1.2}img{max-width:100%}table{max-width:100%}pre{white-space:pre-wrap}</style></head><body><p style="font-size:12px;color:#6b21a8;letter-spacing:2px">PURDUE HACKERS / NEWSLETTER</p><h1>${page.title.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)}</h1>${page.html}</body></html>`
+    ? `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial,sans-serif;color:#241632;background:#faf8fc;margin:0;padding:28px;line-height:1.65;overflow-wrap:anywhere}h1{font-size:32px;line-height:1.2}img{max-width:100%}table{max-width:100%}pre{white-space:pre-wrap}${notionImageStyles}</style></head><body class="notion-content"><p style="font-size:12px;color:#6b21a8;letter-spacing:2px">PURDUE HACKERS / NEWSLETTER</p><h1>${page.title.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)}</h1>${imageLayout(page.html)}</body></html>`
     : "";
   return (
-    <div className="newsletter-admin">
+    <div className="newsletter-admin" data-ready={ready}>
+      <p className="loading-controls" role="status">
+        Loading newsletter controls… If this message remains, reload the page.
+      </p>
+      <noscript>
+        Enable JavaScript to import, preview, and send newsletters.
+      </noscript>
       <div className="mailbox">
         <span className={`status-dot ${connected ? "connected" : ""}`} />{" "}
         <span>{sender}</span>
@@ -274,7 +284,7 @@ export default function NewsletterAdmin() {
                   {page.publishedAt ? (
                     <a
                       className="text-link"
-                      href={`/newsletter/${page.id}`}
+                      href={`/posts/${page.id}`}
                       target="_blank"
                       rel="noreferrer"
                     >

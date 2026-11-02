@@ -1,4 +1,17 @@
-import { key, locked, read, redis, write } from "./store.ts";
+import {
+  locked,
+  getEdition,
+  insertEdition,
+  getEditions,
+  publishedEdition,
+  getAudience,
+  createAudience,
+  getDeliveries,
+  setDelivery,
+  claimDelivery,
+  resetDelivery,
+} from "./store.ts";
+import type { EditionSummary } from "./store.ts";
 import { emailDocument, escapeHtml, type ImportedPage } from "./notion.ts";
 import { DeliveryError, graphAccessToken, sendEmail } from "./microsoft.ts";
 import { getRecipients } from "./recipients.ts";
@@ -26,62 +39,27 @@ export function validId(id: string): boolean {
 }
 export async function campaign(id: string): Promise<ImportedPage> {
   if (!validId(id)) throw new Error("Invalid edition ID.");
-  const page = await read<ImportedPage>(`edition:${id}`);
+  const page = await getEdition(id);
   if (!page) throw new Error("Edition not found.");
   return page;
 }
 export async function saveDraft(page: ImportedPage): Promise<void> {
-  await redis(
-    "EVAL",
-    "redis.call('SET',KEYS[1],ARGV[1]); redis.call('ZADD',KEYS[2],ARGV[2],ARGV[3]); return 1",
-    2,
-    key(`edition:${page.id}`),
-    key("editions"),
-    JSON.stringify(page),
-    Date.parse(page.createdAt),
-    page.id,
-  );
+  await insertEdition(page);
 }
 export async function listEditions(
   publishedOnly = false,
-): Promise<ImportedPage[]> {
-  const ids = await redis<string[]>(
-    "ZREVRANGE",
-    key(publishedOnly ? "published" : "editions"),
-    0,
-    99,
-  );
-  if (!ids.length) return [];
-  const values = await redis<(string | null)[]>(
-    "MGET",
-    ...ids.map((id) => key(`edition:${id}`)),
-  );
-  return values
-    .filter((value): value is string => value !== null)
-    .map((value) => JSON.parse(value) as ImportedPage)
-    .filter((page) => !publishedOnly || !!page.publishedAt);
+): Promise<EditionSummary[]> {
+  return getEditions(publishedOnly);
 }
 export async function publish(id: string): Promise<ImportedPage> {
   return locked(`edition:${id}`, async () => {
-    const page = await campaign(id);
-    if (!page.publishedAt) {
-      page.publishedAt = new Date().toISOString();
-      await redis(
-        "EVAL",
-        "redis.call('SET',KEYS[1],ARGV[1]); redis.call('ZADD',KEYS[2],ARGV[2],ARGV[3]); return 1",
-        2,
-        key(`edition:${id}`),
-        key("published"),
-        JSON.stringify(page),
-        Date.parse(page.publishedAt),
-        id,
-      );
-    }
-    return page;
+    await campaign(id);
+    await publishedEdition(id);
+    return campaign(id);
   });
 }
 export function messageHtml(page: ImportedPage, email: string): string {
-  const url = `${siteOrigin()}/newsletter/${page.id}`;
+  const url = `${siteOrigin()}/posts/${page.id}`;
   const unsubscribe = `${siteOrigin()}/unsubscribe?email=${encodeURIComponent(email)}`;
   return emailDocument(
     page,
@@ -99,16 +77,9 @@ export async function sendTest(id: string, email: string): Promise<void> {
     messageHtml(page, email),
   );
 }
-async function deliveries(id: string): Promise<Record<string, Delivery>> {
-  const data = await redis<string[]>("HGETALL", key(`delivery:${id}`));
-  const result: Record<string, Delivery> = {};
-  for (let i = 0; i < data.length; i += 2)
-    result[data[i]!] = JSON.parse(data[i + 1]!) as Delivery;
-  return result;
-}
 export async function progress(id: string) {
-  const audience = await read<Audience>(`audience:${id}`);
-  const states = await deliveries(id);
+  const audience = await getAudience(id);
+  const states = await getDeliveries(id);
   const counts = {
     total: audience?.emails.length || 0,
     accepted: 0,
@@ -142,13 +113,10 @@ export async function startDelivery(id: string): Promise<void> {
     const page = await campaign(id);
     if (!page.publishedAt)
       throw new Error("Publish the edition before sending it.");
-    if (await read<Audience>(`audience:${id}`)) return;
+    if (await getAudience(id)) return;
     await graphAccessToken(); // Do not freeze the audience if the sender is not connected.
     const emails = await getRecipients();
-    await write(`audience:${id}`, {
-      emails,
-      startedAt: new Date().toISOString(),
-    } satisfies Audience);
+    await createAudience(id, emails);
   });
 }
 // One recipient per request keeps work inside the serverless deadline. The browser
@@ -156,10 +124,10 @@ export async function startDelivery(id: string): Promise<void> {
 export async function sendNext(id: string): Promise<void> {
   await locked(`edition:${id}`, async () => {
     const page = await campaign(id);
-    const audience = await read<Audience>(`audience:${id}`);
+    const audience = await getAudience(id);
     if (!audience || !page.publishedAt)
       throw new Error("Start delivery from a published edition first.");
-    const states = await deliveries(id);
+    const states = await getDeliveries(id);
     // Unconfirmed or rejected mail needs a human decision before continuing.
     if (
       Object.values(states).some(
@@ -169,29 +137,15 @@ export async function sendNext(id: string): Promise<void> {
       return;
     const email = audience.emails.find((item) => !states[item]);
     if (!email) return;
-    const deliveryKey = key(`delivery:${id}`);
     const at = new Date().toISOString();
     // Recheck current subscriptions immediately before each email. All failures
     // occur before claiming/sending, so unavailable Notion never sends mail.
     if (!(await getRecipients(email)).includes(email)) {
-      await redis(
-        "HSET",
-        deliveryKey,
-        email,
-        JSON.stringify({ status: "skipped", at } satisfies Delivery),
-      );
+      await setDelivery(id, email, { status: "skipped", at });
       return;
     }
     const token = await graphAccessToken();
-    if (
-      (await redis<number>(
-        "HSETNX",
-        deliveryKey,
-        email,
-        JSON.stringify({ status: "pending", at } satisfies Delivery),
-      )) !== 1
-    )
-      return;
+    if (!(await claimDelivery(id, email, at))) return;
     try {
       await sendEmail(token, email, page.title, messageHtml(page, email));
     } catch (error) {
@@ -206,16 +160,11 @@ export async function sendNext(id: string): Promise<void> {
             ? error.message
             : "Delivery could not be confirmed.",
       };
-      await redis("HSET", deliveryKey, email, JSON.stringify(state));
+      await setDelivery(id, email, state);
       return;
     }
     // If this persistence fails, 'pending' survives and automatic retries stop.
-    await redis(
-      "HSET",
-      deliveryKey,
-      email,
-      JSON.stringify({ status: "accepted", at } satisfies Delivery),
-    );
+    await setDelivery(id, email, { status: "accepted", at });
   });
 }
 export async function resolveDelivery(
@@ -225,22 +174,17 @@ export async function resolveDelivery(
 ): Promise<void> {
   await locked(`edition:${id}`, async () => {
     await campaign(id);
-    const states = await deliveries(id);
+    const states = await getDeliveries(id);
     const state = states[email];
     if (!state || ["accepted", "skipped"].includes(state.status))
       throw new Error("This recipient has no delivery issue.");
-    if (action === "retry") await redis("HDEL", key(`delivery:${id}`), email);
+    if (action === "retry") await resetDelivery(id, email);
     else if (action === "skip")
-      await redis(
-        "HSET",
-        key(`delivery:${id}`),
-        email,
-        JSON.stringify({
-          status: "skipped",
-          at: new Date().toISOString(),
-          message: "Reviewed by an organizer; no further send.",
-        } satisfies Delivery),
-      );
+      await setDelivery(id, email, {
+        status: "skipped",
+        at: new Date().toISOString(),
+        message: "Reviewed by an organizer; no further send.",
+      });
     else throw new Error("Choose retry or skip after reviewing Sent Items.");
   });
 }

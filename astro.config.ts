@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import { fileURLToPath } from "node:url";
 
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
@@ -16,6 +17,25 @@ export default defineConfig({
     },
   }),
   integrations: [
+    {
+      name: "separate-development-and-build-caches",
+      hooks: {
+        "astro:config:setup": ({ command, updateConfig }) => {
+          // Builds also prebundle dependencies. Sharing their production React
+          // cache with a running dev server creates incompatible React copies.
+          updateConfig({
+            vite: {
+              cacheDir: fileURLToPath(
+                new URL(
+                  `./node_modules/.vite-astro-${command}/`,
+                  import.meta.url,
+                ),
+              ),
+            },
+          });
+        },
+      },
+    },
     mdx(),
     react(),
     tailwind({
@@ -40,6 +60,7 @@ export default defineConfig({
       external: ["@resvg/resvg-js", "satori", "wawoff2"],
     },
     optimizeDeps: {
+      include: ["react-dom/client"],
       exclude: ["@resvg/resvg-js"],
     },
   },

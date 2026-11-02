@@ -1,25 +1,22 @@
 import type { APIContext } from "astro";
 import { createHash } from "node:crypto";
-import { required, setting, siteOrigin } from "./config.ts";
+import { exchangeIdCode } from "./id-token.ts";
+import { AdminSetupError, required, setting, siteOrigin } from "./config.ts";
 import {
   decrypt,
   digest,
   encrypt,
-  key,
   opaque,
-  read,
-  redis,
-  write,
+  getSession,
+  saveSession,
+  deleteSession,
+  saveOAuthState,
+  consumeOAuthState,
 } from "./store.ts";
 
 const provider = "https://id.purduehackers.com/api/auth/oauth2";
 const sessionCookie = "ph_newsletter_session";
 const flowCookie = "ph_newsletter_oauth";
-interface Session {
-  token: string;
-  sub: string;
-  expires: number;
-}
 export interface Admin {
   sub: string;
   name: string;
@@ -69,7 +66,7 @@ export async function requireAdmin(
   const id = context.cookies.get(sessionCookie)?.value;
   if (!id || !/^[A-Za-z0-9_-]{43}$/.test(id))
     throw new AdminError("Sign in to continue.", 401);
-  const session = await read<Session>(`session:${digest(id)}`);
+  const session = await getSession(digest(id));
   if (!session || session.expires <= Date.now())
     throw new AdminError("Your sign-in expired. Sign in again.", 401);
   // Ask ID on every privileged request, including every send continuation.
@@ -82,14 +79,17 @@ export function requireSameOrigin(request: Request): void {
     throw new AdminError("Submit this action from the admin page.");
 }
 export async function beginLogin(context: APIContext): Promise<Response> {
+  const origin = siteOrigin();
+  const clientId = required("PH_ID_CLIENT_ID");
+  required("PH_ID_CLIENT_SECRET");
   const state = opaque();
   const verifier = opaque();
-  await write(`oauth:${digest(state)}`, { verifier }, 600);
+  await saveOAuthState(digest(state), verifier);
   context.cookies.set(flowCookie, state, { ...cookieOptions(), maxAge: 600 });
   const query = new URLSearchParams({
-    client_id: required("PH_ID_CLIENT_ID"),
+    client_id: clientId,
     response_type: "code",
-    redirect_uri: `${siteOrigin()}/admin/callback`,
+    redirect_uri: `${origin}/admin/callback`,
     scope: "openid profile roles",
     state,
     code_challenge: createHash("sha256").update(verifier).digest("base64url"),
@@ -103,31 +103,49 @@ export async function finishLogin(context: APIContext): Promise<Response> {
   context.cookies.delete(flowCookie, { path: "/" });
   if (!state || !expected || state !== expected)
     throw new AdminError("Invalid sign-in state. Start again.");
-  const flowKey = key(`oauth:${digest(state)}`);
-  const saved = await redis<string | null>("GETDEL", flowKey);
-  if (!saved) throw new AdminError("Sign-in expired. Start again.");
-  const { verifier } = JSON.parse(saved) as { verifier: string };
+  const verifier = await consumeOAuthState(digest(state));
+  if (!verifier) throw new AdminError("Sign-in expired. Start again.");
   const code = context.url.searchParams.get("code");
   if (!code || context.url.searchParams.has("error"))
     throw new AdminError("Sign-in was declined.");
-  const response = await fetch(`${provider}/token`, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      grant_type: "authorization_code",
+  let response: Response;
+  try {
+    response = await exchangeIdCode(
       code,
-      code_verifier: verifier,
-      client_id: required("PH_ID_CLIENT_ID"),
-      client_secret: required("PH_ID_CLIENT_SECRET"),
-      redirect_uri: `${siteOrigin()}/admin/callback`,
-    }),
-    signal: AbortSignal.timeout(8000),
-  });
-  if (!response.ok)
+      verifier,
+      `${siteOrigin()}/admin/callback`,
+    );
+  } catch (error) {
+    if (error instanceof AdminSetupError) throw error;
     throw new AdminError(
-      "Could not complete sign-in. Check the ID application configuration.",
+      "Could not reach the ID token service. Start a new sign-in and try again.",
+      503,
+    );
+  }
+  if (!response.ok) {
+    let reason = "";
+    try {
+      const error = (await response.json()) as { error?: unknown };
+      reason = typeof error.error === "string" ? error.error : "";
+    } catch {
+      /* Only known error codes are safe to show. */
+    }
+    const messages: Record<string, string> = {
+      invalid_client:
+        "ID rejected client authentication. Check PH_ID_CLIENT_ID, PH_ID_CLIENT_SECRET, and PH_ID_TOKEN_AUTH_METHOD (normally client_secret_basic).",
+      invalid_grant:
+        "The ID authorization code expired, was already used, or does not match this callback. Start a new sign-in and ensure the registered redirect exactly matches NEWSLETTER_SITE_URL plus /admin/callback.",
+      invalid_request:
+        "ID rejected the token request. Check the client authentication method and the exact registered callback URL, then start a new sign-in.",
+      unauthorized_client:
+        "The ID application does not allow this sign-in flow. Enable the authorization_code grant for the application.",
+    };
+    throw new AdminError(
+      messages[reason] ||
+        `ID could not complete the token exchange (HTTP ${response.status}). Start a new sign-in and check the application configuration.`,
       401,
     );
+  }
   const token = (await response.json()) as {
     access_token?: string;
     expires_in?: number;
@@ -137,22 +155,18 @@ export async function finishLogin(context: APIContext): Promise<Response> {
   const user = await identity(token.access_token);
   const ttl = Math.min(token.expires_in || 3600, 3600);
   const id = opaque();
-  await write(
-    `session:${digest(id)}`,
-    {
-      token: encrypt(token.access_token),
-      sub: user.sub,
-      expires: Date.now() + ttl * 1000,
-    },
-    ttl,
-  );
+  await saveSession(digest(id), {
+    token: encrypt(token.access_token),
+    sub: user.sub,
+    expires: Date.now() + ttl * 1000,
+  });
   context.cookies.set(sessionCookie, id, { ...cookieOptions(), maxAge: ttl });
   return context.redirect("/admin", 303);
 }
 export async function logout(context: APIContext): Promise<Response> {
   requireSameOrigin(context.request);
   const id = context.cookies.get(sessionCookie)?.value;
-  if (id) await redis("DEL", key(`session:${digest(id)}`));
+  if (id) await deleteSession(digest(id));
   context.cookies.delete(sessionCookie, { path: "/" });
   return context.redirect("/admin", 303);
 }

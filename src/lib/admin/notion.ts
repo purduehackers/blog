@@ -1,7 +1,9 @@
 import { randomUUID } from "node:crypto";
+import sharp from "sharp";
+import { imageLayout } from "./image-layout.ts";
 import { getNewsletterConfig } from "../notion-mailing-list.ts";
 import { siteOrigin } from "./config.ts";
-import { write } from "./store.ts";
+import { saveMedia } from "./store.ts";
 
 export function escapeHtml(value: string): string {
   return value.replace(
@@ -46,6 +48,7 @@ export function notionPageId(value: string): string {
   return match[1]!.replace(/-/g, "").toLowerCase();
 }
 interface RichText {
+  equation?: { expression: string };
   plain_text?: string;
   text?: { content: string; link?: { url: string } | null };
   href?: string | null;
@@ -61,7 +64,10 @@ export function richText(items: RichText[] = []): string {
   return items
     .map((item) => {
       let text = escapeHtml(
-        item.plain_text ?? item.text?.content ?? "",
+        item.plain_text ??
+          item.text?.content ??
+          item.equation?.expression ??
+          "",
       ).replace(/\n/g, "<br>");
       const a = item.annotations;
       if (a?.code) text = `<code>${text}</code>`;
@@ -77,6 +83,7 @@ export function richText(items: RichText[] = []): string {
     .join("");
 }
 interface BlockData {
+  expression?: string;
   rich_text?: RichText[];
   caption?: RichText[];
   cells?: RichText[][];
@@ -131,6 +138,16 @@ export async function importNotionPage(
       },
       signal: AbortSignal.any([deadline, AbortSignal.timeout(8000)]),
     });
+    if (response.status === 404) {
+      throw new Error(
+        "Notion cannot access this edition. In Notion, open the edition page → ••• → Connections and add the same integration used by the mailing list, then retry.",
+      );
+    }
+    if (response.status === 403) {
+      throw new Error(
+        "The Notion integration needs Read content permission and a connection to this edition page.",
+      );
+    }
     if (!response.ok)
       throw new Error(
         `Notion could not read the page (${response.status}). Check its integration connection.`,
@@ -175,14 +192,14 @@ export async function importNotionPage(
         redirect: "error",
         signal: AbortSignal.any([deadline, AbortSignal.timeout(8000)]),
       });
-      const type = response.headers.get("content-type")?.split(";")[0] || "";
+      let type = response.headers.get("content-type")?.split(";")[0] || "";
       if (
         !response.ok ||
         !["image/png", "image/jpeg", "image/gif", "image/webp"].includes(type)
       )
         throw new Error("Use PNG, JPEG, GIF or WebP images in the edition.");
-      if (Number(response.headers.get("content-length") || 0) > 2000000)
-        throw new Error("Each image must be under 2 MB.");
+      if (Number(response.headers.get("content-length") || 0) > 20000000)
+        throw new Error("Each original image must be under 20 MB.");
       const reader = response.body?.getReader();
       if (!reader) throw new Error("Image could not be read.");
       const chunks: Uint8Array[] = [];
@@ -191,19 +208,42 @@ export async function importNotionPage(
         const { done, value } = await reader.read();
         if (done) break;
         size += value.length;
-        if (size > 2000000 || imageBytes + size > 8000000) {
+        if (size > 20000000) {
           await reader.cancel();
-          throw new Error(
-            "Images exceed the import limit (2 MB each, 8 MB per edition).",
-          );
+          throw new Error("Each original image must be under 20 MB.");
         }
         chunks.push(value);
       }
-      imageBytes += size;
+      let body = Buffer.concat(chunks);
+      if (type === "image/gif" && size > 2000000)
+        throw new Error("Animated GIFs must be under 2 MB.");
+      if (size > 200000 && type !== "image/gif") {
+        // Optimize photos throughout the edition, preserving transparency for
+        // illustrations. Small files and animated GIFs keep their original bytes.
+        const source = sharp(body, { limitInputPixels: 40000000 });
+        const metadata = await source.metadata();
+        const resized = source.rotate().resize({
+          width: 1280,
+          height: 2400,
+          fit: "inside",
+          withoutEnlargement: true,
+        });
+        body = await (
+          metadata.hasAlpha
+            ? resized.png({ palette: true, quality: 85 })
+            : resized.jpeg({ quality: 82 })
+        ).toBuffer();
+        type = metadata.hasAlpha ? "image/png" : "image/jpeg";
+      }
+      if (body.length > 2000000 || imageBytes + body.length > 8000000)
+        throw new Error(
+          "Optimized images exceed the import limit (2 MB each, 8 MB per edition).",
+        );
+      imageBytes += body.length;
       const mediaId = randomUUID();
-      await write(`media:${mediaId}`, {
+      await saveMedia(mediaId, {
         type,
-        body: Buffer.concat(chunks).toString("base64"),
+        body: body.toString("base64"),
         campaignId: id,
       } satisfies StoredMedia);
       src = `${siteOrigin()}/api/newsletter-media/${mediaId}`;
@@ -264,6 +304,9 @@ export async function importNotionPage(
       else if (type === "code")
         html += `<pre style="white-space:pre-wrap;background:#f4effa;padding:16px"><code>${content}</code></pre>`;
       else if (type === "divider") html += "<hr>";
+      // Preserve equation source as text: email clients cannot run math scripts.
+      else if (type === "equation")
+        html += `<p style="margin:24px 0;text-align:center;white-space:pre-wrap">${escapeHtml(data.expression || "")}</p>`;
       else if (type === "image") html += await image(data);
       else if (type === "to_do")
         html += `<p>${data.checked ? "☑" : "☐"} ${content}</p>${nested}`;
@@ -314,5 +357,5 @@ export async function importNotionPage(
   };
 }
 export function emailDocument(page: ImportedPage, footer = ""): string {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(page.title)}</title></head><body style="margin:0;background:#faf8fc;color:#241632;font-family:Arial,sans-serif"><main style="max-width:640px;margin:auto;padding:32px 20px"><p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#6b21a8">Purdue Hackers / Newsletter</p><h1 style="font-size:32px;line-height:1.2">${escapeHtml(page.title)}</h1>${page.html}${footer}</main></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(page.title)}</title><style>@media(max-width:600px){.notion-gallery,.notion-gallery tbody,.notion-gallery tr,.notion-gallery-cell{display:block!important;width:100%!important;box-sizing:border-box}.notion-gallery-cell{padding:12px 0!important}}</style></head><body style="margin:0;background:#faf8fc;color:#241632;font-family:Arial,sans-serif"><main style="max-width:640px;margin:auto;padding:32px 20px"><p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#6b21a8">Purdue Hackers / Newsletter</p><h1 style="font-size:32px;line-height:1.2">${escapeHtml(page.title)}</h1>${imageLayout(page.html)}${footer}</main></body></html>`;
 }

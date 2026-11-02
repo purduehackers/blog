@@ -1,14 +1,19 @@
 import { required, sender } from "./config.ts";
-import { decrypt, encrypt, locked, read, write } from "./store.ts";
+import {
+  decrypt,
+  encrypt,
+  locked,
+  getMicrosoftCredential,
+  saveMicrosoftCredential,
+} from "./store.ts";
+import type { MicrosoftCredential } from "./store.ts";
+export type { MicrosoftCredential } from "./store.ts";
 
-export const microsoftScope =
+// Capture consent for mail now and calendar events later. Runtime mail refreshes
+// request only their own scopes, so a legacy grant cannot break newsletter mail.
+export const microsoftMailScope =
   "offline_access https://graph.microsoft.com/Mail.Send https://graph.microsoft.com/User.Read";
-export interface MicrosoftCredential {
-  refresh: string;
-  access: string;
-  expires: number;
-  email: string;
-}
+export const microsoftConsentScope = `${microsoftMailScope} https://graph.microsoft.com/Calendars.ReadWrite`;
 export function microsoftEndpoint(path: string): string {
   return `https://login.microsoftonline.com/${encodeURIComponent(required("MICROSOFT_TENANT_ID"))}/oauth2/v2.0/${path}`;
 }
@@ -42,17 +47,19 @@ export async function seedMicrosoftToken(token: {
 }): Promise<void> {
   const email = await verifyMailbox(token.access_token);
   await locked("microsoft", async () => {
-    await write("microsoft", {
+    await saveMicrosoftCredential({
       refresh: encrypt(token.refresh_token),
       access: encrypt(token.access_token),
-      expires: Date.now() + token.expires_in * 1000 - 60000,
+      // The captured access token includes calendar consent. Redeem a narrower
+      // mail token on first use rather than caching this broad token for sends.
+      expires: 0,
       email,
     } satisfies MicrosoftCredential);
   });
 }
 export async function graphAccessToken(): Promise<string> {
   return locked("microsoft", async () => {
-    const saved = await read<MicrosoftCredential>("microsoft");
+    const saved = await getMicrosoftCredential();
     if (!saved || saved.email !== sender())
       throw new Error(
         "Connect the sender by running the Microsoft token capture script.",
@@ -65,7 +72,7 @@ export async function graphAccessToken(): Promise<string> {
         client_id: required("MICROSOFT_CLIENT_ID"),
         grant_type: "refresh_token",
         refresh_token: decrypt(saved.refresh),
-        scope: microsoftScope,
+        scope: microsoftMailScope,
       }),
       signal: AbortSignal.timeout(8000),
     });
@@ -89,10 +96,10 @@ export async function graphAccessToken(): Promise<string> {
       expires: 0,
       email: saved.email,
     } satisfies MicrosoftCredential;
-    await write("microsoft", rotated);
+    await saveMicrosoftCredential(rotated);
     await verifyMailbox(token.access_token);
     rotated.expires = Date.now() + token.expires_in * 1000 - 60000;
-    await write("microsoft", rotated);
+    await saveMicrosoftCredential(rotated);
     return token.access_token;
   });
 }

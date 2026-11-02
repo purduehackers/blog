@@ -1,21 +1,19 @@
 import rss from "@astrojs/rss";
 import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
+import { loadBlogPosts } from "../lib/blog-posts";
+export const prerender = false;
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
 export const GET: APIRoute = async ({ site }) => {
-  const posts = await getCollection("blog");
+  const { posts: sorted_posts, unavailable } = await loadBlogPosts(true);
+  if (unavailable)
+    return new Response("Recent posts are temporarily unavailable.", {
+      status: 503,
+      headers: { "Cache-Control": "no-store" },
+    });
+  const site_url = new URL("/", site!).href;
 
-  const sorted_posts = posts.sort(
-    (a, b) => Number(b.data.pubDate) - Number(a.data.pubDate),
-  );
-
-  const site_url =
-    process.env.PUBLIC_VERCEL_ENV === "production"
-      ? "https://blog.purduehackers.com/"
-      : "http://localhost:3000/";
-
-  return rss({
+  const response = await rss({
     xmlns: {
       dc: `http://purl.org/dc/elements/1.1/`,
       content: `http://purl.org/rss/1.0/modules/content/`,
@@ -30,7 +28,11 @@ export const GET: APIRoute = async ({ site }) => {
       `<pubDate>${sorted_posts[0]!.data.pubDate.toUTCString()}</pubDate>`,
     items: sorted_posts.map((post) => ({
       ...post.data,
-      link: post.data.externalUrl ?? `/posts/${post.slug}/`,
+      link:
+        post.data.externalUrl ??
+        `/${post.data.type === "vip-newsletter" ? "vip-newsletter" : "posts"}/${post.slug}/`,
     })),
   });
+  response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
+  return response;
 };
