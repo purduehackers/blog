@@ -126,11 +126,13 @@ export async function importNotionPage(
       "Configure NOTION_API_KEY and connect the edition page to the integration.",
     );
   const started = Date.now();
-  const deadline = AbortSignal.timeout(40000);
+  const deadline = AbortSignal.timeout(50000);
   let calls = 0;
   async function notion<T>(path: string): Promise<T> {
-    if (++calls > 60 || Date.now() - started > 35000)
-      throw new Error("This page is too large to import in one request.");
+    if (++calls > 200)
+      throw new Error("This page requires too many Notion requests (200 maximum).");
+    if (Date.now() - started > 45000)
+      throw new Error("Import timed out while reading Notion. Please try again.");
     const response = await fetch(`https://api.notion.com/v1/${path}`, {
       headers: {
         Authorization: `Bearer ${config.apiKey}`,
@@ -251,6 +253,63 @@ export async function importNotionPage(
     const caption = richText(data.caption);
     return `<figure style="margin:24px 0"><img src="${escapeHtml(src)}" alt="${escapeHtml((data.caption || []).map((r) => r.plain_text || r.text?.content || "").join(""))}" style="max-width:100%;height:auto;display:block">${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`;
   }
+  // Read the page before copying media, so slow downloads cannot consume the
+  // time needed for subsequent Notion requests. Bound parallel downloads to
+  // keep memory use and database writes under control.
+  const mediaJobs: (() => Promise<string>)[] = [];
+  function deferMedia(job: () => Promise<string>): string {
+    const index = mediaJobs.push(job) - 1;
+    return `<!--newsletter-media-${id}-${index}-->`;
+  }
+  let videoBytes = 0;
+  async function video(data: BlockData): Promise<string> {
+    const raw = data.type === "file" ? data.file?.url : data.external?.url;
+    let href = safeUrl(raw);
+    if (!href || !href.startsWith("https:"))
+      throw new Error("A video has an invalid HTTPS URL.");
+    if (data.type === "file") {
+      const host = new URL(href).hostname;
+      if (!host.endsWith(".amazonaws.com") && !host.endsWith(".notion-static.com"))
+        throw new Error("Unrecognized Notion video host.");
+      const response = await fetch(href, {
+        redirect: "error",
+        signal: AbortSignal.any([deadline, AbortSignal.timeout(20000)]),
+      });
+      const type = response.headers.get("content-type")?.split(";")[0]?.trim().toLowerCase() || "";
+      if (!response.ok || !["video/mp4", "video/webm", "video/quicktime", "video/ogg"].includes(type))
+        throw new Error("Use MP4, WebM, MOV or Ogg videos in the edition.");
+      const limit = Math.min(20000000, 40000000 - videoBytes);
+      const sizeError = "Videos exceed the import limit (20 MB each, 40 MB per edition). Use a permanent public video link for larger files.";
+      if (Number(response.headers.get("content-length") || 0) > limit) {
+        await response.body?.cancel();
+        throw new Error(sizeError);
+      }
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error("Video could not be read.");
+      const chunks: Uint8Array[] = [];
+      let size = 0;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        size += value.length;
+        if (size > limit) {
+          await reader.cancel();
+          throw new Error(sizeError);
+        }
+        chunks.push(value);
+      }
+      if (!size) throw new Error("Video is empty.");
+      if (videoBytes + size > 40000000) throw new Error(sizeError);
+      videoBytes += size;
+      const mediaId = randomUUID();
+      await saveMedia(mediaId, { type, body: Buffer.concat(chunks).toString("base64"), campaignId: id });
+      href = `${siteOrigin()}/api/newsletter-media/${mediaId}`;
+    }
+    // Email clients do not reliably play embedded video. Keep a permanent link
+    // that opens the browser's player without attaching large files to mail.
+    const caption = richText(data.caption);
+    return `<p style="margin:24px 0"><a href="${escapeHtml(href)}" style="color:#6b21a8;text-decoration:underline">Watch video</a>${caption ? `<br>${caption}` : ""}</p>`;
+  }
   async function children(parent: string, depth = 0): Promise<string> {
     if (depth > 10) throw new Error("The page is nested too deeply.");
     const blocks: Block[] = [];
@@ -307,7 +366,8 @@ export async function importNotionPage(
       // Preserve equation source as text: email clients cannot run math scripts.
       else if (type === "equation")
         html += `<p style="margin:24px 0;text-align:center;white-space:pre-wrap">${escapeHtml(data.expression || "")}</p>`;
-      else if (type === "image") html += await image(data);
+      else if (type === "image") html += deferMedia(() => image(data));
+      else if (type === "video") html += deferMedia(() => video(data));
       else if (type === "to_do")
         html += `<p>${data.checked ? "☑" : "☐"} ${content}</p>${nested}`;
       else if (type === "table")
@@ -323,7 +383,6 @@ export async function importNotionPage(
           "bookmark",
           "link_preview",
           "embed",
-          "video",
           "file",
           "pdf",
           "audio",
@@ -344,7 +403,27 @@ export async function importNotionPage(
     }
     return html + (list ? `</${list}>` : "");
   }
-  const html = await children(notionId);
+  let html = await children(notionId);
+  const renderedMedia: string[] = [];
+  let nextMedia = 0;
+  let mediaFailed = false;
+  const workers = Array.from({ length: Math.min(3, mediaJobs.length) }, async () => {
+    while (!mediaFailed && nextMedia < mediaJobs.length) {
+      const index = nextMedia++;
+      try {
+        renderedMedia[index] = await mediaJobs[index]!();
+      } catch (error) {
+        mediaFailed = true;
+        throw error;
+      }
+    }
+  });
+  const results = await Promise.allSettled(workers);
+  for (const result of results) {
+    if (result.status === "rejected") throw result.reason;
+  }
+  html = html.replace(new RegExp(`<!--newsletter-media-${id}-(\\d+)-->`, "g"),
+    (_, index: string) => renderedMedia[Number(index)]!);
   if (!html || Buffer.byteLength(html) > 180000)
     throw new Error("The edition is empty or too large (180 KB HTML limit).");
   return {
@@ -357,5 +436,19 @@ export async function importNotionPage(
   };
 }
 export function emailDocument(page: ImportedPage, footer = ""): string {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(page.title)}</title><style>@media(max-width:600px){.notion-gallery,.notion-gallery tbody,.notion-gallery tr,.notion-gallery-cell{display:block!important;width:100%!important;box-sizing:border-box}.notion-gallery-cell{padding:12px 0!important}}</style></head><body style="margin:0;background:#faf8fc;color:#241632;font-family:Arial,sans-serif"><main style="max-width:640px;margin:auto;padding:32px 20px"><p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#6b21a8">Purdue Hackers / Newsletter</p><h1 style="font-size:32px;line-height:1.2">${escapeHtml(page.title)}</h1>${imageLayout(page.html)}${footer}</main></body></html>`;
+  // Style at delivery time so saved editions receive the same email formatting.
+  const content = imageLayout(page.html)
+    .replace(/<h([2-4])\b[^>]*>/g, (_, level: string) => {
+      const size = { "2": 32, "3": 26, "4": 22 }[level];
+      return `<h${level} style="margin:32px 0 14px;font-size:${size}px;line-height:1.25;font-weight:700">`;
+    })
+    .replace(/<img\b[^>]*>/g, (img) => {
+      const style = "display:block;width:auto;max-width:100%;height:auto;max-height:320px;margin:0 auto;border:0";
+      // A width attribute also bounds images in clients with limited CSS support.
+      return img.replace(/\s(?:style|width|height)="[^"]*"/g, "")
+        .replace(/>$/, ` width="420" style="${style}">`);
+    })
+    .replace(/<figure\b[^>]*>/g, '<figure style="max-width:420px;margin:20px auto">')
+    .replace(/<figcaption\b[^>]*>/g, '<figcaption style="margin-top:8px;font-size:13px;line-height:1.5;color:#695e72;text-align:center">');
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(page.title)}</title><style>@media(max-width:600px){.notion-gallery,.notion-gallery tbody,.notion-gallery tr,.notion-gallery-cell{display:block!important;width:100%!important;box-sizing:border-box}.notion-gallery-cell{padding:12px 0!important}}</style></head><body style="margin:0;color:#241632;font-family:Arial,sans-serif;font-size:16px;line-height:1.65"><main style="max-width:640px;margin:auto;padding:32px 20px"><p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#6b21a8">Purdue Hackers / Newsletter</p><h1 style="margin:16px 0 28px;font-size:40px;line-height:1.15;font-weight:700">${escapeHtml(page.title)}</h1>${content}${footer}</main></body></html>`;
 }

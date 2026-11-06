@@ -1,0 +1,14 @@
+{
+  "name": "standalone-microsoft-mail-tool",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local Microsoft mail CLI with encrypted reusable account connections",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "mail": "node --env-file-if-exists=.env mail.mjs",
+    "test": "node --test tests/*.test.mjs"
+  }
+}

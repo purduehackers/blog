@@ -1,7 +1,12 @@
+import { trackedLinks } from "./clicks.ts";
+import { signedRatingToken } from "./ratings.ts";
+import sharp from "sharp";
 import {
   locked,
+  getMedia,
   getEdition,
   insertEdition,
+  deleteEdition,
   getEditions,
   publishedEdition,
   getAudience,
@@ -13,7 +18,7 @@ import {
 } from "./store.ts";
 import type { EditionSummary } from "./store.ts";
 import { emailDocument, escapeHtml, type ImportedPage } from "./notion.ts";
-import { DeliveryError, graphAccessToken, sendEmail } from "./microsoft.ts";
+import { DeliveryError, graphAccessToken, sendEmail, type InlineImage } from "./microsoft.ts";
 import { getRecipients } from "./recipients.ts";
 import { siteOrigin } from "./config.ts";
 
@@ -58,23 +63,86 @@ export async function publish(id: string): Promise<ImportedPage> {
     return campaign(id);
   });
 }
+export async function deleteNewsletter(id: string): Promise<void> {
+  await locked(`edition:${id}`, async () => {
+    await campaign(id);
+    await deleteEdition(id);
+  });
+}
 export function messageHtml(page: ImportedPage, email: string): string {
   const url = `${siteOrigin()}/posts/${page.id}`;
   const unsubscribe = `${siteOrigin()}/unsubscribe?email=${encodeURIComponent(email)}`;
+  const ratingLinks = [1, 3, 5].map((score) =>
+    `<div style="margin:8px 0"><a href="${escapeHtml(`${siteOrigin()}/rate?edition=${page.id}&score=${score}&token=${signedRatingToken(page.id, email)}`)}" style="text-decoration:underline">${"🔥".repeat(score)} ${(score === 1 ? "Meh" : score === 3 ? "Solid issue" : "This was gold!")}</a></div>`
+  ).join(" ");
   return emailDocument(
-    page,
-    `<hr style="margin-top:32px"><p style="font-size:13px;line-height:1.6">You subscribed to the Purdue Hackers newsletter.<br><a href="${escapeHtml(url)}">Read on the website</a> · <a href="${escapeHtml(unsubscribe)}">Unsubscribe</a></p>`,
+    { ...page, html: trackedLinks(page.html, page.id, "email") },
+    `<hr style="margin-top:32px"><p>How was this newsletter?</p><div style="margin:16px 0">${ratingLinks}</div><p style="font-size:13px">Click a flame rating to rate this edition.</p><p style="font-size:13px;line-height:1.6">You subscribed to the Purdue Hackers newsletter.<br><a href="${escapeHtml(url)}">Read on the website</a> · <a href="${escapeHtml(unsubscribe)}">Unsubscribe</a></p>`,
   );
+}
+// Read stored bytes rather than asking the recipient to reach the import host
+// (which may be localhost or a protected preview deployment).
+export async function emailContent(page: ImportedPage, email: string) {
+  let html = messageHtml(page, email);
+  const attachments: InlineImage[] = [];
+  const urls = [...html.matchAll(/<img\b[^>]*\bsrc="([^"]*\/api\/newsletter-media\/([a-f\d-]+))"/g)];
+  const included = new Set<string>();
+  for (const [, url, id] of urls) {
+    if (!id || !url || !validId(id)) throw new Error("Invalid newsletter photo ID.");
+    if (!included.has(id)) {
+      const media = await getMedia(id);
+      if (!media || media.campaignId !== page.id)
+        throw new Error("A newsletter photo is missing. Import the edition again.");
+      attachments.push({
+        "@odata.type": "#microsoft.graph.fileAttachment",
+        name: `photo-${id}.${media.type.split("/")[1]}`,
+        contentType: media.type,
+        contentBytes: media.body,
+        contentId: `photo-${id}`,
+        isInline: true,
+      });
+      included.add(id);
+    }
+    html = html.replaceAll(`src="${url}"`, `src="cid:photo-${id}"`);
+  }
+  // Keep the JSON request below Graph's single-request limit. Optimize only
+  // email copies; the website keeps the original stored photos.
+  const payloadBytes = () => Buffer.byteLength(JSON.stringify({ html, attachments }));
+  for (const width of [1000, 800, 600]) {
+    if (payloadBytes() <= 3000000) break;
+    for (const attachment of attachments) {
+      if (attachment.contentType === "image/gif") continue;
+      const original = Buffer.from(attachment.contentBytes, "base64");
+      const source = sharp(original);
+      const metadata = await source.metadata();
+      const resized = source.rotate().resize({
+        width, height: width * 2, fit: "inside", withoutEnlargement: true,
+      });
+      const body = await (metadata.hasAlpha
+        ? resized.png({ palette: true, quality: 65 })
+        : resized.jpeg({ quality: width === 600 ? 60 : 72 })
+      ).toBuffer();
+      if (body.length >= original.length) continue;
+      attachment.contentType = metadata.hasAlpha ? "image/png" : "image/jpeg";
+      attachment.name = `photo-${attachment.contentId}.${metadata.hasAlpha ? "png" : "jpg"}`;
+      attachment.contentBytes = body.toString("base64");
+    }
+  }
+  if (payloadBytes() > 3500000)
+    throw new Error("Email photos are too large to send. Reduce the photos or animated GIFs and try again.");
+  return { html, attachments };
 }
 export async function sendTest(id: string, email: string): Promise<void> {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254)
     throw new Error("Enter a valid test email address.");
   const page = await campaign(id);
+  const content = await emailContent(page, email);
   await sendEmail(
     await graphAccessToken(),
     email,
     `[TEST] ${page.title}`,
-    messageHtml(page, email),
+    content.html,
+    content.attachments,
   );
 }
 export async function progress(id: string) {
@@ -144,10 +212,11 @@ export async function sendNext(id: string): Promise<void> {
       await setDelivery(id, email, { status: "skipped", at });
       return;
     }
+    const content = await emailContent(page, email);
     const token = await graphAccessToken();
     if (!(await claimDelivery(id, email, at))) return;
     try {
-      await sendEmail(token, email, page.title, messageHtml(page, email));
+      await sendEmail(token, email, page.title, content.html, content.attachments);
     } catch (error) {
       const state: Delivery = {
         status:

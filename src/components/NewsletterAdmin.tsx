@@ -1,3 +1,5 @@
+import type { clickSummary } from "../lib/admin/clicks";
+import type { ratingSummary } from "../lib/admin/ratings";
 import { useEffect, useRef, useState } from "react";
 import type { ImportedPage } from "../lib/admin/notion";
 import type { progress } from "../lib/admin/campaigns";
@@ -10,12 +12,16 @@ type Summary = Omit<ImportedPage, "html" | "createdBy">;
 interface Result {
   page: ImportedPage;
   progress: Progress;
+  clicks: Awaited<ReturnType<typeof clickSummary>>;
+  ratings: Awaited<ReturnType<typeof ratingSummary>>;
   message?: string;
 }
 export default function NewsletterAdmin() {
   const [editions, setEditions] = useState<Summary[]>([]);
   const [page, setPage] = useState<ImportedPage>();
   const [delivery, setDelivery] = useState<Progress>();
+  const [clicks, setClicks] = useState<Result["clicks"]>();
+  const [ratings, setRatings] = useState<Result["ratings"]>();
   const [url, setUrl] = useState("");
   const [testEmail, setTestEmail] = useState("");
   const [confirmation, setConfirmation] = useState("");
@@ -46,6 +52,8 @@ export default function NewsletterAdmin() {
   function update(data: Result) {
     setPage(data.page);
     setDelivery(data.progress);
+    setRatings(data.ratings);
+    setClicks(data.clicks);
     setEditions((items) => [
       { ...data.page },
       ...items.filter((p) => p.id !== data.page.id),
@@ -64,6 +72,33 @@ export default function NewsletterAdmin() {
       update(await request(action, extra, id));
     } catch (e) {
       setError(e instanceof Error ? e.message : "The operation failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function deleteCurrent() {
+    if (!page || disabled) return;
+    const id = page.id;
+    if (
+      !window.confirm(
+        `Delete “${page.title}”? This permanently removes the saved edition, public page, media, delivery history, and statistics. The Notion source and emails already sent are unchanged.`,
+      )
+    )
+      return;
+    setBusy(true);
+    setMessage("");
+    setError("");
+    try {
+      await request("delete", { confirmation: "DELETE" }, id);
+      setEditions((items) => items.filter((item) => item.id !== id));
+      setPage(undefined);
+      setDelivery(undefined);
+      setClicks(undefined);
+      setRatings(undefined);
+      setConfirmation("");
+      setMessage("Newsletter deleted.");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not delete newsletter.");
     } finally {
       setBusy(false);
     }
@@ -186,10 +221,12 @@ export default function NewsletterAdmin() {
               maxLength={2048}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="Paste an edition page link"
+              type="url"
+              placeholder="https://www.notion.so/…"
+              aria-describedby="notion-import-hint"
               disabled={disabled}
             />
-            <p className="hint">
+            <p className="hint" id="notion-import-hint">
               Connect the page to the blog’s Notion integration first. Import
               creates a saved draft.
             </p>
@@ -204,6 +241,7 @@ export default function NewsletterAdmin() {
                   key={item.id}
                   className={`edition-choice ${page?.id === item.id ? "selected" : ""}`}
                   disabled={disabled}
+                  aria-pressed={page?.id === item.id}
                   onClick={() => {
                     setConfirmation("");
                     void run("load", {}, item.id);
@@ -223,7 +261,11 @@ export default function NewsletterAdmin() {
             )}
           </div>
         </section>
-        <section aria-labelledby="preview-title" className="edition-detail">
+        <section
+          aria-labelledby="preview-title"
+          className="edition-detail"
+          aria-busy={busy || sending}
+        >
           {page ? (
             <>
               <div className="preview-heading">
@@ -426,16 +468,166 @@ export default function NewsletterAdmin() {
                   )}
                 </div>
               </section>
+              {clicks && (
+                <section
+                  className="admin-step click-stats"
+                  aria-labelledby="click-stats-title"
+                >
+                  <div className="step-label" aria-hidden="true">
+                    ↗
+                  </div>
+                  <div className="click-stats-content">
+                    <div className="click-stats-heading">
+                      <div>
+                        <h3 id="click-stats-title">Link clicks</h3>
+                        <p>See where readers follow your links.</p>
+                      </div>
+                      <button
+                        disabled={disabled}
+                        onClick={() => void run("load")}
+                      >
+                        Refresh stats
+                      </button>
+                    </div>
+                    <div
+                      className="click-table-scroll"
+                      role="region"
+                      aria-label="Link click statistics"
+                      tabIndex={0}
+                    >
+                      <table className="click-table">
+                        <caption className="sr-only">
+                          Unique browsers and total clicks by source. Combined
+                          counts each browser once across web and email.
+                        </caption>
+                        <colgroup>
+                          <col className="click-link-column" />
+                          <col />
+                          <col />
+                          <col className="click-combined-column" />
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Web</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Combined</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[
+                            { url: "All links", counts: clicks.totals },
+                            ...clicks.links,
+                          ].map((link, index) => (
+                            <tr
+                              key={link.url}
+                              className={
+                                index === 0 ? "click-total-row" : undefined
+                              }
+                            >
+                              <th scope="row">
+                                {index === 0 ? (
+                                  "All links"
+                                ) : (
+                                  <span className="click-destination">
+                                    {link.url}
+                                  </span>
+                                )}
+                              </th>
+                              {["web", "email", "combined"].map((source) => (
+                                <td key={source}>
+                                  <span className="click-browser-count">
+                                    {(
+                                      link.counts[source]?.visitors || 0
+                                    ).toLocaleString()}{" "}
+                                    <span>browsers</span>
+                                  </span>
+                                  <span className="click-event-count">
+                                    {(
+                                      link.counts[source]?.clicks || 0
+                                    ).toLocaleString()}{" "}
+                                    clicks
+                                  </span>
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    {clicks.links.length === 0 && (
+                      <div className="click-empty">
+                        <strong>No link clicks yet</strong>
+                        <p>
+                          {page.publishedAt
+                            ? "Clicks will appear here as readers open links in this edition on the web or in email."
+                            : "Publish this edition to start collecting clicks from the web and email."}
+                        </p>
+                      </div>
+                    )}
+                    <p className="click-stats-note">
+                      Combined counts each browser once across web and email.
+                      Repeat visits add to clicks.
+                    </p>
+                    <details className="click-stats-details">
+                      <summary>How clicks are counted</summary>
+                      <p>
+                        Unique browsers estimate readership, not individual
+                        people. Known bots and previews are excluded, but email
+                        security scanners, multiple devices, and cleared cookies
+                        can affect counts. Use Refresh stats to see the latest
+                        activity.
+                      </p>
+                    </details>
+                  </div>
+                </section>
+              )}
+              {ratings && (
+                <section className="admin-step" aria-label="Newsletter ratings">
+                  <div className="step-label">🔥</div>
+                  <div>
+                    <h3>Reader ratings</h3>
+                    <p>
+                      {ratings.total} ratings ·{" "}
+                      {ratings.average === null
+                        ? "No ratings yet"
+                        : `${ratings.average.toFixed(1)} / 5 average flames`}
+                    </p>
+                    <p>
+                      🔥 {ratings.one} · 🔥🔥🔥 {ratings.three} · 🔥🔥🔥🔥🔥{" "}
+                      {ratings.five}
+                    </p>
+                  </div>
+                </section>
+              )}
+              <section className="edition-danger" aria-label="Delete edition">
+                <div>
+                  <h3>Delete this edition</h3>
+                  <p>
+                    Remove its public page, delivery history, and statistics.
+                  </p>
+                </div>
+                <button
+                  className="danger-button"
+                  disabled={disabled}
+                  onClick={() => void deleteCurrent()}
+                >
+                  Delete newsletter
+                </button>
+              </section>
             </>
           ) : (
             <div className="preview-empty">
-              <p className="eyebrow">Your next dispatch</p>
               <h2 id="preview-title">From Notion to inbox.</h2>
               <p>
                 Import an edition to preview it here, send a test, and share it
                 with the collective.
               </p>
-              <span aria-hidden="true">↖</span>
+              <ol className="empty-workflow" aria-label="Newsletter workflow">
+                <li>Import from Notion</li>
+                <li>Preview and send a test</li>
+                <li>Publish and send</li>
+              </ol>
             </div>
           )}
         </section>

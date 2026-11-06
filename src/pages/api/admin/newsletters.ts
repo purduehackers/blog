@@ -1,7 +1,10 @@
+import { clickSummary } from "../../../lib/admin/clicks";
+import { ratingSummary } from "../../../lib/admin/ratings";
 import type { APIRoute } from "astro";
 import { AdminError } from "../../../lib/admin/auth";
 import {
   campaign,
+  deleteNewsletter,
   listEditions,
   progress,
   publish,
@@ -59,6 +62,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
       id = page.id;
     } else {
       await campaign(id);
+      if (action === "delete") {
+        if (field("confirmation") !== "DELETE")
+          return json({ message: "Confirm newsletter deletion." }, 400);
+        await deleteNewsletter(id);
+        return json({ deletedId: id, message: "Newsletter deleted." });
+      }
       if (action === "publish") await publish(id);
       else if (action === "test")
         await sendTest(id, field("email").trim().toLowerCase());
@@ -83,6 +92,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return json({
       page: await campaign(id),
       progress: await progress(id),
+      ratings: await ratingSummary(id),
+      clicks: await clickSummary(id),
       message:
         action === "test"
           ? "Microsoft accepted the test email. Check your inbox."

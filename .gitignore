@@ -37,3 +37,6 @@ src/content/blog/remixing.mdx
 # Optional local newsletter SQLite database and journal files
 /newsletter.local.db*
 .env*.local
+
+# Encrypted personal mailbox connections (separate from newsletter storage).
+/.mail-accounts/

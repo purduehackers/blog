@@ -21,9 +21,9 @@ const admin = Astro.locals.admin;
       <header>
         <div>
           <a class="back" href="/">&lt;&lt; Blog</a><p class="eyebrow">
-            Purdue Hackers / Organizers
+            For Purdue Hackers organizers
           </p><h1>Newsletter desk</h1><p class="intro">
-            A dispatch for the collective.
+            Preview, publish, and send a dispatch to the collective.
           </p>
         </div>{
           admin && (
@@ -66,7 +66,7 @@ const admin = Astro.locals.admin;
   .admin-shell {
     max-width: 1200px;
     margin: auto;
-    padding: 88px 28px 80px;
+    padding: 64px 28px 80px;
   }
   header {
     display: flex;
@@ -80,10 +80,8 @@ const admin = Astro.locals.admin;
     text-decoration: underline;
   }
   .eyebrow {
-    font-family: PixelHackers, monospace;
-    font-size: 12px;
+    font-size: 13px;
     color: #9333ea;
-    text-transform: uppercase;
     margin-top: 40px;
   }
   h1 {
@@ -93,7 +91,9 @@ const admin = Astro.locals.admin;
     margin: 16px 0;
   }
   .intro {
-    opacity: 0.6;
+    opacity: 0.75;
+    max-width: 48ch;
+    line-height: 1.6;
   }
   .account {
     display: flex;
@@ -103,7 +103,13 @@ const admin = Astro.locals.admin;
   }
   .account button {
     text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 10px 0;
     cursor: pointer;
+  }
+  .admin-shell :is(a, button):focus-visible {
+    outline: 2px solid #9333ea;
+    outline-offset: 4px;
   }
   .sign-in {
     border-top: 1px solid #a78bfa55;

@@ -28,6 +28,7 @@ import {
   digest,
   getMicrosoftCredential,
   getMedia,
+  saveMedia,
   saveSession,
   getEdition,
   getAudience,
@@ -39,7 +40,9 @@ import {
 } from "../src/lib/admin/store.ts";
 import {
   campaign,
+  deleteNewsletter,
   messageHtml,
+  emailContent,
   progress,
   publish,
   saveDraft,
@@ -169,7 +172,7 @@ async function harness(t: TestContext) {
       calls.push({ url, ...(init ? { init } : {}) });
       if (url.startsWith("https://files.notion-static.com/"))
         return new Response(Buffer.from(imageBody), {
-          headers: { "Content-Type": "image/png" },
+          headers: { "Content-Type": url.includes(".mp4") ? "video/mp4" : "image/png" },
         });
       if (url.includes("/oauth2/userinfo"))
         return Response.json({ sub: "user1", name: "Hacker", roles });
@@ -897,4 +900,157 @@ test("Notion access errors explain how to connect an edition instead of looking 
     /Read content permission/,
   );
   assert.equal(h.sends().length, 0);
+});
+
+
+test("email embeds stored photos from localhost, deduplicates them and rejects missing media", async (t) => {
+  await harness(t);
+  const mediaId = "6c7069f8-9d03-42b4-b75d-bb8f01fd1424";
+  await saveMedia(mediaId, { campaignId: id, type: "image/png", body: "AQIDBA==" });
+  const src = `http://localhost:3000/api/newsletter-media/${mediaId}`;
+  const edition = { ...page, html: `<img src="${src}"><img src="${src}"><img src="https://example.com/photo.png">` };
+  const content = await emailContent(edition, "reader@example.com");
+  assert.equal(content.attachments.length, 1);
+  assert.equal(content.attachments[0]!.contentBytes, "AQIDBA==");
+  assert.equal(content.attachments[0]!.isInline, true);
+  assert.equal((content.html.match(/src="cid:/g) || []).length, 2);
+  assert.match(content.html, /src="https:\/\/example.com\/photo.png"/);
+  assert.ok(!content.html.includes('src="http://localhost'));
+  await assert.rejects(emailContent({ ...edition, id: "other" }, "reader@example.com"), /missing/);
+  await assert.rejects(emailContent({ ...page, html: '<img src="https://old.example/api/newsletter-media/bc7069f8-9d03-42b4-b75d-bb8f01fd1424">' }, "reader@example.com"), /missing/);
+});
+
+test("large editions compress email copies to fit without changing stored photos", async (t) => {
+  await harness(t);
+  const bytes = await sharp(randomBytes(700 * 700 * 3), {
+    raw: { width: 700, height: 700, channels: 3 },
+  }).png().toBuffer();
+  const sources: string[] = [];
+  for (let i = 0; i < 3; i++) {
+    const mediaId = `6c7069f8-9d03-42b4-b75d-bb8f01fd142${i}`;
+    await saveMedia(mediaId, { campaignId: id, type: "image/png", body: bytes.toString("base64") });
+    sources.push(`<img src="http://localhost:3000/api/newsletter-media/${mediaId}">`);
+  }
+  const content = await emailContent({ ...page, html: sources.join("") }, "reader@example.com");
+  assert.equal(content.attachments.length, 3);
+  assert.ok(Buffer.byteLength(JSON.stringify(content)) < 3000000);
+  assert.equal(content.attachments[0]!.contentType, "image/jpeg");
+  const stored = await getMedia("6c7069f8-9d03-42b4-b75d-bb8f01fd1420");
+  assert.equal(stored!.body, bytes.toString("base64"));
+});
+
+
+test("Notion videos are stored permanently and linked in email without attachments", async (t) => {
+  const h = await harness(t);
+  h.blocks([{
+    id: "video1", type: "video", has_children: false,
+    video: { type: "file", file: { url: "https://files.notion-static.com/demo.mp4?expires=soon" }, caption: [{ plain_text: "Demo <clip>" }] },
+  }]);
+  const imported = await importNotionPage(page.notionId, "organizer");
+  assert.ok(!imported.html.includes("expires=soon"));
+  assert.match(imported.html, /Watch video/);
+  assert.match(imported.html, /Demo &lt;clip&gt;/);
+  const mediaId = imported.html.match(/newsletter-media\/([a-f\d-]+)/)![1]!;
+  const media = await getMedia(mediaId);
+  assert.equal(media!.campaignId, imported.id);
+  assert.equal(media!.type, "video/mp4");
+  assert.equal(Buffer.from(media!.body, "base64").length, 4);
+  const email = await emailContent(imported, "reader@example.com");
+  assert.match(email.html, /Watch video/);
+  assert.equal(email.attachments.length, 0);
+});
+
+test("external videos keep their links and hosted videos validate hosts and types", async (t) => {
+  const h = await harness(t);
+  const block = (video: unknown) => [{ id: "v", type: "video", has_children: false, video }];
+  h.blocks(block({ type: "external", external: { url: "https://youtube.com/watch?v=demo" } }));
+  assert.match((await importNotionPage(page.notionId, "organizer")).html, /https:\/\/youtube.com\/watch/);
+  for (const [url, error] of [
+    ["https://untrusted.example/demo.mp4", /Unrecognized Notion video host/],
+    ["https://files.notion-static.com/demo.png", /Use MP4/],
+    ["javascript:alert(1)", /invalid HTTPS URL/],
+  ] as const) {
+    h.blocks(block({ type: "file", file: { url } }));
+    await assert.rejects(importNotionPage(page.notionId, "organizer"), error);
+  }
+  assert.ok(!h.calls.some((call) => call.url.includes("untrusted.example")));
+});
+
+test("video limits reject both declared and streamed oversized files", async (t) => {
+  const h = await harness(t);
+  h.blocks([{ id: "v", type: "video", has_children: false, video: {
+    type: "file", file: { url: "https://files.notion-static.com/large.mp4" },
+  } }]);
+  const originalFetch = globalThis.fetch;
+  let declared = true;
+  t.mock.method(globalThis, "fetch", async (input: string | URL | Request, init?: RequestInit) => {
+    if (String(input).includes("large.mp4")) return new Response(
+      declared ? new Uint8Array([1]) : new Uint8Array(20000001),
+      { headers: { "Content-Type": "video/mp4", ...(declared ? { "Content-Length": "20000001" } : {}) } },
+    );
+    return originalFetch(input, init);
+  });
+  await assert.rejects(importNotionPage(page.notionId, "organizer"), /20 MB each/);
+  declared = false;
+  await assert.rejects(importNotionPage(page.notionId, "organizer"), /20 MB each/);
+});
+
+test("media downloads run three at a time and retain Notion order", async (t) => {
+  const h = await harness(t);
+  h.blocks(Array.from({ length: 7 }, (_, i) => ({
+    id: `v${i}`, type: "video", has_children: false,
+    video: { type: "file", file: { url: `https://files.notion-static.com/${i}.mp4` }, caption: [{ plain_text: `Clip ${i}` }] },
+  })));
+  const originalFetch = globalThis.fetch;
+  let active = 0;
+  let peak = 0;
+  t.mock.method(globalThis, "fetch", async (input: string | URL | Request, init?: RequestInit) => {
+    if (String(input).includes(".mp4")) {
+      peak = Math.max(peak, ++active);
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      active--;
+    }
+    return originalFetch(input, init);
+  });
+  const imported = await importNotionPage(page.notionId, "organizer");
+  assert.equal(peak, 3);
+  assert.deepEqual([...imported.html.matchAll(/Clip (\d)/g)].map((m) => m[1]), ["0", "1", "2", "3", "4", "5", "6"]);
+  assert.ok(!imported.html.includes("<!--newsletter-media-"));
+});
+
+
+test("deleting a published newsletter removes its related data and preserves other editions", async (t) => {
+  const h = await harness(t);
+  await h.ready();
+  const otherId = "6c7069f8-9d03-42b4-b75d-bb8f01fd1424";
+  await saveDraft({ ...page, id: otherId });
+  await saveMedia(id, { campaignId: id, type: "image/png", body: "AQIDBA==" });
+  await saveMedia(otherId, { campaignId: otherId, type: "image/png", body: "AQIDBA==" });
+  await sql({ sql: "INSERT INTO newsletter_ratings VALUES (?,?,?,?)", args: [id, "reader", 5, "now"] });
+  await sql({ sql: "INSERT INTO newsletter_clicks VALUES (?,?,?,?,?)", args: [id, "web", "https://example.com", "reader", "now"] });
+  await deleteNewsletter(id);
+  closeDatabase();
+  assert.equal(await getEdition(id), null);
+  assert.equal(await getMedia(id), null);
+  assert.equal(await getAudience(id), null);
+  for (const table of ["newsletter_recipients", "newsletter_clicks", "newsletter_ratings"]) {
+    assert.equal((await sql(`SELECT COUNT(*) AS count FROM ${table}`)).rows[0]!.count, 0);
+  }
+  assert.equal((await campaign(otherId)).title, page.title);
+  assert.ok(await getMedia(otherId));
+  assert.ok(await getMicrosoftCredential());
+  await assert.rejects(deleteNewsletter(id), /not found/);
+  await assert.rejects(sendNext(id), /not found/);
+  assert.equal(h.sends().length, 0);
+});
+
+test("newsletter deletion cannot race an active delivery operation", async (t) => {
+  const h = await harness(t);
+  await h.ready();
+  await locked(`edition:${id}`, async () => {
+    await assert.rejects(deleteNewsletter(id), /Another operation/);
+    assert.ok(await getEdition(id));
+  });
+  await deleteNewsletter(id);
+  assert.equal(await getEdition(id), null);
 });

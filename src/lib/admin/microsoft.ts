@@ -110,11 +110,20 @@ export class DeliveryError extends Error {
     this.uncertain = uncertain;
   }
 }
+export interface InlineImage {
+  "@odata.type": "#microsoft.graph.fileAttachment";
+  name: string;
+  contentType: string;
+  contentBytes: string;
+  contentId: string;
+  isInline: true;
+}
 export async function sendEmail(
   accessToken: string,
   to: string,
   subject: string,
   html: string,
+  attachments: InlineImage[] = [],
 ): Promise<void> {
   let response: Response;
   try {
@@ -127,6 +136,7 @@ export async function sendEmail(
       body: JSON.stringify({
         message: {
           subject,
+          ...(attachments.length ? { attachments } : {}),
           body: { contentType: "HTML", content: html },
           toRecipients: [{ emailAddress: { address: to } }],
         },

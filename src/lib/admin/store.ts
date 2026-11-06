@@ -193,6 +193,19 @@ export async function insertEdition(page: ImportedPage): Promise<void> {
     ],
   });
 }
+export async function deleteEdition(id: string): Promise<void> {
+  await batch(
+    [
+      ...["newsletter_recipients", "newsletter_audiences", "newsletter_clicks", "newsletter_ratings"].map((table) => ({
+        sql: `DELETE FROM ${table} WHERE edition_id=?`,
+        args: [id],
+      })),
+      { sql: "DELETE FROM newsletter_media WHERE campaign_id=?", args: [id] },
+      { sql: "DELETE FROM newsletter_editions WHERE id=?", args: [id] },
+    ],
+    "write",
+  );
+}
 export async function publishedEdition(id: string): Promise<void> {
   await sql({
     sql: "UPDATE newsletter_editions SET published_at=COALESCE(published_at,?) WHERE id=?",

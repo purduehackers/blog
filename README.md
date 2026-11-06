@@ -205,6 +205,27 @@ delivery. Purdue/Exchange sending limits and tenant anti-spam policies still
 apply; this is suitable for the club's mailing workflow, not an unlimited bulk
 mailer.
 
+### Send a basic test email without the admin page
+
+For reusable personal mail connections, including reading and searching mail,
+see [MAIL_TOOL.md](MAIL_TOOL.md). Run `npm run mail -- --help` for commands.
+
+Use the saved mailbox connection to send one plain-text email:
+
+```sh
+npm run newsletter:test-email -- --from phackers@purdue.edu --to you@purdue.edu --subject "Test email" --body "Hello from Purdue Hackers!"
+```
+
+To test another Purdue mailbox, add `--login` and set `--from` to that mailbox.
+Follow the displayed Microsoft sign-in instructions. This separate login keeps
+credentials in memory and does not replace the saved newsletter connection.
+Purdue policies and application access restrictions still apply. The sender must
+match the signed-in mailbox; this script does not support shared mailboxes or
+arbitrary From addresses. It sends immediately to exactly one recipient, saves
+a copy in Sent Items, and does not access subscribers or publish an edition.
+HTTP 202 means accepted for processing, not confirmed delivery. Check Sent Items
+before retrying an uncertain result. Run with `--help` to view all options.
+
 ### 3. Import, review, publish, and send
 
 1. Give the Notion integration **Read content** access and connect the edition
@@ -255,7 +276,10 @@ Captions stay with each image; standalone images use the blog's image sizing.
 The same gallery grouping applies to existing snapshots, admin previews, and
 email HTML. Email galleries use presentation tables with a mobile stacking rule;
 website images use the existing click-to-enlarge lightbox.
-Embeds, bookmarks, videos, and external files become links. Unsupported
+Notion-hosted videos (MP4, WebM, MOV, Ogg) are copied to permanent site URLs
+and become “Watch video” links with their captions. Videos are limited to 20 MB
+each and 40 MB per edition; use a permanent public link for larger videos.
+External videos, embeds, bookmarks, and external files become links. Unsupported
 blocks and expiring file attachments fail the import with an actionable message
 instead of silently dropping content. Convert them to text, an image, or a
 permanent public link first.
@@ -288,3 +312,9 @@ Notion and Microsoft requests remain mocked; no live emails are sent. Run
 runtime compatibility step still sets Node.js 22 and a 60-second function limit.
 A real organizer sign-in and a deliberate test email remain deployment checks
 once the app registrations and storage are configured.
+
+### Newsletter link statistics
+
+Edition content links are automatically signed and rewritten for the website and newly sent emails. In the admin page, load an edition to see per-link and edition-wide unique browsers and total clicks for web, email, and both combined. Reload the edition to refresh statistics. Combined unique counts deduplicate the same browser across sources and links; cookies blocked or cleared, different devices, and email security scanners can affect these estimates. No recipient email or IP address is stored in click records. Draft/test editions do not record clicks until published. Previously sent emails cannot be retroactively tracked.
+
+Run `npm run newsletter:setup` against each deployment's database before deploying this feature to add the click tables without changing existing data. Keep `NEWSLETTER_ENCRYPTION_KEY` stable so existing tracked links remain valid.
