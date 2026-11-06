@@ -4,7 +4,7 @@ import { ExternalLinkIcon } from "astro-feather";
 import { parseMarkdownLink } from "lib/utils";
 
 interface Props {
-  post: CollectionEntry<"blog">;
+  post: { slug: string; data: CollectionEntry<"blog">["data"] };
   type: "blog" | "vipNewsletter";
 }
 
@@ -15,7 +15,9 @@ const isExternal = !!data.externalUrl;
 const href = isExternal
   ? data.externalUrl!
   : `/${type === "blog" ? "posts" : "vip-newsletter"}/${post.slug}`;
-const externalHostname = isExternal ? new URL(data.externalUrl!).hostname : null;
+const externalHostname = isExternal
+  ? new URL(data.externalUrl!).hostname
+  : null;
 
 const month = data.pubDate
   .toLocaleDateString("en-us", { month: "short", timeZone: "UTC" })
@@ -30,9 +32,13 @@ const dayYear = `${data.pubDate.getUTCDate()}, ${data.pubDate.getUTCFullYear()}`
   class="flex flex-row gap-4 sm:gap-5 p-4 sm:p-5 rounded-sm border border-black dark:border-white/30 bg-white dark:bg-gray-800 no-underline text-black dark:text-gray-100"
 >
   <div class="shrink-0 flex flex-col">
-    <div class="w-16 sm:w-20 bg-black dark:bg-yellow text-white dark:text-black rounded-sm font-pixel uppercase flex flex-col items-center justify-center px-2 py-1.5 leading-none overflow-hidden">
+    <div
+      class="w-16 sm:w-20 bg-black dark:bg-yellow text-white dark:text-black rounded-sm font-pixel uppercase flex flex-col items-center justify-center px-2 py-1.5 leading-none overflow-hidden"
+    >
       <span class="text-2xl sm:text-3xl tracking-tight">{month}</span>
-      <span class="mt-1 text-[10px] sm:text-[11px] tracking-wide whitespace-nowrap">
+      <span
+        class="mt-1 text-[10px] sm:text-[11px] tracking-wide whitespace-nowrap"
+      >
         {dayYear}
       </span>
     </div>
@@ -45,7 +51,9 @@ const dayYear = `${data.pubDate.getUTCDate()}, ${data.pubDate.getUTCFullYear()}`
     }
   </div>
   <div class="flex-1 min-w-0 flex flex-col gap-2">
-    <h2 class="font-pixel uppercase text-2xl sm:text-3xl leading-[1.05] flex items-start gap-2">
+    <h2
+      class="font-pixel uppercase text-2xl sm:text-3xl leading-[1.05] flex items-start gap-2"
+    >
       <span>{data.title}</span>
       {
         isExternal && (

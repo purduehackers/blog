@@ -22,6 +22,8 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.env.*
+!.env.example
 
 # macOS-specific files
 .DS_Store
@@ -31,3 +33,10 @@ pnpm-debug.log*
 .vercel
 
 src/content/blog/remixing.mdx
+
+# Optional local newsletter SQLite database and journal files
+/newsletter.local.db*
+.env*.local
+
+# Encrypted personal mailbox connections (separate from newsletter storage).
+/.mail-accounts/

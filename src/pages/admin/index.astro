@@ -1,0 +1,146 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import Nav from "../../components/Nav.astro";
+import NewsletterAdmin from "../../components/NewsletterAdmin";
+import { setting } from "../../lib/admin/config";
+export const prerender = false;
+const admin = Astro.locals.admin;
+---
+
+<!doctype html>
+<html lang="en">
+  <head
+    ><BaseHead
+      title="Newsletter admin | Purdue Hackers"
+      description="Publish and send the Purdue Hackers newsletter."
+    /><meta name="robots" content="noindex,nofollow" /></head
+  >
+  <body>
+    <Nav />
+    <main class="admin-shell">
+      <header>
+        <div>
+          <a class="back" href="/">&lt;&lt; Blog</a><p class="eyebrow">
+            For Purdue Hackers organizers
+          </p><h1>Newsletter desk</h1><p class="intro">
+            Preview, publish, and send a dispatch to the collective.
+          </p>
+        </div>{
+          admin && (
+            <div class="account">
+              <>
+                <span>{admin.name}</span>
+                <form method="post" action="/admin/logout">
+                  <button>Sign out</button>
+                </form>
+              </>
+            </div>
+          )
+        }
+      </header>
+      {
+        admin ? (
+          <NewsletterAdmin client:load />
+        ) : (
+          <section class="sign-in">
+            <p>
+              Use your Purdue Hackers ID with the{" "}
+              <strong>{setting("PH_ID_REQUIRED_ROLE", "organizer")}</strong>{" "}
+              role.
+            </p>
+            {Astro.locals.adminError && (
+              <p class="auth-message" role="status">
+                {Astro.locals.adminError}
+              </p>
+            )}
+            <a class="sign-in-button" href="/admin/login">
+              Continue with Purdue Hackers ID ↗
+            </a>
+          </section>
+        )
+      }
+    </main>
+  </body>
+</html>
+<style>
+  .admin-shell {
+    max-width: 1200px;
+    margin: auto;
+    padding: 64px 28px 80px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding-bottom: 40px;
+  }
+  .back {
+    font-size: 13px;
+    text-decoration: underline;
+  }
+  .eyebrow {
+    font-size: 13px;
+    color: #9333ea;
+    margin-top: 40px;
+  }
+  h1 {
+    font-family: PixelHackers, monospace;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.1;
+    margin: 16px 0;
+  }
+  .intro {
+    opacity: 0.75;
+    max-width: 48ch;
+    line-height: 1.6;
+  }
+  .account {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+  }
+  .account button {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 10px 0;
+    cursor: pointer;
+  }
+  .admin-shell :is(a, button):focus-visible {
+    outline: 2px solid #9333ea;
+    outline-offset: 4px;
+  }
+  .sign-in {
+    border-top: 1px solid #a78bfa55;
+    padding-top: 40px;
+    max-width: 640px;
+  }
+  h2 {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+  .sign-in p {
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .auth-message {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+  .sign-in-button {
+    display: inline-block;
+    padding: 14px 20px;
+    background: #6b21a8;
+    color: #faf8fc;
+    border-radius: 3px;
+  }
+  @media (max-width: 600px) {
+    header {
+      flex-direction: column;
+    }
+    .admin-shell {
+      padding: 72px 20px 48px;
+    }
+  }
+</style>

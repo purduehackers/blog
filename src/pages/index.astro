@@ -1,5 +1,6 @@
 ---
-import { getCollection } from "astro:content";
+import { loadBlogPosts } from "../lib/blog-posts";
+export const prerender = false;
 
 import BaseHead from "components/BaseHead.astro";
 import Footer from "components/Footer.astro";
@@ -8,9 +9,10 @@ import PostCard from "components/PostCard.astro";
 
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
-const coll = await getCollection("blog", ({ data }) => data.type === "blog");
-const posts = coll.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+const { posts, unavailable } = await loadBlogPosts();
+Astro.response.headers.set(
+  "Cache-Control",
+  unavailable ? "no-store" : "public, max-age=60, s-maxage=60",
 );
 ---
 
@@ -33,18 +35,37 @@ const posts = coll.sort(
         <div
           class="relative z-10 text-center px-4 pt-24 pb-16 sm:pt-32 sm:pb-24 flex flex-col gap-y-5 items-center"
         >
-          <h1 class="font-pixel uppercase text-5xl sm:text-7xl md:text-8xl leading-[1.05] dark:text-yellow">
-            Purdue Hackers <span class="text-amber-500 dark:text-purple-400">Blog</span>
+          <h1
+            class="font-pixel uppercase text-5xl sm:text-7xl md:text-8xl leading-[1.05] dark:text-yellow"
+          >
+            Purdue Hackers <span class="text-amber-500 dark:text-purple-400"
+              >Blog</span
+            >
           </h1>
-          <p class="font-mono text-sm sm:text-base md:text-lg text-black/70 dark:text-white/70 max-w-xl">
+          <p
+            class="font-mono text-sm sm:text-base md:text-lg text-black/70 dark:text-white/70 max-w-xl"
+          >
             <span class="font-pixel">{"> "}</span>
             Where we share our magic with the world.
           </p>
+          <a
+            href="#subscribe"
+            class="font-pixel uppercase rounded-sm bg-purple-700 text-white px-5 py-3 hover:bg-purple-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400"
+            >Subscribe to the newsletter</a
+          >
         </div>
       </header>
       <div
         class="w-full max-w-3xl flex flex-col gap-4 py-10 sm:py-16 px-5 sm:px-8 mx-auto"
       >
+        {
+          unavailable && (
+            <p role="status">
+              Recent posts are temporarily unavailable. Please try again
+              shortly.
+            </p>
+          )
+        }
         {posts.map((post) => <PostCard post={post} type="blog" />)}
       </div>
       <Footer />

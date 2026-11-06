@@ -1,0 +1,126 @@
+---
+import BaseHead from "components/BaseHead.astro";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <BaseHead
+      title="Unsubscribe | Purdue Hackers"
+      description="Unsubscribe from the Purdue Hackers newsletter."
+    />
+  </head>
+  <body>
+    <main class="w-full max-w-xl mx-auto px-5 py-16 sm:py-24">
+      <a
+        href="/"
+        class="font-pixel uppercase text-sm text-purple-700 dark:text-purple-400 underline underline-offset-4"
+        >&lt;&lt; Back to the blog</a
+      >
+      <h1
+        class="font-pixel uppercase text-3xl sm:text-4xl mt-10 dark:text-yellow"
+      >
+        Unsubscribe
+      </h1>
+      <p
+        id="unsubscribe-description"
+        class="font-mono mt-4 text-black/70 dark:text-white/70"
+      >
+        Enter your email and confirm to stop receiving the Purdue Hackers
+        newsletter.
+      </p>
+      <form
+        id="unsubscribe-form"
+        action="/api/unsubscribe"
+        method="post"
+        aria-describedby="unsubscribe-description"
+        class="mt-8"
+      >
+        <label for="unsubscribe-email" class="block font-mono font-bold mb-2"
+          >Email</label
+        >
+        <input
+          id="unsubscribe-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          maxlength="254"
+          placeholder="you@example.com"
+          class="w-full rounded-sm border border-black/40 dark:border-white/40 bg-transparent px-3 py-3 font-mono focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400"
+        />
+        <button
+          type="submit"
+          class="mt-5 min-h-12 w-full sm:w-auto rounded-sm bg-purple-700 px-5 py-3 font-pixel uppercase text-white hover:bg-purple-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400 disabled:opacity-60 disabled:cursor-wait"
+          >Unsubscribe</button
+        >
+        <noscript
+          ><p class="font-mono mt-4">
+            Please enable JavaScript to confirm your unsubscribe request.
+          </p></noscript
+        >
+      </form>
+      <p
+        id="unsubscribe-status"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        class="font-mono mt-4 min-h-6"
+      >
+      </p>
+    </main>
+  </body>
+</html>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#unsubscribe-form")!;
+  const email = document.querySelector<HTMLInputElement>("#unsubscribe-email")!;
+  const button = form.querySelector<HTMLButtonElement>("button")!;
+  const status = document.querySelector<HTMLParagraphElement>(
+    "#unsubscribe-status",
+  )!;
+  const url = new URL(window.location.href);
+  email.value = url.searchParams.get("email") || "";
+  // Keep the address out of subsequent navigation and copied page URLs.
+  if (url.searchParams.has("email")) {
+    url.searchParams.delete("email");
+    window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+  }
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (button.disabled || !form.reportValidity()) return;
+    button.disabled = true;
+    button.textContent = "Unsubscribing…";
+    form.setAttribute("aria-busy", "true");
+    status.textContent = "";
+    try {
+      const response = await fetch("/api/unsubscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.value }),
+        signal: AbortSignal.timeout(55000),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(
+          result.message ||
+            "We couldn't save your unsubscribe request. Please try again.",
+        );
+      status.textContent = result.message;
+      form.hidden = true;
+      document.querySelector("#unsubscribe-description")!.textContent =
+        "Your newsletter preference has been saved.";
+    } catch (error) {
+      status.textContent =
+        error instanceof Error && error.name === "Error"
+          ? error.message
+          : "We couldn't connect. Please try again in a moment.";
+    } finally {
+      button.disabled = false;
+      button.textContent = "Unsubscribe";
+      form.removeAttribute("aria-busy");
+    }
+  });
+</script>
