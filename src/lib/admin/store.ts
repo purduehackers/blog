@@ -165,6 +165,12 @@ function editionSummary(row: Row): EditionSummary {
   return {
     id: String(row.id),
     notionId: String(row.notion_id),
+    importMode:
+      String(row.html || "").startsWith(
+        '<div data-notion-layout="preserve">',
+      ) || Number(row.preserve_layout) === 1
+        ? "notion-layout"
+        : "newsletter",
     title: String(row.title),
     createdAt: String(row.created_at),
     createdBy: String(row.created_by),
@@ -196,7 +202,12 @@ export async function insertEdition(page: ImportedPage): Promise<void> {
 export async function deleteEdition(id: string): Promise<void> {
   await batch(
     [
-      ...["newsletter_recipients", "newsletter_audiences", "newsletter_clicks", "newsletter_ratings"].map((table) => ({
+      ...[
+        "newsletter_recipients",
+        "newsletter_audiences",
+        "newsletter_clicks",
+        "newsletter_ratings",
+      ].map((table) => ({
         sql: `DELETE FROM ${table} WHERE edition_id=?`,
         args: [id],
       })),
@@ -217,8 +228,8 @@ export async function getEditions(
 ): Promise<EditionSummary[]> {
   const result = await sql(
     publishedOnly
-      ? "SELECT id,notion_id,title,created_at,created_by,published_at FROM newsletter_editions WHERE published_at IS NOT NULL ORDER BY published_at DESC,id LIMIT 100"
-      : "SELECT id,notion_id,title,created_at,created_by,published_at FROM newsletter_editions ORDER BY created_at DESC,id LIMIT 100",
+      ? "SELECT id,notion_id,title,created_at,created_by,published_at,instr(html,'<div data-notion-layout=\"preserve\">')=1 AS preserve_layout FROM newsletter_editions WHERE published_at IS NOT NULL ORDER BY published_at DESC,id LIMIT 100"
+      : "SELECT id,notion_id,title,created_at,created_by,published_at,instr(html,'<div data-notion-layout=\"preserve\">')=1 AS preserve_layout FROM newsletter_editions ORDER BY created_at DESC,id LIMIT 100",
   );
   return result.rows.map(editionSummary);
 }

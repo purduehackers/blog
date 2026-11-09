@@ -1054,3 +1054,112 @@ test("newsletter deletion cannot race an active delivery operation", async (t) =
   await deleteNewsletter(id);
   assert.equal(await getEdition(id), null);
 });
+
+test("layout imports preserve columns, headings and colors through saving and email", async (t) => {
+  await harness(t);
+  const originalFetch = globalThis.fetch;
+  const text = (id: string, type: string, value: string) => ({
+    id,
+    type,
+    has_children: false,
+    [type]: {
+      rich_text: [
+        { plain_text: value, annotations: { color: "red", bold: true } },
+      ],
+    },
+  });
+  const photo = (id: string) => ({
+    id,
+    type: "image",
+    has_children: false,
+    image: {
+      type: "external",
+      external: { url: `https://example.com/${id}.png` },
+      caption: [{ plain_text: `Caption ${id}` }],
+    },
+  });
+  const tree: Record<string, unknown[]> = {
+    [page.notionId]: [
+      {
+        id: "columns",
+        type: "column_list",
+        has_children: true,
+        column_list: {},
+      },
+    ],
+    columns: [
+      {
+        id: "left",
+        type: "column",
+        has_children: true,
+        column: { width_ratio: 0.4 },
+      },
+      {
+        id: "right",
+        type: "column",
+        has_children: true,
+        column: { width_ratio: 0.6 },
+      },
+    ],
+    left: [text("heading", "heading_1", "A heading"), photo("one")],
+    right: [
+      text("paragraph", "paragraph", "Between photos <safe>"),
+      photo("two"),
+      photo("three"),
+    ],
+  };
+  t.mock.method(
+    globalThis,
+    "fetch",
+    async (input: string | URL | Request, init?: RequestInit) => {
+      const match = String(input).match(/\/blocks\/([^/]+)\/children/);
+      if (match)
+        return Response.json({
+          results: tree[match[1]!] || [],
+          has_more: false,
+          next_cursor: null,
+        });
+      return originalFetch(input, init);
+    },
+  );
+  const { imageLayout } = await import("../src/lib/admin/image-layout.ts");
+  const { emailDocument } = await import("../src/lib/admin/notion.ts");
+  const { getEditions } = await import("../src/lib/admin/store.ts");
+  const standard = await importNotionPage(page.notionId, "organizer");
+  const layout = await importNotionPage(
+    page.notionId,
+    "organizer",
+    "notion-layout",
+  );
+  assert.notEqual(standard.id, layout.id);
+  assert.equal(layout.notionId, standard.notionId);
+  assert.match(layout.html, /class="notion-columns"/);
+  assert.match(layout.html, /width:40%/);
+  assert.match(layout.html, /<h1\b/);
+  assert.match(standard.html, /<h2\b/);
+  assert.match(standard.html, /class="notion-columns"/);
+  assert.match(standard.html, /width:40%/);
+  assert.equal((standard.html.match(/class="notion-column"/g) || []).length, 2);
+  assert.ok(!imageLayout(standard.html).includes('class="notion-gallery'));
+  const newsletterEmail = emailDocument(standard);
+  assert.match(newsletterEmail, /class="notion-columns"/);
+  assert.match(newsletterEmail, /width:40%/);
+  assert.match(newsletterEmail, /max-height:320px/);
+  assert.match(newsletterEmail, /max-width:420px/);
+  assert.match(newsletterEmail, /font-size:13px;line-height:1.5;color:#695e72;text-align:center/);
+  assert.equal((newsletterEmail.match(/<img /g) || []).length, 3);
+  assert.ok(!newsletterEmail.includes('class="notion-gallery'));
+  assert.ok(newsletterEmail.indexOf("one.png") < newsletterEmail.indexOf("Between photos"));
+  assert.ok(newsletterEmail.indexOf("Between photos") < newsletterEmail.indexOf("two.png"));
+  assert.match(layout.html, /color:#d44c47/);
+  assert.ok(!standard.html.includes("#d44c47"));
+  for (const html of [imageLayout(layout.html), emailDocument(layout)]) {
+    assert.match(html, /Between photos &lt;safe&gt;/);
+    assert.equal((html.match(/<img /g) || []).length, 3);
+    assert.ok(!html.includes('class="notion-gallery'));
+    assert.ok(!html.includes('width="420"'));
+  }
+  await saveDraft(layout);
+  assert.equal((await campaign(layout.id)).importMode, "notion-layout");
+  assert.equal((await getEditions(false))[0]?.importMode, "notion-layout");
+});

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { ImportedPage } from "../lib/admin/notion";
 import type { progress } from "../lib/admin/campaigns";
 import "../styles/newsletter-admin.css";
-import { imageLayout } from "../lib/admin/image-layout";
+import { isPreservedLayout, imageLayout } from "../lib/admin/image-layout";
 import notionImageStyles from "../styles/notion-images.css?inline";
 
 type Progress = Awaited<ReturnType<typeof progress>>;
@@ -54,10 +54,13 @@ export default function NewsletterAdmin() {
     setDelivery(data.progress);
     setRatings(data.ratings);
     setClicks(data.clicks);
-    setEditions((items) => [
-      { ...data.page },
-      ...items.filter((p) => p.id !== data.page.id),
-    ]);
+    setEditions((items) =>
+      [{ ...data.page }, ...items.filter((p) => p.id !== data.page.id)].sort(
+        (a, b) =>
+          Date.parse(b.createdAt) - Date.parse(a.createdAt) ||
+          a.id.localeCompare(b.id),
+      ),
+    );
     if (data.message) setMessage(data.message);
   }
   async function run(
@@ -171,8 +174,23 @@ export default function NewsletterAdmin() {
     }
   }
   const disabled = !ready || busy || sending;
+  const formatDate = (value: string) =>
+    new Date(value).toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  const deliveryStatus = !delivery?.started
+    ? "Not sent"
+    : sending
+      ? "Sending"
+      : delivery.issues.length
+        ? "Needs review"
+        : delivery.remaining > 0
+          ? "Paused"
+          : "Finished";
   const preview = page
-    ? `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial,sans-serif;color:#241632;background:#faf8fc;margin:0;padding:28px;line-height:1.65;overflow-wrap:anywhere}h1{font-size:32px;line-height:1.2}img{max-width:100%}table{max-width:100%}pre{white-space:pre-wrap}${notionImageStyles}</style></head><body class="notion-content"><p style="font-size:12px;color:#6b21a8;letter-spacing:2px">PURDUE HACKERS / NEWSLETTER</p><h1>${page.title.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)}</h1>${imageLayout(page.html)}</body></html>`
+    ? `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial,sans-serif;color:#241632;background:#faf8fc;margin:0;padding:28px;line-height:1.65;overflow-wrap:anywhere}h1{font-size:32px;line-height:1.2}img{max-width:100%}table{max-width:100%}pre{white-space:pre-wrap}${isPreservedLayout(page.html) ? "" : notionImageStyles}@media(max-width:600px){.notion-columns,.notion-columns tbody,.notion-columns tr,.notion-column{display:block!important;width:100%!important;box-sizing:border-box}}.notion-column img{max-width:100%;height:auto}</style></head><body class="notion-content"><p style="font-size:12px;color:#6b21a8;letter-spacing:2px">PURDUE HACKERS / NEWSLETTER</p><h1>${page.title.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)}</h1>${imageLayout(page.html)}</body></html>`
     : "";
   return (
     <div className="newsletter-admin" data-ready={ready}>
@@ -185,7 +203,9 @@ export default function NewsletterAdmin() {
       <div className="mailbox">
         <span className={`status-dot ${connected ? "connected" : ""}`} />{" "}
         <span>{sender}</span>
-        <span>{connected ? "Connected" : "Setup required"}</span>
+        <span>
+          {connected ? "Mailbox connected" : "Mailbox setup required"}
+        </span>
       </div>
       {!connected && (
         <p className="setup-note">
@@ -228,7 +248,8 @@ export default function NewsletterAdmin() {
             />
             <p className="hint" id="notion-import-hint">
               Connect the page to the blog’s Notion integration first. Import
-              creates a saved draft.
+              creates a saved draft with Notion’s columns and newsletter image
+              styling.
             </p>
             <button className="primary" disabled={disabled}>
               {busy ? "Working…" : "Import edition"}
@@ -249,8 +270,14 @@ export default function NewsletterAdmin() {
                 >
                   <span>{item.title}</span>
                   <small>
-                    {item.publishedAt ? "Published" : "Draft"} ·{" "}
-                    {new Date(item.createdAt).toLocaleDateString()}
+                    <span
+                      className={`edition-state ${item.publishedAt ? "is-published" : ""}`}
+                    >
+                      {item.publishedAt ? "Published" : "Draft"}
+                    </span>
+                    <time dateTime={item.createdAt}>
+                      {formatDate(item.createdAt)}
+                    </time>
                   </small>
                 </button>
               ))
@@ -270,336 +297,465 @@ export default function NewsletterAdmin() {
             <>
               <div className="preview-heading">
                 <div>
-                  <p className="eyebrow">
-                    {page.publishedAt ? "Published edition" : "Draft preview"}
-                  </p>
+                  <div className="edition-heading-status">
+                    <span
+                      className={`edition-state ${page.publishedAt ? "is-published" : ""}`}
+                    >
+                      {page.publishedAt ? "Published" : "Draft"}
+                    </span>
+                    <span>Email: {deliveryStatus.toLowerCase()}</span>
+                  </div>
                   <h2 id="preview-title">{page.title}</h2>
                 </div>
                 <button disabled={disabled} onClick={() => void run("load")}>
                   Refresh status
                 </button>
               </div>
-              <p className="hint">
-                This is a saved copy. To include later Notion edits, import the
-                page again as a new draft.
-              </p>
-              <iframe
-                title="Newsletter email preview"
-                sandbox=""
-                srcDoc={preview}
-                className="email-preview"
-              />
-              <section className="admin-step" aria-labelledby="test-heading">
-                <div className="step-label">01</div>
+              <dl className="edition-meta">
                 <div>
-                  <h3 id="test-heading">Check your inbox</h3>
-                  <p>Send yourself a test to check the layout and links.</p>
-                  <form
-                    className="inline-form"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      void run("test", { email: testEmail });
-                    }}
-                  >
-                    <label className="sr-only" htmlFor="test-email">
-                      Test recipient email
-                    </label>
-                    <input
-                      type="email"
-                      id="test-email"
-                      required
-                      maxLength={254}
-                      value={testEmail}
-                      onChange={(e) => setTestEmail(e.target.value)}
-                      placeholder="you@purdue.edu"
-                      disabled={disabled}
-                    />
-                    <button disabled={disabled || !connected}>Send test</button>
-                  </form>
+                  <dt>Imported</dt>
+                  <dd>
+                    <time dateTime={page.createdAt}>
+                      {formatDate(page.createdAt)}
+                    </time>
+                  </dd>
                 </div>
-              </section>
-              <section className="admin-step" aria-labelledby="publish-heading">
-                <div className="step-label">02</div>
+                {page.publishedAt && (
+                  <div>
+                    <dt>Published</dt>
+                    <dd>
+                      <time dateTime={page.publishedAt}>
+                        {formatDate(page.publishedAt)}
+                      </time>
+                    </dd>
+                  </div>
+                )}
                 <div>
-                  <h3 id="publish-heading">Publish to the website</h3>
-                  <p>The saved edition becomes public immediately.</p>
-                  {page.publishedAt ? (
+                  <dt>Layout</dt>
+                  <dd>
+                    {page.importMode === "notion-layout"
+                      ? "Notion original"
+                      : "Newsletter"}
+                  </dd>
+                </div>
+              </dl>
+              <div className="edition-workbench">
+                <section
+                  className="preview-pane"
+                  aria-labelledby="saved-preview-title"
+                >
+                  <div className="pane-heading">
+                    <h3 id="saved-preview-title">Saved preview</h3>
                     <a
                       className="text-link"
-                      href={`/posts/${page.id}`}
+                      href={`https://www.notion.so/${page.notionId.replace(/-/g, "")}`}
                       target="_blank"
                       rel="noreferrer"
                     >
-                      View published edition ↗
+                      Open Notion
                     </a>
-                  ) : (
-                    <button
-                      disabled={disabled}
-                      onClick={() => void run("publish")}
-                    >
-                      Publish edition
-                    </button>
-                  )}
-                </div>
-              </section>
-              <section className="admin-step" aria-labelledby="send-heading">
-                <div className="step-label">03</div>
-                <div>
-                  <h3 id="send-heading">Send to subscribers</h3>
-                  <p>
-                    Each reader gets a separate email with an unsubscribe link.
-                    Unsubscribed readers are excluded.
+                  </div>
+                  <iframe
+                    title="Newsletter email preview"
+                    sandbox=""
+                    srcDoc={preview}
+                    className="email-preview"
+                  />
+                  <p className="hint preview-note">
+                    A saved copy of your Notion page. To include new edits,
+                    import it again as a new draft.
                   </p>
-                  {delivery?.started ? (
-                    <>
-                      <p className="delivery-counts" aria-live="polite">
-                        {delivery.accepted} accepted · {delivery.skipped}{" "}
-                        skipped · {delivery.remaining} remaining
-                        {delivery.uncertain + delivery.failed > 0
-                          ? ` · ${delivery.uncertain + delivery.failed} need review`
-                          : ""}
+                </section>
+                <aside
+                  className="dispatch-panel"
+                  aria-label="Publishing and delivery"
+                >
+                  <section
+                    className="admin-step"
+                    aria-labelledby="test-heading"
+                  >
+                    <div>
+                      <h3 id="test-heading">Send a test</h3>
+                      <p>Send yourself a test to check the layout and links.</p>
+                      <form
+                        className="inline-form"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          void run("test", { email: testEmail });
+                        }}
+                      >
+                        <label className="sr-only" htmlFor="test-email">
+                          Test recipient email
+                        </label>
+                        <input
+                          type="email"
+                          id="test-email"
+                          required
+                          maxLength={254}
+                          value={testEmail}
+                          onChange={(e) => setTestEmail(e.target.value)}
+                          placeholder="you@purdue.edu"
+                          disabled={disabled}
+                        />
+                        <button disabled={disabled || !connected}>
+                          Send test
+                        </button>
+                      </form>
+                    </div>
+                  </section>
+                  <section
+                    className="admin-step"
+                    aria-labelledby="publish-heading"
+                  >
+                    <div>
+                      <h3 id="publish-heading">Website</h3>
+                      <p>
+                        {page.publishedAt
+                          ? "This edition is live on the blog."
+                          : "Publish this saved copy to the blog before sending."}
                       </p>
-                      {delivery.issues.map((issue) => (
-                        <div className="delivery-issue" key={issue.email}>
-                          <strong>{issue.email}</strong>
-                          <p>{issue.message}</p>
-                          <p>
-                            Check this recipient in {sender} Sent Items. Choose
-                            “Skip” if sent, or “Retry” only if it was not sent.
-                          </p>
-                          <button
-                            disabled={disabled}
-                            onClick={() => {
-                              if (
-                                window.confirm(
-                                  "I reviewed Sent Items. Do not send another email to this recipient.",
-                                )
-                              )
-                                void run("resolve", {
-                                  email: issue.email,
-                                  resolution: "skip",
-                                  confirmation: "REVIEWED",
-                                });
-                            }}
-                          >
-                            Skip recipient
-                          </button>{" "}
-                          <button
-                            disabled={disabled}
-                            onClick={() => {
-                              if (
-                                window.confirm(
-                                  "I verified this email was not sent. Allow a retry?",
-                                )
-                              )
-                                void run("resolve", {
-                                  email: issue.email,
-                                  resolution: "retry",
-                                  confirmation: "REVIEWED",
-                                });
-                            }}
-                          >
-                            Retry after review
-                          </button>
-                        </div>
-                      ))}
-                      {sending ? (
+                      {page.publishedAt ? (
+                        <a
+                          className="text-link"
+                          href={`/posts/${page.id}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          View published edition
+                        </a>
+                      ) : (
                         <button
-                          onClick={() => {
-                            paused.current = true;
-                            setMessage("Pausing after the current recipient…");
+                          disabled={disabled}
+                          onClick={() => void run("publish")}
+                        >
+                          Publish edition
+                        </button>
+                      )}
+                    </div>
+                  </section>
+                  <section
+                    className="admin-step"
+                    aria-labelledby="send-heading"
+                  >
+                    <div>
+                      <div className="send-heading">
+                        <h3 id="send-heading">Subscriber email</h3>
+                        <span className="delivery-state">{deliveryStatus}</span>
+                      </div>
+                      <p>
+                        Each reader gets a separate email with an unsubscribe
+                        link. Unsubscribed readers are excluded.
+                      </p>
+                      {delivery?.started ? (
+                        <>
+                          <div className="delivery-progress" aria-live="polite">
+                            <label htmlFor="delivery-progress">
+                              {delivery.accepted} of {delivery.total} accepted
+                            </label>
+                            <progress
+                              id="delivery-progress"
+                              max={delivery.total || 1}
+                              value={delivery.accepted}
+                            />
+                            <dl className="delivery-counts">
+                              <div>
+                                <dt>Remaining</dt>
+                                <dd>{delivery.remaining}</dd>
+                              </div>
+                              <div>
+                                <dt>Skipped</dt>
+                                <dd>{delivery.skipped}</dd>
+                              </div>
+                              <div>
+                                <dt>Need review</dt>
+                                <dd>{delivery.uncertain + delivery.failed}</dd>
+                              </div>
+                            </dl>
+                          </div>
+                          {delivery.issues.map((issue) => (
+                            <div className="delivery-issue" key={issue.email}>
+                              <strong>{issue.email}</strong>
+                              <p>{issue.message}</p>
+                              <p>
+                                Check this recipient in {sender} Sent Items.
+                                Choose “Skip” if sent, or “Retry” only if it was
+                                not sent.
+                              </p>
+                              <button
+                                disabled={disabled}
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      "I reviewed Sent Items. Do not send another email to this recipient.",
+                                    )
+                                  )
+                                    void run("resolve", {
+                                      email: issue.email,
+                                      resolution: "skip",
+                                      confirmation: "REVIEWED",
+                                    });
+                                }}
+                              >
+                                Skip recipient
+                              </button>{" "}
+                              <button
+                                disabled={disabled}
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      "I verified this email was not sent. Allow a retry?",
+                                    )
+                                  )
+                                    void run("resolve", {
+                                      email: issue.email,
+                                      resolution: "retry",
+                                      confirmation: "REVIEWED",
+                                    });
+                                }}
+                              >
+                                Retry after review
+                              </button>
+                            </div>
+                          ))}
+                          {sending ? (
+                            <button
+                              onClick={() => {
+                                paused.current = true;
+                                setMessage(
+                                  "Pausing after the current recipient…",
+                                );
+                              }}
+                            >
+                              Pause after current email
+                            </button>
+                          ) : (
+                            delivery.remaining > 0 && (
+                              <button
+                                className="primary"
+                                disabled={
+                                  busy || !connected || !!delivery.issues.length
+                                }
+                                onClick={() => void deliver(false)}
+                              >
+                                Resume delivery
+                              </button>
+                            )
+                          )}
+                          <p className="hint">
+                            Keep this tab open during delivery. If it closes,
+                            reopen this edition and resume. Accepted means
+                            Microsoft queued the email, not confirmed inbox
+                            delivery.
+                          </p>
+                        </>
+                      ) : (
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            void deliver(true);
                           }}
                         >
-                          Pause after current email
-                        </button>
-                      ) : (
-                        delivery.remaining > 0 && (
-                          <button
-                            className="primary"
-                            disabled={
-                              busy || !connected || !!delivery.issues.length
-                            }
-                            onClick={() => void deliver(false)}
-                          >
-                            Resume delivery
-                          </button>
-                        )
-                      )}
-                      <p className="hint">
-                        Keep this tab open during delivery. If it closes, reopen
-                        this edition and resume. Accepted means Microsoft queued
-                        the email, not confirmed inbox delivery.
-                      </p>
-                    </>
-                  ) : (
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        void deliver(true);
-                      }}
-                    >
-                      <label htmlFor="send-confirmation">
-                        Type SEND to confirm
-                      </label>
-                      <div className="inline-form">
-                        <input
-                          id="send-confirmation"
-                          value={confirmation}
-                          onChange={(e) => setConfirmation(e.target.value)}
-                          autoComplete="off"
-                          disabled={disabled || !page.publishedAt}
-                        />
-                        <button
-                          className="primary"
-                          disabled={
-                            disabled ||
-                            !connected ||
-                            !page.publishedAt ||
-                            confirmation !== "SEND"
-                          }
-                        >
-                          Send newsletter
-                        </button>
-                      </div>
-                      {!page.publishedAt && (
-                        <p className="hint">Publish the edition first.</p>
-                      )}
-                    </form>
-                  )}
-                </div>
-              </section>
-              {clicks && (
-                <section
-                  className="admin-step click-stats"
-                  aria-labelledby="click-stats-title"
-                >
-                  <div className="step-label" aria-hidden="true">
-                    ↗
-                  </div>
-                  <div className="click-stats-content">
-                    <div className="click-stats-heading">
-                      <div>
-                        <h3 id="click-stats-title">Link clicks</h3>
-                        <p>See where readers follow your links.</p>
-                      </div>
-                      <button
-                        disabled={disabled}
-                        onClick={() => void run("load")}
-                      >
-                        Refresh stats
-                      </button>
-                    </div>
-                    <div
-                      className="click-table-scroll"
-                      role="region"
-                      aria-label="Link click statistics"
-                      tabIndex={0}
-                    >
-                      <table className="click-table">
-                        <caption className="sr-only">
-                          Unique browsers and total clicks by source. Combined
-                          counts each browser once across web and email.
-                        </caption>
-                        <colgroup>
-                          <col className="click-link-column" />
-                          <col />
-                          <col />
-                          <col className="click-combined-column" />
-                        </colgroup>
-                        <thead>
-                          <tr>
-                            <th scope="col">Destination</th>
-                            <th scope="col">Web</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Combined</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {[
-                            { url: "All links", counts: clicks.totals },
-                            ...clicks.links,
-                          ].map((link, index) => (
-                            <tr
-                              key={link.url}
-                              className={
-                                index === 0 ? "click-total-row" : undefined
+                          <label htmlFor="send-confirmation">
+                            Type SEND to confirm
+                          </label>
+                          <div className="inline-form">
+                            <input
+                              id="send-confirmation"
+                              value={confirmation}
+                              onChange={(e) => setConfirmation(e.target.value)}
+                              autoComplete="off"
+                              disabled={disabled || !page.publishedAt}
+                            />
+                            <button
+                              className="primary"
+                              disabled={
+                                disabled ||
+                                !connected ||
+                                !page.publishedAt ||
+                                confirmation !== "SEND"
                               }
                             >
-                              <th scope="row">
-                                {index === 0 ? (
-                                  "All links"
-                                ) : (
-                                  <span className="click-destination">
-                                    {link.url}
-                                  </span>
-                                )}
-                              </th>
-                              {["web", "email", "combined"].map((source) => (
-                                <td key={source}>
-                                  <span className="click-browser-count">
-                                    {(
-                                      link.counts[source]?.visitors || 0
-                                    ).toLocaleString()}{" "}
-                                    <span>browsers</span>
-                                  </span>
-                                  <span className="click-event-count">
-                                    {(
-                                      link.counts[source]?.clicks || 0
-                                    ).toLocaleString()}{" "}
-                                    clicks
-                                  </span>
-                                </td>
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                              Send newsletter
+                            </button>
+                          </div>
+                          {!page.publishedAt && (
+                            <p className="hint">Publish the edition first.</p>
+                          )}
+                        </form>
+                      )}
                     </div>
-                    {clicks.links.length === 0 && (
-                      <div className="click-empty">
-                        <strong>No link clicks yet</strong>
-                        <p>
-                          {page.publishedAt
-                            ? "Clicks will appear here as readers open links in this edition on the web or in email."
-                            : "Publish this edition to start collecting clicks from the web and email."}
-                        </p>
+                  </section>
+                </aside>
+              </div>
+              <div className="edition-results">
+                {clicks && (
+                  <section
+                    className="admin-step click-stats"
+                    aria-labelledby="click-stats-title"
+                  >
+                    <div className="click-stats-content">
+                      <div className="click-stats-heading">
+                        <div>
+                          <h3 id="click-stats-title">Link clicks</h3>
+                          <p>
+                            Unique browsers and total clicks, by destination.
+                          </p>
+                        </div>
+                        <button
+                          disabled={disabled}
+                          onClick={() => void run("load")}
+                        >
+                          Refresh stats
+                        </button>
                       </div>
-                    )}
-                    <p className="click-stats-note">
-                      Combined counts each browser once across web and email.
-                      Repeat visits add to clicks.
-                    </p>
-                    <details className="click-stats-details">
-                      <summary>How clicks are counted</summary>
-                      <p>
-                        Unique browsers estimate readership, not individual
-                        people. Known bots and previews are excluded, but email
-                        security scanners, multiple devices, and cleared cookies
-                        can affect counts. Use Refresh stats to see the latest
-                        activity.
+                      <div
+                        className="click-table-scroll"
+                        role="region"
+                        aria-label="Link click statistics"
+                        tabIndex={0}
+                      >
+                        <table className="click-table">
+                          <caption className="sr-only">
+                            Unique browsers and total clicks by source. Combined
+                            counts each browser once across web and email.
+                          </caption>
+                          <colgroup>
+                            <col className="click-link-column" />
+                            <col />
+                            <col />
+                            <col className="click-combined-column" />
+                          </colgroup>
+                          <thead>
+                            <tr>
+                              <th scope="col">Destination</th>
+                              <th scope="col">Web</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Combined</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[
+                              { url: "All links", counts: clicks.totals },
+                              ...clicks.links,
+                            ].map((link, index) => (
+                              <tr
+                                key={link.url}
+                                className={
+                                  index === 0 ? "click-total-row" : undefined
+                                }
+                              >
+                                <th scope="row">
+                                  {index === 0 ? (
+                                    "All links"
+                                  ) : (
+                                    <span className="click-destination">
+                                      {link.url}
+                                    </span>
+                                  )}
+                                </th>
+                                {["web", "email", "combined"].map((source) => (
+                                  <td key={source}>
+                                    <span className="click-browser-count">
+                                      {(
+                                        link.counts[source]?.visitors || 0
+                                      ).toLocaleString()}{" "}
+                                      <span>browsers</span>
+                                    </span>
+                                    <span className="click-event-count">
+                                      {(
+                                        link.counts[source]?.clicks || 0
+                                      ).toLocaleString()}{" "}
+                                      clicks
+                                    </span>
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      {clicks.links.length === 0 && (
+                        <div className="click-empty">
+                          <strong>No link clicks yet</strong>
+                          <p>
+                            {page.publishedAt
+                              ? "Clicks will appear here as readers open links in this edition on the web or in email."
+                              : "Publish this edition to start collecting clicks from the web and email."}
+                          </p>
+                        </div>
+                      )}
+                      <p className="click-stats-note">
+                        Combined counts each browser once across web and email.
+                        Repeat visits add to clicks.
                       </p>
-                    </details>
-                  </div>
-                </section>
-              )}
-              {ratings && (
-                <section className="admin-step" aria-label="Newsletter ratings">
-                  <div className="step-label">🔥</div>
-                  <div>
-                    <h3>Reader ratings</h3>
-                    <p>
-                      {ratings.total} ratings ·{" "}
-                      {ratings.average === null
-                        ? "No ratings yet"
-                        : `${ratings.average.toFixed(1)} / 5 average flames`}
-                    </p>
-                    <p>
-                      🔥 {ratings.one} · 🔥🔥🔥 {ratings.three} · 🔥🔥🔥🔥🔥{" "}
-                      {ratings.five}
-                    </p>
-                  </div>
-                </section>
-              )}
+                      <details className="click-stats-details">
+                        <summary>How clicks are counted</summary>
+                        <p>
+                          Unique browsers estimate readership, not individual
+                          people. Known bots and previews are excluded, but
+                          email security scanners, multiple devices, and cleared
+                          cookies can affect counts. Use Refresh stats to see
+                          the latest activity.
+                        </p>
+                      </details>
+                    </div>
+                  </section>
+                )}
+                {ratings && (
+                  <section
+                    className="admin-step"
+                    aria-label="Newsletter ratings"
+                  >
+                    <div>
+                      <h3>Reader ratings</h3>
+                      <p className="rating-summary">
+                        {ratings.average === null ? (
+                          "No ratings yet"
+                        ) : (
+                          <>
+                            <strong>{ratings.average.toFixed(1)}</strong> / 5
+                            average flames
+                          </>
+                        )}
+                        <span>
+                          {ratings.total.toLocaleString()}{" "}
+                          {ratings.total === 1 ? "response" : "responses"}
+                        </span>
+                      </p>
+                      <div className="rating-distribution">
+                        {(
+                          [
+                            [5, "This was gold!", ratings.five],
+                            [3, "Solid issue", ratings.three],
+                            [1, "Meh", ratings.one],
+                          ] as const
+                        ).map(([score, label, count]) => (
+                          <div className="rating-row" key={score}>
+                            <div>
+                              <span>
+                                <span aria-hidden="true">🔥</span> {score}{" "}
+                                <span className="rating-label">{label}</span>
+                              </span>
+                              <strong>{count.toLocaleString()}</strong>
+                            </div>
+                            <meter
+                              min={0}
+                              max={ratings.total || 1}
+                              value={count}
+                              aria-label={`${score} flames: ${count} of ${ratings.total} responses`}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      {!ratings.total && (
+                        <p className="hint">
+                          Readers can rate this edition from their email.
+                        </p>
+                      )}
+                    </div>
+                  </section>
+                )}
+              </div>
               <section className="edition-danger" aria-label="Delete edition">
                 <div>
                   <h3>Delete this edition</h3>
@@ -618,7 +774,7 @@ export default function NewsletterAdmin() {
             </>
           ) : (
             <div className="preview-empty">
-              <h2 id="preview-title">From Notion to inbox.</h2>
+              <h2 id="preview-title">Your next dispatch starts here.</h2>
               <p>
                 Import an edition to preview it here, send a test, and share it
                 with the collective.

@@ -57,7 +57,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const action = field("action");
     let id = field("id");
     if (action === "import") {
-      const page = await importNotionPage(field("url"), locals.admin.sub);
+      const page = await importNotionPage(
+        field("url"),
+        locals.admin.sub,
+      );
       await saveDraft(page);
       id = page.id;
     } else {

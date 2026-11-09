@@ -33,3 +33,14 @@ test("website images support the existing lightbox while email images remain ord
   );
   assert.ok(!imageLayout(figure(1)).includes("data-fancybox"));
 });
+
+test("text and headings between photo groups survive gallery formatting", () => {
+  const between = "<h2>Upcoming events</h2><p>Do not lose this paragraph.</p>";
+  for (const zoom of [false, true]) {
+    const html = imageLayout(figure(1) + between + figure(2) + figure(3), zoom);
+    assert.ok(html.includes(between));
+    assert.equal((html.match(/<figure>/g) || []).length, 3);
+    assert.equal((html.match(/<table /g) || []).length, 1);
+    assert.ok(html.indexOf(between) < html.indexOf("<table "));
+  }
+});

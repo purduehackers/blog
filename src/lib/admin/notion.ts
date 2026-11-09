@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import sharp from "sharp";
-import { imageLayout } from "./image-layout.ts";
+import { isPreservedLayout, imageLayout } from "./image-layout.ts";
 import { getNewsletterConfig } from "../notion-mailing-list.ts";
 import { siteOrigin } from "./config.ts";
 import { saveMedia } from "./store.ts";
@@ -58,9 +58,29 @@ interface RichText {
     strikethrough?: boolean;
     underline?: boolean;
     code?: boolean;
+    color?: string;
   };
 }
-export function richText(items: RichText[] = []): string {
+const colors: Record<string, string> = {
+  gray: "#787774",
+  brown: "#9f6b53",
+  orange: "#d9730d",
+  yellow: "#cb912f",
+  green: "#448361",
+  blue: "#337ea9",
+  purple: "#9065b0",
+  pink: "#c14c8a",
+  red: "#d44c47",
+};
+function notionColor(color?: string): string {
+  if (!color) return "";
+  const background = color.endsWith("_background");
+  const value = colors[background ? color.slice(0, -11) : color];
+  return value
+    ? `${background ? "background-color" : "color"}:${value}${background ? "22" : ""}`
+    : "";
+}
+export function richText(items: RichText[] = [], preserve = false): string {
   return items
     .map((item) => {
       let text = escapeHtml(
@@ -75,6 +95,8 @@ export function richText(items: RichText[] = []): string {
       if (a?.italic) text = `<em>${text}</em>`;
       if (a?.strikethrough) text = `<s>${text}</s>`;
       if (a?.underline) text = `<u>${text}</u>`;
+      const color = preserve ? notionColor(a?.color) : "";
+      if (color) text = `<span style="${color}">${text}</span>`;
       const href = safeUrl(item.href || item.text?.link?.url);
       return href
         ? `<a href="${escapeHtml(href)}" style="color:#6b21a8;text-decoration:underline">${text}</a>`
@@ -84,6 +106,8 @@ export function richText(items: RichText[] = []): string {
 }
 interface BlockData {
   expression?: string;
+  color?: string;
+  width_ratio?: number;
   rich_text?: RichText[];
   caption?: RichText[];
   cells?: RichText[][];
@@ -108,6 +132,7 @@ export interface ImportedPage {
   createdAt: string;
   createdBy: string;
   publishedAt?: string;
+  importMode?: "newsletter" | "notion-layout";
 }
 export interface StoredMedia {
   type: string;
@@ -118,7 +143,10 @@ export interface StoredMedia {
 export async function importNotionPage(
   input: string,
   createdBy: string,
+  mode: "newsletter" | "notion-layout" = "newsletter",
 ): Promise<ImportedPage> {
+  const preserve = mode === "notion-layout";
+  const renderText = (items?: RichText[]) => richText(items, preserve);
   const notionId = notionPageId(input);
   const config = getNewsletterConfig();
   if (!config.apiKey)
@@ -130,9 +158,13 @@ export async function importNotionPage(
   let calls = 0;
   async function notion<T>(path: string): Promise<T> {
     if (++calls > 200)
-      throw new Error("This page requires too many Notion requests (200 maximum).");
+      throw new Error(
+        "This page requires too many Notion requests (200 maximum).",
+      );
     if (Date.now() - started > 45000)
-      throw new Error("Import timed out while reading Notion. Please try again.");
+      throw new Error(
+        "Import timed out while reading Notion. Please try again.",
+      );
     const response = await fetch(`https://api.notion.com/v1/${path}`, {
       headers: {
         Authorization: `Bearer ${config.apiKey}`,
@@ -250,7 +282,7 @@ export async function importNotionPage(
       } satisfies StoredMedia);
       src = `${siteOrigin()}/api/newsletter-media/${mediaId}`;
     }
-    const caption = richText(data.caption);
+    const caption = renderText(data.caption);
     return `<figure style="margin:24px 0"><img src="${escapeHtml(src)}" alt="${escapeHtml((data.caption || []).map((r) => r.plain_text || r.text?.content || "").join(""))}" style="max-width:100%;height:auto;display:block">${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`;
   }
   // Read the page before copying media, so slow downloads cannot consume the
@@ -269,17 +301,31 @@ export async function importNotionPage(
       throw new Error("A video has an invalid HTTPS URL.");
     if (data.type === "file") {
       const host = new URL(href).hostname;
-      if (!host.endsWith(".amazonaws.com") && !host.endsWith(".notion-static.com"))
+      if (
+        !host.endsWith(".amazonaws.com") &&
+        !host.endsWith(".notion-static.com")
+      )
         throw new Error("Unrecognized Notion video host.");
       const response = await fetch(href, {
         redirect: "error",
         signal: AbortSignal.any([deadline, AbortSignal.timeout(20000)]),
       });
-      const type = response.headers.get("content-type")?.split(";")[0]?.trim().toLowerCase() || "";
-      if (!response.ok || !["video/mp4", "video/webm", "video/quicktime", "video/ogg"].includes(type))
+      const type =
+        response.headers
+          .get("content-type")
+          ?.split(";")[0]
+          ?.trim()
+          .toLowerCase() || "";
+      if (
+        !response.ok ||
+        !["video/mp4", "video/webm", "video/quicktime", "video/ogg"].includes(
+          type,
+        )
+      )
         throw new Error("Use MP4, WebM, MOV or Ogg videos in the edition.");
       const limit = Math.min(20000000, 40000000 - videoBytes);
-      const sizeError = "Videos exceed the import limit (20 MB each, 40 MB per edition). Use a permanent public video link for larger files.";
+      const sizeError =
+        "Videos exceed the import limit (20 MB each, 40 MB per edition). Use a permanent public video link for larger files.";
       if (Number(response.headers.get("content-length") || 0) > limit) {
         await response.body?.cancel();
         throw new Error(sizeError);
@@ -302,12 +348,16 @@ export async function importNotionPage(
       if (videoBytes + size > 40000000) throw new Error(sizeError);
       videoBytes += size;
       const mediaId = randomUUID();
-      await saveMedia(mediaId, { type, body: Buffer.concat(chunks).toString("base64"), campaignId: id });
+      await saveMedia(mediaId, {
+        type,
+        body: Buffer.concat(chunks).toString("base64"),
+        campaignId: id,
+      });
       href = `${siteOrigin()}/api/newsletter-media/${mediaId}`;
     }
     // Email clients do not reliably play embedded video. Keep a permanent link
     // that opens the browser's player without attaching large files to mail.
-    const caption = richText(data.caption);
+    const caption = renderText(data.caption);
     return `<p style="margin:24px 0"><a href="${escapeHtml(href)}" style="color:#6b21a8;text-decoration:underline">Watch video</a>${caption ? `<br>${caption}` : ""}</p>`;
   }
   async function children(parent: string, depth = 0): Promise<string> {
@@ -347,17 +397,20 @@ export async function importNotionPage(
         list = desiredList;
         html += `<${list}>`;
       }
-      const content = richText(data?.rich_text);
+      const content = renderText(data?.rich_text);
       const nested = block.has_children
         ? await children(block.id, depth + 1)
         : "";
+      const blockColor = preserve ? notionColor(data?.color) : "";
+      if (blockColor && !desiredList && !["column", "table_row"].includes(type))
+        html += `<div style="${blockColor}">`;
       if (desiredList)
-        html += `<li style="margin:8px 0">${content}${nested}</li>`;
+        html += `<li style="margin:8px 0;${blockColor}">${content}${nested}</li>`;
       else if (type === "paragraph")
         html += `<p style="margin:16px 0;line-height:1.65">${content}</p>${nested}`;
       else if (/^heading_[123]$/.test(type)) {
-        const level = Number(type.slice(-1)) + 1;
-        html += `<h${level} style="margin:28px 0 12px">${content}</h${level}>${nested}`;
+        const level = Number(type.slice(-1)) + (preserve ? 0 : 1);
+        html += `<h${level} style="margin:28px 0 12px;${preserve ? `font-size:${[0, 32, 26, 22][level]}px;line-height:1.25` : ""}">${content}</h${level}>${nested}`;
       } else if (["quote", "callout"].includes(type))
         html += `<blockquote style="margin:20px 0;padding:16px;background:#f4effa">${content}${nested}</blockquote>`;
       else if (type === "code")
@@ -373,20 +426,24 @@ export async function importNotionPage(
       else if (type === "table")
         html += `<table style="border-collapse:collapse;width:100%"><tbody>${nested}</tbody></table>`;
       else if (type === "table_row")
-        html += `<tr>${(data.cells || []).map((cell) => `<td style="border:1px solid #ddd;padding:8px">${richText(cell)}</td>`).join("")}</tr>`;
-      else if (
-        ["column_list", "column", "synced_block", "toggle"].includes(type)
+        html += `<tr>${(data.cells || []).map((cell) => `<td style="border:1px solid #ddd;padding:8px">${renderText(cell)}</td>`).join("")}</tr>`;
+      else if (type === "column_list")
+        html += `<table role="presentation" class="notion-columns" style="width:100%;table-layout:fixed;border-collapse:collapse"><tbody><tr>${nested}</tr></tbody></table>`;
+      else if (type === "column") {
+        const ratio = data.width_ratio;
+        const width =
+          typeof ratio === "number" && ratio > 0 && ratio <= 1
+            ? `width:${ratio * 100}%;`
+            : "";
+        html += `<td class="notion-column" style="${width}vertical-align:top;padding:0 10px">${nested}</td>`;
+      } else if (
+        ["synced_block", "toggle"].includes(type)
       )
         html += `${content ? `<p><strong>${content}</strong></p>` : ""}${nested}`;
       else if (
-        [
-          "bookmark",
-          "link_preview",
-          "embed",
-          "file",
-          "pdf",
-          "audio",
-        ].includes(type)
+        ["bookmark", "link_preview", "embed", "file", "pdf", "audio"].includes(
+          type,
+        )
       ) {
         // Signed file URLs expire; require a stable external link for attachments.
         if (data.type === "file")
@@ -395,40 +452,51 @@ export async function importNotionPage(
           );
         const href = safeUrl(data.url || data.external?.url);
         if (!href) throw new Error(`Invalid ${type} link.`);
-        html += `<p><a href="${escapeHtml(href)}">${richText(data.caption) || escapeHtml(data.title || `Open ${type}`)}</a></p>`;
+        html += `<p><a href="${escapeHtml(href)}">${renderText(data.caption) || escapeHtml(data.title || `Open ${type}`)}</a></p>`;
       } else
         throw new Error(
           `Notion block “${type}” is not supported. Convert it to text, an image, or a link before importing.`,
         );
+      if (blockColor && !desiredList && !["column", "table_row"].includes(type))
+        html += "</div>";
     }
     return html + (list ? `</${list}>` : "");
   }
   let html = await children(notionId);
+  html = preserve
+    ? `<div data-notion-layout="preserve">${html}</div>`
+    : `<div data-newsletter-layout="source">${html}</div>`;
   const renderedMedia: string[] = [];
   let nextMedia = 0;
   let mediaFailed = false;
-  const workers = Array.from({ length: Math.min(3, mediaJobs.length) }, async () => {
-    while (!mediaFailed && nextMedia < mediaJobs.length) {
-      const index = nextMedia++;
-      try {
-        renderedMedia[index] = await mediaJobs[index]!();
-      } catch (error) {
-        mediaFailed = true;
-        throw error;
+  const workers = Array.from(
+    { length: Math.min(3, mediaJobs.length) },
+    async () => {
+      while (!mediaFailed && nextMedia < mediaJobs.length) {
+        const index = nextMedia++;
+        try {
+          renderedMedia[index] = await mediaJobs[index]!();
+        } catch (error) {
+          mediaFailed = true;
+          throw error;
+        }
       }
-    }
-  });
+    },
+  );
   const results = await Promise.allSettled(workers);
   for (const result of results) {
     if (result.status === "rejected") throw result.reason;
   }
-  html = html.replace(new RegExp(`<!--newsletter-media-${id}-(\\d+)-->`, "g"),
-    (_, index: string) => renderedMedia[Number(index)]!);
+  html = html.replace(
+    new RegExp(`<!--newsletter-media-${id}-(\\d+)-->`, "g"),
+    (_, index: string) => renderedMedia[Number(index)]!,
+  );
   if (!html || Buffer.byteLength(html) > 180000)
     throw new Error("The edition is empty or too large (180 KB HTML limit).");
   return {
     id,
     notionId,
+    importMode: mode,
     title,
     html,
     createdAt: new Date().toISOString(),
@@ -437,18 +505,28 @@ export async function importNotionPage(
 }
 export function emailDocument(page: ImportedPage, footer = ""): string {
   // Style at delivery time so saved editions receive the same email formatting.
-  const content = imageLayout(page.html)
-    .replace(/<h([2-4])\b[^>]*>/g, (_, level: string) => {
-      const size = { "2": 32, "3": 26, "4": 22 }[level];
-      return `<h${level} style="margin:32px 0 14px;font-size:${size}px;line-height:1.25;font-weight:700">`;
-    })
-    .replace(/<img\b[^>]*>/g, (img) => {
-      const style = "display:block;width:auto;max-width:100%;height:auto;max-height:320px;margin:0 auto;border:0";
-      // A width attribute also bounds images in clients with limited CSS support.
-      return img.replace(/\s(?:style|width|height)="[^"]*"/g, "")
-        .replace(/>$/, ` width="420" style="${style}">`);
-    })
-    .replace(/<figure\b[^>]*>/g, '<figure style="max-width:420px;margin:20px auto">')
-    .replace(/<figcaption\b[^>]*>/g, '<figcaption style="margin-top:8px;font-size:13px;line-height:1.5;color:#695e72;text-align:center">');
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(page.title)}</title><style>@media(max-width:600px){.notion-gallery,.notion-gallery tbody,.notion-gallery tr,.notion-gallery-cell{display:block!important;width:100%!important;box-sizing:border-box}.notion-gallery-cell{padding:12px 0!important}}</style></head><body style="margin:0;color:#241632;font-family:Arial,sans-serif;font-size:16px;line-height:1.65"><main style="max-width:640px;margin:auto;padding:32px 20px"><p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#6b21a8">Purdue Hackers / Newsletter</p><h1 style="margin:16px 0 28px;font-size:40px;line-height:1.15;font-weight:700">${escapeHtml(page.title)}</h1>${content}${footer}</main></body></html>`;
+  const content = isPreservedLayout(page.html)
+    ? page.html
+    : imageLayout(page.html)
+        .replace(/<h([2-4])\b[^>]*>/g, (_, level: string) => {
+          const size = { "2": 32, "3": 26, "4": 22 }[level];
+          return `<h${level} style="margin:32px 0 14px;font-size:${size}px;line-height:1.25;font-weight:700">`;
+        })
+        .replace(/<img\b[^>]*>/g, (img) => {
+          const style =
+            "display:block;width:auto;max-width:100%;height:auto;max-height:320px;margin:0 auto;border:0";
+          // A width attribute also bounds images in clients with limited CSS support.
+          return img
+            .replace(/\s(?:style|width|height)="[^"]*"/g, "")
+            .replace(/>$/, ` width="420" style="${style}">`);
+        })
+        .replace(
+          /<figure\b[^>]*>/g,
+          '<figure style="max-width:420px;margin:20px auto">',
+        )
+        .replace(
+          /<figcaption\b[^>]*>/g,
+          '<figcaption style="margin-top:8px;font-size:13px;line-height:1.5;color:#695e72;text-align:center">',
+        );
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(page.title)}</title><style>@media(max-width:600px){.notion-columns,.notion-columns tbody,.notion-columns tr,.notion-column,.notion-gallery,.notion-gallery tbody,.notion-gallery tr,.notion-gallery-cell{display:block!important;width:100%!important;box-sizing:border-box}.notion-gallery-cell{padding:12px 0!important}}</style></head><body style="margin:0;color:#241632;font-family:Arial,sans-serif;font-size:16px;line-height:1.65"><main style="max-width:640px;margin:auto;padding:32px 20px"><p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#6b21a8">Purdue Hackers / Newsletter</p><h1 style="margin:16px 0 28px;font-size:40px;line-height:1.15;font-weight:700">${escapeHtml(page.title)}</h1>${content}${footer}</main></body></html>`;
 }
