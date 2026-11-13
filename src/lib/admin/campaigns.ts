@@ -1,11 +1,15 @@
 import { trackedLinks } from "./clicks.ts";
 import { signedRatingToken } from "./ratings.ts";
+import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 import {
   locked,
   getMedia,
   getEdition,
   insertEdition,
+  updateEditionTitle,
+  replaceEditionContent,
+  deleteEditionMedia,
   deleteEdition,
   getEditions,
   publishedEdition,
@@ -17,7 +21,13 @@ import {
   resetDelivery,
 } from "./store.ts";
 import type { EditionSummary } from "./store.ts";
-import { emailDocument, escapeHtml, type ImportedPage } from "./notion.ts";
+import {
+  emailDocument,
+  escapeHtml,
+  importNotionPage,
+  newsletterTitle,
+  type ImportedPage,
+} from "./notion.ts";
 import { DeliveryError, graphAccessToken, sendEmail, type InlineImage } from "./microsoft.ts";
 import { getRecipients } from "./recipients.ts";
 import { siteOrigin } from "./config.ts";
@@ -50,6 +60,31 @@ export async function campaign(id: string): Promise<ImportedPage> {
 }
 export async function saveDraft(page: ImportedPage): Promise<void> {
   await insertEdition(page);
+}
+export async function renameNewsletter(id: string, name: string): Promise<void> {
+  const title = newsletterTitle(name);
+  await locked(`edition:${id}`, async () => {
+    await campaign(id);
+    await updateEditionTitle(id, title);
+  });
+}
+export async function reimportNewsletter(id: string): Promise<void> {
+  await locked(`edition:${id}`, async () => {
+    const edition = await campaign(id);
+    const importId = randomUUID();
+    try {
+      const imported = await importNotionPage(
+        edition.notionId,
+        edition.createdBy,
+        edition.importMode,
+        { id: importId, title: edition.title },
+      );
+      await replaceEditionContent(id, imported);
+    } catch (error) {
+      await deleteEditionMedia(importId);
+      throw error;
+    }
+  });
 }
 export async function listEditions(
   publishedOnly = false,

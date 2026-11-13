@@ -140,11 +140,20 @@ export interface StoredMedia {
   campaignId: string;
 }
 
+export function newsletterTitle(value: string): string {
+  const title = value.trim();
+  if (!title || title.length > 200)
+    throw new Error("Enter a newsletter name of 1–200 characters.");
+  return title;
+}
+
 export async function importNotionPage(
   input: string,
   createdBy: string,
   mode: "newsletter" | "notion-layout" = "newsletter",
+  { id = randomUUID(), title: name }: { id?: string; title?: string } = {},
 ): Promise<ImportedPage> {
+  const customTitle = name === undefined ? undefined : newsletterTitle(name);
   const preserve = mode === "notion-layout";
   const renderText = (items?: RichText[]) => richText(items, preserve);
   const notionId = notionPageId(input);
@@ -195,14 +204,14 @@ export async function importNotionPage(
   }>(`pages/${notionId}`);
   if (page.archived || page.in_trash)
     throw new Error("This Notion page is archived.");
-  const title = Object.values(page.properties)
+  const notionTitle = Object.values(page.properties)
     .find((p) => p.type === "title")
     ?.title?.map((r) => r.plain_text ?? r.text?.content ?? "")
     .join("")
     .trim();
+  const title = customTitle ?? notionTitle;
   if (!title || title.length > 200)
     throw new Error("Give the Notion page a title of 1–200 characters.");
-  const id = randomUUID();
   let blockCount = 0;
   let imageBytes = 0;
   async function image(data: BlockData): Promise<string> {

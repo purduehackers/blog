@@ -20,11 +20,8 @@ const admin = Astro.locals.admin;
     <main class="admin-shell">
       <header>
         <div>
-          <a class="back" href="/">&lt;&lt; Blog</a><h1>Newsletter desk</h1><p
-            class="intro"
-          >
-            The collective’s next dispatch. From Notion to inbox.
-          </p>
+          <a class="back" href="/">← Blog</a>
+          <h1>Newsletter desk</h1>
         </div>{
           admin && (
             <div class="account">
@@ -66,14 +63,16 @@ const admin = Astro.locals.admin;
   .admin-shell {
     max-width: 1480px;
     margin: auto;
-    padding: 64px 32px 64px;
+    padding: 54px clamp(16px, 3vw, 36px) 56px;
   }
   header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: flex-end;
     gap: 24px;
-    padding-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #a78bfa55;
+    margin-bottom: 20px;
   }
   .back {
     font-size: 13px;
@@ -81,14 +80,9 @@ const admin = Astro.locals.admin;
   }
   h1 {
     font-family: PixelHackers, monospace;
-    font-size: clamp(32px, 4vw, 48px);
+    font-size: clamp(28px, 3.25vw, 42px);
     line-height: 1.1;
-    margin: 20px 0 10px;
-  }
-  .intro {
-    opacity: 0.75;
-    max-width: 48ch;
-    line-height: 1.6;
+    margin: 8px 0 0;
   }
   .account {
     display: flex;
@@ -107,8 +101,7 @@ const admin = Astro.locals.admin;
     outline-offset: 4px;
   }
   .sign-in {
-    border-top: 1px solid #a78bfa55;
-    padding-top: 40px;
+    padding-top: 20px;
     max-width: 640px;
   }
   h2 {
@@ -132,10 +125,8 @@ const admin = Astro.locals.admin;
   }
   @media (max-width: 600px) {
     header {
-      flex-direction: column;
-    }
-    .admin-shell {
-      padding: 72px 20px 48px;
+      flex-wrap: wrap;
+      gap: 6px 16px;
     }
   }
 </style>

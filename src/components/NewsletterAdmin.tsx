@@ -1,6 +1,19 @@
 import type { clickSummary } from "../lib/admin/clicks";
 import type { ratingSummary } from "../lib/admin/ratings";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Activity,
+  ArrowUpRight,
+  ChevronRight,
+  Download,
+  Edit2,
+  Eye,
+  Monitor,
+  RefreshCw,
+  Send,
+  Smartphone,
+  Trash2,
+} from "react-feather";
 import type { ImportedPage } from "../lib/admin/notion";
 import type { progress } from "../lib/admin/campaigns";
 import "../styles/newsletter-admin.css";
@@ -16,17 +29,30 @@ interface Result {
   ratings: Awaited<ReturnType<typeof ratingSummary>>;
   message?: string;
 }
+const editionViews = [
+  { id: "preview", label: "Preview", Icon: Eye },
+  { id: "delivery", label: "Delivery", Icon: Send },
+  { id: "engagement", label: "Engagement", Icon: Activity },
+] as const;
+
 export default function NewsletterAdmin() {
   const [editions, setEditions] = useState<Summary[]>([]);
+  const [view, setView] =
+    useState<(typeof editionViews)[number]["id"]>("preview");
+  const [phonePreview, setPhonePreview] = useState(false);
+  const [loadingEditions, setLoadingEditions] = useState(true);
+  const [openingEdition, setOpeningEdition] = useState<string>();
   const [page, setPage] = useState<ImportedPage>();
   const [delivery, setDelivery] = useState<Progress>();
   const [clicks, setClicks] = useState<Result["clicks"]>();
   const [ratings, setRatings] = useState<Result["ratings"]>();
   const [url, setUrl] = useState("");
+  const [importTitle, setImportTitle] = useState("");
+  const [importError, setImportError] = useState("");
   const [testEmail, setTestEmail] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [ready, setReady] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [pendingAction, setPendingAction] = useState<string>();
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -34,49 +60,117 @@ export default function NewsletterAdmin() {
   const [sender, setSender] = useState("phackers@purdue.edu");
   const paused = useRef(true);
   const mounted = useRef(true);
-  async function request(
+  const importDialog = useRef<HTMLDialogElement>(null);
+  const renameDialog = useRef<HTMLDialogElement>(null);
+  async function request<T = Result>(
     action: string,
     extra: Record<string, string> = {},
     id = page?.id,
-  ): Promise<Result> {
+  ): Promise<T> {
     const response = await fetch("/api/admin/newsletters", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action, id, ...extra }),
     });
-    const data = (await response.json()) as Result & { message?: string };
+    const data = (await response.json()) as T & { message?: string };
     if (!response.ok)
       throw new Error(data.message || "Request failed. Try again.");
     return data;
   }
-  function update(data: Result) {
-    setPage(data.page);
-    setDelivery(data.progress);
-    setRatings(data.ratings);
-    setClicks(data.clicks);
+  function updatePage(page: ImportedPage) {
+    const { html: _html, createdBy: _createdBy, ...summary } = page;
+    setPage(page);
     setEditions((items) =>
-      [{ ...data.page }, ...items.filter((p) => p.id !== data.page.id)].sort(
+      [summary, ...items.filter((p) => p.id !== page.id)].sort(
         (a, b) =>
           Date.parse(b.createdAt) - Date.parse(a.createdAt) ||
           a.id.localeCompare(b.id),
       ),
     );
+  }
+  function updateStats(data: Omit<Result, "page">) {
+    setDelivery(data.progress);
+    setRatings(data.ratings);
+    setClicks(data.clicks);
+  }
+  function update(data: Result) {
+    updatePage(data.page);
+    updateStats(data);
     if (data.message) setMessage(data.message);
+  }
+  async function selectEdition(id: string) {
+    setPendingAction("switch");
+    setOpeningEdition(id);
+    setView("preview");
+    setConfirmation("");
+    setMessage("");
+    setError("");
+    try {
+      const [previewResult, statsResult] = await Promise.allSettled([
+        request<Pick<Result, "page">>("preview", {}, id).then(({ page }) => {
+          updatePage(page);
+          setOpeningEdition(undefined);
+          setDelivery(undefined);
+          setRatings(undefined);
+          setClicks(undefined);
+        }),
+        request<Omit<Result, "page">>("stats", {}, id),
+      ]);
+      if (previewResult.status === "rejected") throw previewResult.reason;
+      if (statsResult.status === "rejected") {
+        setError(
+          "Could not load delivery status or statistics. Use Refresh status to retry.",
+        );
+      } else {
+        updateStats(statsResult.value);
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not open this edition.");
+    } finally {
+      setPendingAction(undefined);
+      setOpeningEdition(undefined);
+    }
   }
   async function run(
     action: string,
     extra: Record<string, string> = {},
     id = page?.id,
+    onSuccess?: () => void,
   ) {
-    setBusy(true);
+    setPendingAction(action);
     setMessage("");
     setError("");
     try {
       update(await request(action, extra, id));
+      onSuccess?.();
     } catch (e) {
       setError(e instanceof Error ? e.message : "The operation failed.");
     } finally {
-      setBusy(false);
+      setPendingAction(undefined);
+    }
+  }
+  async function importNewsletter() {
+    if (disabled) return;
+    setPendingAction("import");
+    setImportError("");
+    setMessage("");
+    setError("");
+    try {
+      update(await request("import", { url: url.trim(), title: importTitle }));
+      setMessage("Newsletter imported as a draft.");
+      setConfirmation("");
+      setView("preview");
+      setUrl("");
+      setImportTitle("");
+      importDialog.current?.close();
+    } catch (e) {
+      setImportError(
+        e instanceof Error
+          ? e.message
+          : "Could not import the newsletter. Try again.",
+      );
+    } finally {
+      setPendingAction(undefined);
     }
   }
   async function deleteCurrent() {
@@ -88,7 +182,7 @@ export default function NewsletterAdmin() {
       )
     )
       return;
-    setBusy(true);
+    setPendingAction("delete");
     setMessage("");
     setError("");
     try {
@@ -103,7 +197,7 @@ export default function NewsletterAdmin() {
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not delete newsletter.");
     } finally {
-      setBusy(false);
+      setPendingAction(undefined);
     }
   }
   useEffect(() => {
@@ -123,6 +217,8 @@ export default function NewsletterAdmin() {
       } catch (e) {
         if (mounted.current)
           setError(e instanceof Error ? e.message : "Could not load editions.");
+      } finally {
+        if (mounted.current) setLoadingEditions(false);
       }
     })();
     return () => {
@@ -173,6 +269,9 @@ export default function NewsletterAdmin() {
       if (mounted.current) setSending(false);
     }
   }
+  const busy = pendingAction !== undefined;
+  const importing = pendingAction === "import";
+  const reimporting = pendingAction === "reimport";
   const disabled = !ready || busy || sending;
   const formatDate = (value: string) =>
     new Date(value).toLocaleDateString(undefined, {
@@ -180,18 +279,26 @@ export default function NewsletterAdmin() {
       day: "numeric",
       year: "numeric",
     });
-  const deliveryStatus = !delivery?.started
-    ? "Not sent"
-    : sending
-      ? "Sending"
-      : delivery.issues.length
-        ? "Needs review"
-        : delivery.remaining > 0
-          ? "Paused"
-          : "Finished";
-  const preview = page
-    ? `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial,sans-serif;color:#241632;background:#faf8fc;margin:0;padding:28px;line-height:1.65;overflow-wrap:anywhere}h1{font-size:32px;line-height:1.2}img{max-width:100%}table{max-width:100%}pre{white-space:pre-wrap}${isPreservedLayout(page.html) ? "" : notionImageStyles}@media(max-width:600px){.notion-columns,.notion-columns tbody,.notion-columns tr,.notion-column{display:block!important;width:100%!important;box-sizing:border-box}}.notion-column img{max-width:100%;height:auto}</style></head><body class="notion-content"><p style="font-size:12px;color:#6b21a8;letter-spacing:2px">PURDUE HACKERS / NEWSLETTER</p><h1>${page.title.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)}</h1>${imageLayout(page.html)}</body></html>`
-    : "";
+  const deliveryStatus = !delivery
+    ? busy
+      ? "Loading"
+      : "Unavailable"
+    : !delivery.started
+      ? "Not sent"
+      : sending
+        ? "Sending"
+        : delivery.issues.length
+          ? "Needs review"
+          : delivery.remaining > 0
+            ? "Paused"
+            : "Finished";
+  const preview = useMemo(
+    () =>
+      page
+        ? `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial,sans-serif;color:#241632;background:#faf8fc;margin:0;padding:28px;line-height:1.65;overflow-wrap:anywhere}h1{font-size:32px;line-height:1.2}img{max-width:100%}table{max-width:100%}pre{white-space:pre-wrap}${isPreservedLayout(page.html) ? "" : notionImageStyles}@media(max-width:600px){.notion-columns,.notion-columns tbody,.notion-columns tr,.notion-column{display:block!important;width:100%!important;box-sizing:border-box}}.notion-column img{max-width:100%;height:auto}</style></head><body class="notion-content"><p style="font-size:12px;color:#6b21a8;letter-spacing:2px">PURDUE HACKERS / NEWSLETTER</p><h1>${page.title.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)}</h1>${imageLayout(page.html)}</body></html>`
+        : "",
+    [page?.title, page?.html],
+  );
   return (
     <div className="newsletter-admin" data-ready={ready}>
       <p className="loading-controls" role="status">
@@ -200,21 +307,10 @@ export default function NewsletterAdmin() {
       <noscript>
         Enable JavaScript to import, preview, and send newsletters.
       </noscript>
-      <div className="mailbox">
-        <span className={`status-dot ${connected ? "connected" : ""}`} />{" "}
-        <span>{sender}</span>
-        <span>
-          {connected ? "Mailbox connected" : "Mailbox setup required"}
-        </span>
-      </div>
-      {!connected && (
-        <p className="setup-note">
-          The sender needs to be connected before sending. Follow the Microsoft
-          mailbox setup in this project’s README. You can still import and
-          preview an edition.
-        </p>
-      )}
-      <div aria-live="polite" aria-atomic="true">
+      <div className="admin-feedback" aria-live="polite" aria-atomic="true">
+        {reimporting && (
+          <span className="sr-only">Updating preview from Notion.</span>
+        )}
         {message && <p className="notice">{message}</p>}
         {error && (
           <p className="notice error" role="alert">
@@ -224,52 +320,48 @@ export default function NewsletterAdmin() {
       </div>
       <div className="admin-workspace">
         <section aria-labelledby="editions-title" className="edition-list">
-          <h2 id="editions-title">
-            Editions <span>{editions.length}</span>
-          </h2>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setConfirmation("");
-              void run("import", { url });
-            }}
-          >
-            <label htmlFor="notion-url">Import from Notion</label>
-            <input
-              id="notion-url"
-              required
-              maxLength={2048}
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              type="url"
-              placeholder="https://www.notion.so/…"
-              aria-describedby="notion-import-hint"
-              disabled={disabled}
-            />
-            <p className="hint" id="notion-import-hint">
-              Connect the page to the blog’s Notion integration first. Import
-              creates a saved draft with Notion’s columns and newsletter image
-              styling.
-            </p>
-            <button className="primary" disabled={disabled}>
-              {busy ? "Working…" : "Import edition"}
+          <div className="editions-header">
+            <h2 id="editions-title">Editions</h2>
+            <button
+              type="button"
+              className="primary import-trigger"
+              aria-haspopup="dialog"
+              disabled={disabled && !importing}
+              onClick={() => {
+                setImportError("");
+                importDialog.current?.showModal();
+              }}
+            >
+              <Download size={16} aria-hidden="true" />
+              Import newsletter
             </button>
-          </form>
-          <div className="saved-editions">
-            {editions.length ? (
+          </div>
+          <div className="saved-editions" aria-busy={loadingEditions}>
+            {loadingEditions ? (
+              <p className="empty" role="status">
+                Loading editions…
+              </p>
+            ) : editions.length ? (
               editions.map((item) => (
                 <button
                   key={item.id}
                   className={`edition-choice ${page?.id === item.id ? "selected" : ""}`}
                   disabled={disabled}
                   aria-pressed={page?.id === item.id}
+                  aria-labelledby={`edition-title-${item.id}`}
+                  aria-describedby={`edition-meta-${item.id}`}
                   onClick={() => {
-                    setConfirmation("");
-                    void run("load", {}, item.id);
+                    if (page?.id !== item.id) void selectEdition(item.id);
                   }}
                 >
-                  <span>{item.title}</span>
-                  <small>
+                  <span
+                    className="edition-choice-title"
+                    id={`edition-title-${item.id}`}
+                  >
+                    {item.title}
+                    <ChevronRight size={15} aria-hidden="true" />
+                  </span>
+                  <small id={`edition-meta-${item.id}`}>
                     <span
                       className={`edition-state ${item.publishedAt ? "is-published" : ""}`}
                     >
@@ -293,7 +385,17 @@ export default function NewsletterAdmin() {
           className="edition-detail"
           aria-busy={busy || sending}
         >
-          {page ? (
+          {openingEdition ? (
+            <div className="preview-empty">
+              <h2 id="preview-title" role="status">
+                Opening{" "}
+                {editions.find((item) => item.id === openingEdition)?.title ??
+                  "edition"}
+                …
+              </h2>
+              <div className="preview-loading-indicator" aria-hidden="true" />
+            </div>
+          ) : page ? (
             <>
               <div className="preview-heading">
                 <div>
@@ -303,12 +405,49 @@ export default function NewsletterAdmin() {
                     >
                       {page.publishedAt ? "Published" : "Draft"}
                     </span>
-                    <span>Email: {deliveryStatus.toLowerCase()}</span>
+                    <span
+                      className={`delivery-state ${delivery?.issues.length ? "needs-review" : ""}`}
+                    >
+                      Email: {deliveryStatus.toLowerCase()}
+                    </span>
                   </div>
-                  <h2 id="preview-title">{page.title}</h2>
+                  <div className="edition-name">
+                    <h2 id="preview-title">{page.title}</h2>
+                    <button
+                      type="button"
+                      className="icon-action"
+                      aria-label="Rename newsletter"
+                      title="Rename newsletter"
+                      aria-haspopup="dialog"
+                      disabled={disabled}
+                      onClick={() => {
+                        setError("");
+                        renameDialog.current?.showModal();
+                      }}
+                    >
+                      <Edit2 size={16} aria-hidden="true" />
+                    </button>
+                  </div>
                 </div>
-                <button disabled={disabled} onClick={() => void run("load")}>
-                  Refresh status
+                {page.publishedAt && (
+                  <a
+                    className="text-link published-link"
+                    href={`/posts/${page.id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View on blog <ArrowUpRight size={15} aria-hidden="true" />
+                  </a>
+                )}
+                <button
+                  type="button"
+                  className="icon-action danger-button"
+                  aria-label="Delete newsletter"
+                  title="Delete newsletter"
+                  disabled={disabled}
+                  onClick={() => void deleteCurrent()}
+                >
+                  <Trash2 size={16} aria-hidden="true" />
                 </button>
               </div>
               <dl className="edition-meta">
@@ -339,37 +478,224 @@ export default function NewsletterAdmin() {
                   </dd>
                 </div>
               </dl>
-              <div className="edition-workbench">
-                <section
-                  className="preview-pane"
-                  aria-labelledby="saved-preview-title"
+              <dialog
+                ref={renameDialog}
+                className="import-dialog"
+                aria-labelledby="rename-dialog-title"
+                onClose={(event) =>
+                  event.currentTarget.querySelector("form")?.reset()
+                }
+                onCancel={(event) => {
+                  if (pendingAction === "rename") event.preventDefault();
+                }}
+              >
+                <header className="import-dialog-header">
+                  <h2 id="rename-dialog-title">Rename newsletter</h2>
+                </header>
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    const title = new FormData(event.currentTarget).get(
+                      "title",
+                    );
+                    void run(
+                      "rename",
+                      { title: String(title ?? "") },
+                      page.id,
+                      () => renameDialog.current?.close(),
+                    );
+                  }}
                 >
-                  <div className="pane-heading">
-                    <h3 id="saved-preview-title">Saved preview</h3>
+                  <div className="import-dialog-fields">
+                    <div>
+                      <label htmlFor="edition-title">Newsletter name</label>
+                      <input
+                        key={`${page.id}:${page.title}`}
+                        id="edition-title"
+                        name="title"
+                        defaultValue={page.title}
+                        required
+                        maxLength={200}
+                        readOnly={pendingAction === "rename"}
+                      />
+                    </div>
+                    {error && (
+                      <p className="notice error" role="alert">
+                        {error}
+                      </p>
+                    )}
+                  </div>
+                  <footer className="import-dialog-footer">
+                    <button
+                      type="button"
+                      disabled={disabled}
+                      onClick={() => renameDialog.current?.close()}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="primary"
+                      disabled={disabled}
+                    >
+                      {pendingAction === "rename"
+                        ? "Saving name…"
+                        : "Save name"}
+                    </button>
+                  </footer>
+                </form>
+              </dialog>
+              <div
+                className="edition-tabs"
+                role="tablist"
+                aria-label="Edition views"
+              >
+                {editionViews.map(({ id, label, Icon }, index) => (
+                  <button
+                    type="button"
+                    key={id}
+                    id={`tab-${id}`}
+                    role="tab"
+                    aria-selected={view === id}
+                    aria-controls={`panel-${id}`}
+                    tabIndex={view === id ? 0 : -1}
+                    onClick={() => setView(id)}
+                    onKeyDown={(event) => {
+                      const last = editionViews.length - 1;
+                      const next = {
+                        ArrowLeft: index === 0 ? last : index - 1,
+                        ArrowRight: index === last ? 0 : index + 1,
+                        Home: 0,
+                        End: last,
+                      }[event.key];
+                      const tab =
+                        next === undefined ? undefined : editionViews[next]?.id;
+                      if (!tab) return;
+                      event.preventDefault();
+                      setView(tab);
+                      document.getElementById(`tab-${tab}`)?.focus();
+                    }}
+                  >
+                    <Icon size={16} aria-hidden="true" />
+                    {label}
+                    {id === "delivery" && !!delivery?.issues.length && (
+                      <span className="review-dot">
+                        <span className="sr-only">needs review</span>
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+              <section
+                className="preview-pane edition-panel"
+                id="panel-preview"
+                role="tabpanel"
+                aria-labelledby="tab-preview"
+                hidden={view !== "preview"}
+              >
+                <div className="pane-heading">
+                  <div
+                    className="preview-width"
+                    role="group"
+                    aria-label="Preview width"
+                  >
+                    <button
+                      type="button"
+                      aria-pressed={!phonePreview}
+                      onClick={() => setPhonePreview(false)}
+                    >
+                      <Monitor size={15} aria-hidden="true" /> Wide
+                    </button>
+                    <button
+                      type="button"
+                      aria-pressed={phonePreview}
+                      onClick={() => setPhonePreview(true)}
+                    >
+                      <Smartphone size={15} aria-hidden="true" /> Phone
+                    </button>
+                  </div>
+                  <div className="preview-actions">
                     <a
                       className="text-link"
                       href={`https://www.notion.so/${page.notionId.replace(/-/g, "")}`}
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Open Notion
+                      Open Notion <ArrowUpRight size={14} aria-hidden="true" />
                     </a>
+                    <button
+                      type="button"
+                      disabled={disabled}
+                      aria-describedby={
+                        page.publishedAt ? "reimport-hint" : undefined
+                      }
+                      onClick={() => void run("reimport")}
+                    >
+                      <RefreshCw size={14} aria-hidden="true" />
+                      {reimporting ? "Reimporting…" : "Reimport from Notion"}
+                    </button>
                   </div>
-                  <iframe
-                    title="Newsletter email preview"
-                    sandbox=""
-                    srcDoc={preview}
-                    className="email-preview"
-                  />
-                  <p className="hint preview-note">
-                    A saved copy of your Notion page. To include new edits,
-                    import it again as a new draft.
+                </div>
+                {page.publishedAt && (
+                  <p className="preview-hint" id="reimport-hint">
+                    Reimporting updates the live edition at the same link.
                   </p>
-                </section>
-                <aside
-                  className="dispatch-panel"
-                  aria-label="Publishing and delivery"
+                )}
+                <div
+                  className={`preview-stage ${phonePreview ? "is-phone" : ""}`}
                 >
+                  {reimporting ? (
+                    <div className="email-preview preview-loading">
+                      <div
+                        className="preview-loading-indicator"
+                        aria-hidden="true"
+                      />
+                      <p>Updating preview from Notion…</p>
+                    </div>
+                  ) : (
+                    <iframe
+                      title="Newsletter email preview"
+                      sandbox=""
+                      srcDoc={preview}
+                      className="email-preview"
+                    />
+                  )}
+                </div>
+              </section>
+              <section
+                className="edition-panel"
+                id="panel-delivery"
+                role="tabpanel"
+                aria-labelledby="tab-delivery"
+                tabIndex={0}
+                hidden={view !== "delivery"}
+              >
+                <div className="mailbox">
+                  <span
+                    className={`status-dot ${connected ? "connected" : ""}`}
+                    aria-hidden="true"
+                  />
+                  <div>
+                    <strong>{sender}</strong>
+                    <p>
+                      {loadingEditions
+                        ? "Checking mailbox…"
+                        : connected
+                          ? "Mailbox connected"
+                          : "Mailbox setup required"}
+                    </p>
+                  </div>
+                  <button disabled={disabled} onClick={() => void run("load")}>
+                    <RefreshCw size={14} aria-hidden="true" /> Refresh status
+                  </button>
+                </div>
+                {!connected && !loadingEditions && (
+                  <p className="setup-note">
+                    Follow the Microsoft mailbox setup in the project README to
+                    enable sending.
+                  </p>
+                )}
+                <div className="dispatch-panel">
                   <section
                     className="admin-step"
                     aria-labelledby="test-heading"
@@ -446,7 +772,13 @@ export default function NewsletterAdmin() {
                         Each reader gets a separate email with an unsubscribe
                         link. Unsubscribed readers are excluded.
                       </p>
-                      {delivery?.started ? (
+                      {!delivery ? (
+                        <p>
+                          {busy
+                            ? "Loading delivery status…"
+                            : "Refresh status to load delivery details."}
+                        </p>
+                      ) : delivery.started ? (
                         <>
                           <div className="delivery-progress" aria-live="polite">
                             <label htmlFor="delivery-progress">
@@ -585,209 +917,299 @@ export default function NewsletterAdmin() {
                       )}
                     </div>
                   </section>
-                </aside>
-              </div>
-              <div className="edition-results">
-                {clicks && (
-                  <section
-                    className="admin-step click-stats"
-                    aria-labelledby="click-stats-title"
-                  >
-                    <div className="click-stats-content">
-                      <div className="click-stats-heading">
-                        <div>
-                          <h3 id="click-stats-title">Link clicks</h3>
-                          <p>
-                            Unique browsers and total clicks, by destination.
-                          </p>
-                        </div>
-                        <button
-                          disabled={disabled}
-                          onClick={() => void run("load")}
-                        >
-                          Refresh stats
-                        </button>
-                      </div>
-                      <div
-                        className="click-table-scroll"
-                        role="region"
-                        aria-label="Link click statistics"
-                        tabIndex={0}
-                      >
-                        <table className="click-table">
-                          <caption className="sr-only">
-                            Unique browsers and total clicks by source. Combined
-                            counts each browser once across web and email.
-                          </caption>
-                          <colgroup>
-                            <col className="click-link-column" />
-                            <col />
-                            <col />
-                            <col className="click-combined-column" />
-                          </colgroup>
-                          <thead>
-                            <tr>
-                              <th scope="col">Destination</th>
-                              <th scope="col">Web</th>
-                              <th scope="col">Email</th>
-                              <th scope="col">Combined</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {[
-                              { url: "All links", counts: clicks.totals },
-                              ...clicks.links,
-                            ].map((link, index) => (
-                              <tr
-                                key={link.url}
-                                className={
-                                  index === 0 ? "click-total-row" : undefined
-                                }
-                              >
-                                <th scope="row">
-                                  {index === 0 ? (
-                                    "All links"
-                                  ) : (
-                                    <span className="click-destination">
-                                      {link.url}
-                                    </span>
-                                  )}
-                                </th>
-                                {["web", "email", "combined"].map((source) => (
-                                  <td key={source}>
-                                    <span className="click-browser-count">
-                                      {(
-                                        link.counts[source]?.visitors || 0
-                                      ).toLocaleString()}{" "}
-                                      <span>browsers</span>
-                                    </span>
-                                    <span className="click-event-count">
-                                      {(
-                                        link.counts[source]?.clicks || 0
-                                      ).toLocaleString()}{" "}
-                                      clicks
-                                    </span>
-                                  </td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                      {clicks.links.length === 0 && (
-                        <div className="click-empty">
-                          <strong>No link clicks yet</strong>
-                          <p>
-                            {page.publishedAt
-                              ? "Clicks will appear here as readers open links in this edition on the web or in email."
-                              : "Publish this edition to start collecting clicks from the web and email."}
-                          </p>
-                        </div>
-                      )}
-                      <p className="click-stats-note">
-                        Combined counts each browser once across web and email.
-                        Repeat visits add to clicks.
-                      </p>
-                      <details className="click-stats-details">
-                        <summary>How clicks are counted</summary>
-                        <p>
-                          Unique browsers estimate readership, not individual
-                          people. Known bots and previews are excluded, but
-                          email security scanners, multiple devices, and cleared
-                          cookies can affect counts. Use Refresh stats to see
-                          the latest activity.
-                        </p>
-                      </details>
-                    </div>
-                  </section>
-                )}
-                {ratings && (
-                  <section
-                    className="admin-step"
-                    aria-label="Newsletter ratings"
-                  >
-                    <div>
-                      <h3>Reader ratings</h3>
-                      <p className="rating-summary">
-                        {ratings.average === null ? (
-                          "No ratings yet"
-                        ) : (
-                          <>
-                            <strong>{ratings.average.toFixed(1)}</strong> / 5
-                            average flames
-                          </>
-                        )}
-                        <span>
-                          {ratings.total.toLocaleString()}{" "}
-                          {ratings.total === 1 ? "response" : "responses"}
-                        </span>
-                      </p>
-                      <div className="rating-distribution">
-                        {(
-                          [
-                            [5, "This was gold!", ratings.five],
-                            [3, "Solid issue", ratings.three],
-                            [1, "Meh", ratings.one],
-                          ] as const
-                        ).map(([score, label, count]) => (
-                          <div className="rating-row" key={score}>
-                            <div>
-                              <span>
-                                <span aria-hidden="true">🔥</span> {score}{" "}
-                                <span className="rating-label">{label}</span>
-                              </span>
-                              <strong>{count.toLocaleString()}</strong>
-                            </div>
-                            <meter
-                              min={0}
-                              max={ratings.total || 1}
-                              value={count}
-                              aria-label={`${score} flames: ${count} of ${ratings.total} responses`}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                      {!ratings.total && (
-                        <p className="hint">
-                          Readers can rate this edition from their email.
-                        </p>
-                      )}
-                    </div>
-                  </section>
-                )}
-              </div>
-              <section className="edition-danger" aria-label="Delete edition">
-                <div>
-                  <h3>Delete this edition</h3>
-                  <p>
-                    Remove its public page, delivery history, and statistics.
-                  </p>
                 </div>
-                <button
-                  className="danger-button"
-                  disabled={disabled}
-                  onClick={() => void deleteCurrent()}
-                >
-                  Delete newsletter
-                </button>
+              </section>
+              <section
+                className="edition-panel"
+                id="panel-engagement"
+                role="tabpanel"
+                aria-labelledby="tab-engagement"
+                tabIndex={0}
+                hidden={view !== "engagement"}
+              >
+                {!clicks && !ratings && (
+                  <div className="panel-empty">
+                    <p role="status">
+                      {busy
+                        ? "Loading engagement…"
+                        : "Engagement data is unavailable."}
+                    </p>
+                    {!busy && (
+                      <button
+                        disabled={disabled}
+                        onClick={() => void run("load")}
+                      >
+                        Refresh stats
+                      </button>
+                    )}
+                  </div>
+                )}
+                <div className="edition-results">
+                  {clicks && (
+                    <section
+                      className="admin-step click-stats"
+                      aria-labelledby="click-stats-title"
+                    >
+                      <div className="click-stats-content">
+                        <div className="click-stats-heading">
+                          <div>
+                            <h3 id="click-stats-title">Link clicks</h3>
+                            <p>
+                              Unique browsers and total clicks, by destination.
+                            </p>
+                          </div>
+                          <button
+                            disabled={disabled}
+                            onClick={() => void run("load")}
+                          >
+                            Refresh stats
+                          </button>
+                        </div>
+                        <div
+                          className="click-table-scroll"
+                          role="region"
+                          aria-label="Link click statistics"
+                          tabIndex={0}
+                        >
+                          <table className="click-table">
+                            <caption className="sr-only">
+                              Unique browsers and total clicks by source.
+                              Combined counts each browser once across web and
+                              email.
+                            </caption>
+                            <colgroup>
+                              <col className="click-link-column" />
+                              <col />
+                              <col />
+                              <col className="click-combined-column" />
+                            </colgroup>
+                            <thead>
+                              <tr>
+                                <th scope="col">Destination</th>
+                                <th scope="col">Web</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Combined</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {[
+                                { url: "All links", counts: clicks.totals },
+                                ...clicks.links,
+                              ].map((link, index) => (
+                                <tr
+                                  key={link.url}
+                                  className={
+                                    index === 0 ? "click-total-row" : undefined
+                                  }
+                                >
+                                  <th scope="row">
+                                    {index === 0 ? (
+                                      "All links"
+                                    ) : (
+                                      <span className="click-destination">
+                                        {link.url}
+                                      </span>
+                                    )}
+                                  </th>
+                                  {["web", "email", "combined"].map(
+                                    (source) => (
+                                      <td key={source}>
+                                        <span className="click-browser-count">
+                                          {(
+                                            link.counts[source]?.visitors || 0
+                                          ).toLocaleString()}{" "}
+                                          <span>browsers</span>
+                                        </span>
+                                        <span className="click-event-count">
+                                          {(
+                                            link.counts[source]?.clicks || 0
+                                          ).toLocaleString()}{" "}
+                                          clicks
+                                        </span>
+                                      </td>
+                                    ),
+                                  )}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        {clicks.links.length === 0 && (
+                          <div className="click-empty">
+                            <strong>No link clicks yet</strong>
+                            <p>
+                              {page.publishedAt
+                                ? "Clicks will appear here as readers open links in this edition on the web or in email."
+                                : "Publish this edition to start collecting clicks from the web and email."}
+                            </p>
+                          </div>
+                        )}
+                        <p className="click-stats-note">
+                          Combined counts each browser once across web and
+                          email. Repeat visits add to clicks.
+                        </p>
+                        <details className="click-stats-details">
+                          <summary>How clicks are counted</summary>
+                          <p>
+                            Unique browsers estimate readership, not individual
+                            people. Known bots and previews are excluded, but
+                            email security scanners, multiple devices, and
+                            cleared cookies can affect counts. Use Refresh stats
+                            to see the latest activity.
+                          </p>
+                        </details>
+                      </div>
+                    </section>
+                  )}
+                  {ratings && (
+                    <section
+                      className="admin-step"
+                      aria-label="Newsletter ratings"
+                    >
+                      <div>
+                        <h3>Reader ratings</h3>
+                        <p className="rating-summary">
+                          {ratings.average === null ? (
+                            "No ratings yet"
+                          ) : (
+                            <>
+                              <strong>{ratings.average.toFixed(1)}</strong> / 5
+                              average flames
+                            </>
+                          )}
+                          <span>
+                            {ratings.total.toLocaleString()}{" "}
+                            {ratings.total === 1 ? "response" : "responses"}
+                          </span>
+                        </p>
+                        <div className="rating-distribution">
+                          {(
+                            [
+                              [5, "This was gold!", ratings.five],
+                              [3, "Solid issue", ratings.three],
+                              [1, "Meh", ratings.one],
+                            ] as const
+                          ).map(([score, label, count]) => (
+                            <div className="rating-row" key={score}>
+                              <div>
+                                <span>
+                                  <span aria-hidden="true">🔥</span> {score}{" "}
+                                  <span className="rating-label">{label}</span>
+                                </span>
+                                <strong>{count.toLocaleString()}</strong>
+                              </div>
+                              <meter
+                                min={0}
+                                max={ratings.total || 1}
+                                value={count}
+                                aria-label={`${score} flames: ${count} of ${ratings.total} responses`}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        {!ratings.total && (
+                          <p className="hint">
+                            Readers can rate this edition from their email.
+                          </p>
+                        )}
+                      </div>
+                    </section>
+                  )}
+                </div>
               </section>
             </>
           ) : (
             <div className="preview-empty">
-              <h2 id="preview-title">Your next dispatch starts here.</h2>
-              <p>
-                Import an edition to preview it here, send a test, and share it
-                with the collective.
-              </p>
-              <ol className="empty-workflow" aria-label="Newsletter workflow">
-                <li>Import from Notion</li>
-                <li>Preview and send a test</li>
-                <li>Publish and send</li>
-              </ol>
+              <Eye size={26} aria-hidden="true" />
+              <h2 id="preview-title">
+                {loadingEditions
+                  ? "Loading newsletters…"
+                  : editions.length
+                    ? "Choose an edition"
+                    : "Import your first newsletter"}
+              </h2>
+              {!loadingEditions && (
+                <p>
+                  {editions.length
+                    ? "Select an edition to preview it, manage delivery, or see how readers engaged."
+                    : "Use Import newsletter to create a draft from a Notion page."}
+                </p>
+              )}
             </div>
           )}
         </section>
       </div>
+      <dialog
+        ref={importDialog}
+        className="import-dialog"
+        aria-labelledby="import-dialog-title"
+        aria-describedby="import-dialog-description"
+        onCancel={(e) => {
+          if (importing) e.preventDefault();
+        }}
+      >
+        <header className="import-dialog-header">
+          <h2 id="import-dialog-title">Import newsletter</h2>
+          <p id="import-dialog-description">
+            Create a saved draft from a Notion page.
+          </p>
+        </header>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            void importNewsletter();
+          }}
+        >
+          <div className="import-dialog-fields">
+            <div>
+              <label htmlFor="notion-url">Notion page URL</label>
+              <input
+                id="notion-url"
+                required
+                maxLength={2048}
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                type="url"
+                placeholder="https://www.notion.so/…"
+                disabled={importing}
+              />
+            </div>
+            <div>
+              <label htmlFor="import-title">
+                Newsletter name <span>(optional)</span>
+              </label>
+              <input
+                id="import-title"
+                value={importTitle}
+                onChange={(e) => setImportTitle(e.target.value)}
+                maxLength={200}
+                placeholder="Use Notion page title"
+                disabled={importing}
+              />
+            </div>
+            {importError && (
+              <p className="notice error" role="alert">
+                {importError}
+              </p>
+            )}
+          </div>
+          <footer className="import-dialog-footer">
+            <span className="sr-only" role="status">
+              {importing ? "Importing newsletter from Notion." : ""}
+            </span>
+            <button
+              type="button"
+              disabled={importing}
+              onClick={() => importDialog.current?.close()}
+            >
+              Cancel
+            </button>
+            <button type="submit" className="primary" disabled={importing}>
+              {importing ? "Importing…" : "Import newsletter"}
+            </button>
+          </footer>
+        </form>
+      </dialog>
     </div>
   );
 }

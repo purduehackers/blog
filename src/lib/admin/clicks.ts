@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { required, siteOrigin } from "./config.ts";
-import { sql } from "./database.ts";
+import { batch, sql } from "./database.ts";
 import { escapeHtml } from "./notion.ts";
 
 export type ClickSource = "web" | "email";
@@ -90,18 +90,21 @@ export async function recordClick(
   });
 }
 export async function clickSummary(edition: string) {
-  const result = await sql({
-    sql: `SELECT destination,source,COUNT(*) AS clicks,COUNT(DISTINCT visitor) AS visitors
+  const results = await batch([
+    {
+      sql: `SELECT destination,source,COUNT(*) AS clicks,COUNT(DISTINCT visitor) AS visitors
     FROM newsletter_clicks WHERE edition_id=? GROUP BY destination,source
     UNION ALL SELECT destination,'combined',COUNT(*),COUNT(DISTINCT visitor) FROM newsletter_clicks WHERE edition_id=? GROUP BY destination`,
-    args: [edition, edition],
-  });
-  const totals = await sql({
-    sql: `SELECT source,COUNT(*) AS clicks,COUNT(DISTINCT visitor) AS visitors FROM newsletter_clicks WHERE edition_id=? GROUP BY source
+      args: [edition, edition],
+    },
+    {
+      sql: `SELECT source,COUNT(*) AS clicks,COUNT(DISTINCT visitor) AS visitors FROM newsletter_clicks WHERE edition_id=? GROUP BY source
     UNION ALL SELECT 'combined',COUNT(*),COUNT(DISTINCT visitor) FROM newsletter_clicks WHERE edition_id=?`,
-    args: [edition, edition],
-  });
-  const counts = (rows: typeof result.rows) =>
+      args: [edition, edition],
+    },
+  ]);
+  const [{ rows: links }, { rows: totals }] = [results[0]!, results[1]!];
+  const counts = (rows: typeof links) =>
     Object.fromEntries(
       rows.map((row) => [
         String(row.source),
@@ -109,13 +112,13 @@ export async function clickSummary(edition: string) {
       ]),
     );
   const destinations = [
-    ...new Set(result.rows.map((row) => String(row.destination))),
+    ...new Set(links.map((row) => String(row.destination))),
   ];
   return {
-    totals: counts(totals.rows),
+    totals: counts(totals),
     links: destinations.map((url) => ({
       url,
-      counts: counts(result.rows.filter((row) => row.destination === url)),
+      counts: counts(links.filter((row) => row.destination === url)),
     })),
   };
 }

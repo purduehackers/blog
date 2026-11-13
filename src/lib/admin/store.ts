@@ -199,6 +199,37 @@ export async function insertEdition(page: ImportedPage): Promise<void> {
     ],
   });
 }
+export async function updateEditionTitle(
+  id: string,
+  title: string,
+): Promise<void> {
+  await sql({
+    sql: "UPDATE newsletter_editions SET title=? WHERE id=?",
+    args: [title, id],
+  });
+}
+export async function replaceEditionContent(
+  id: string,
+  imported: ImportedPage,
+): Promise<void> {
+  // Keep previous media IDs available for links in delivered emails.
+  await batch([
+    {
+      sql: "UPDATE newsletter_media SET campaign_id=? WHERE campaign_id=?",
+      args: [id, imported.id],
+    },
+    {
+      sql: "UPDATE newsletter_editions SET html=? WHERE id=?",
+      args: [imported.html, id],
+    },
+  ]);
+}
+export async function deleteEditionMedia(id: string): Promise<void> {
+  await sql({
+    sql: "DELETE FROM newsletter_media WHERE campaign_id=?",
+    args: [id],
+  });
+}
 export async function deleteEdition(id: string): Promise<void> {
   await batch(
     [

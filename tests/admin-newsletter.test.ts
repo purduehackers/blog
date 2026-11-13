@@ -45,6 +45,8 @@ import {
   emailContent,
   progress,
   publish,
+  reimportNewsletter,
+  renameNewsletter,
   saveDraft,
   sendNext,
   startDelivery,
@@ -495,6 +497,64 @@ test("Notion import paginates, keeps a snapshot, and rejects unsupported content
     /not supported/,
   );
   assert.equal(h.sends().length, 0);
+});
+
+test("a newsletter name can be set on import and edited before and after publication", async (t) => {
+  await harness(t);
+  const imported = await importNotionPage(page.notionId, "organizer", "newsletter", {
+    title: " Custom name ",
+  });
+  assert.equal(imported.title, "Custom name");
+  await saveDraft(imported);
+  await renameNewsletter(imported.id, "Draft name");
+  assert.equal((await campaign(imported.id)).title, "Draft name");
+  const published = await publish(imported.id);
+  await renameNewsletter(imported.id, " Published name ");
+  await assert.rejects(renameNewsletter(imported.id, "  "), /1–200 characters/);
+  await assert.rejects(renameNewsletter(imported.id, "x".repeat(201)), /1–200 characters/);
+  assert.deepEqual(await campaign(imported.id), { ...published, title: "Published name" });
+});
+
+test("reimport updates a sent newsletter in place and preserves prior media links", async (t) => {
+  const h = await harness(t);
+  await saveDraft({ ...page, html: '<div data-notion-layout="preserve"><p>Original copy</p></div>' });
+  await h.ready();
+  await sendNext(id);
+  await sendNext(id);
+  const before = await campaign(id);
+  const delivery = await progress(id);
+  assert.equal(delivery.accepted, 2);
+  await saveMedia(id, { campaignId: id, type: "video/mp4", body: "AQIDBA==" });
+  h.blocks([
+    {
+      id: "image",
+      type: "image",
+      has_children: false,
+      image: { type: "file", file: { url: "https://files.notion-static.com/correction.png" } },
+    },
+    {
+      id: "correction",
+      type: "paragraph",
+      has_children: false,
+      paragraph: { rich_text: [{ plain_text: "Corrected copy" }] },
+    },
+  ]);
+  await reimportNewsletter(id);
+  const { html, ...updated } = await campaign(id);
+  assert.deepEqual({ ...updated, html: before.html }, before);
+  assert.match(html, /Corrected copy/);
+  const mediaId = html.match(/newsletter-media\/([a-f\d-]+)/)?.[1];
+  assert.ok(mediaId);
+  assert.equal((await getMedia(mediaId))?.campaignId, id);
+  assert.ok(await getMedia(id));
+  assert.equal((await emailContent({ ...updated, html }, "reader@example.com")).attachments.length, 1);
+  assert.deepEqual(await progress(id), delivery);
+  assert.equal(h.sends().length, 2);
+
+  await sql("CREATE TRIGGER reject_content BEFORE UPDATE OF html ON newsletter_editions BEGIN SELECT RAISE(ABORT, 'Failed to save'); END");
+  await assert.rejects(reimportNewsletter(id), /Failed to save/);
+  assert.deepEqual(await campaign(id), { ...updated, html });
+  assert.equal((await sql("SELECT COUNT(*) AS count FROM newsletter_media")).rows[0]?.count, 2);
 });
 
 test("publication is idempotent and email recipients remain private with encoded unsubscribe links", async (t) => {

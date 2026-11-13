@@ -8,11 +8,14 @@ import {
   listEditions,
   progress,
   publish,
+  reimportNewsletter,
+  renameNewsletter,
   resolveDelivery,
   saveDraft,
   sendNext,
   sendTest,
   startDelivery,
+  validId,
 } from "../../../lib/admin/campaigns";
 import { importNotionPage } from "../../../lib/admin/notion";
 import { sender } from "../../../lib/admin/config";
@@ -30,10 +33,13 @@ function json(value: unknown, status = 200) {
 }
 export const GET: APIRoute = async ({ locals }) => {
   if (!locals.admin) throw new AdminError("Sign in to continue.", 401);
-  const editions = (await listEditions()).map(
+  const [savedEditions, credential] = await Promise.all([
+    listEditions(),
+    getMicrosoftCredential(),
+  ]);
+  const editions = savedEditions.map(
     ({ createdBy: _createdBy, ...page }) => page,
   );
-  const credential = await getMicrosoftCredential();
   return json({
     editions,
     sender: sender(),
@@ -56,15 +62,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
       typeof input[name] === "string" ? (input[name] as string) : "";
     const action = field("action");
     let id = field("id");
+    if (action === "preview") return json({ page: await campaign(id) });
     if (action === "import") {
+      const title = field("title").trim();
       const page = await importNotionPage(
         field("url"),
         locals.admin.sub,
+        "newsletter",
+        title ? { title } : {},
       );
       await saveDraft(page);
       id = page.id;
     } else {
-      await campaign(id);
+      if (!validId(id)) throw new Error("Invalid edition ID.");
       if (action === "delete") {
         if (field("confirmation") !== "DELETE")
           return json({ message: "Confirm newsletter deletion." }, 400);
@@ -72,6 +82,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
         return json({ deletedId: id, message: "Newsletter deleted." });
       }
       if (action === "publish") await publish(id);
+      else if (action === "rename") await renameNewsletter(id, field("title"));
+      else if (action === "reimport") await reimportNewsletter(id);
       else if (action === "test")
         await sendTest(id, field("email").trim().toLowerCase());
       else if (action === "start") {
@@ -89,18 +101,28 @@ export const POST: APIRoute = async ({ request, locals }) => {
             400,
           );
         await resolveDelivery(id, field("email"), field("resolution"));
-      } else if (action !== "load")
+      } else if (action !== "load" && action !== "stats")
         return json({ message: "Unknown action." }, 400);
     }
+    const [page, delivery, ratings, clicks] = await Promise.all([
+      action === "stats" ? undefined : campaign(id),
+      progress(id),
+      ratingSummary(id),
+      clickSummary(id),
+    ]);
     return json({
-      page: await campaign(id),
-      progress: await progress(id),
-      ratings: await ratingSummary(id),
-      clicks: await clickSummary(id),
+      page,
+      progress: delivery,
+      ratings,
+      clicks,
       message:
         action === "test"
           ? "Microsoft accepted the test email. Check your inbox."
-          : undefined,
+          : action === "rename"
+            ? "Newsletter name saved."
+            : action === "reimport"
+              ? "Newsletter updated from Notion."
+              : undefined,
     });
   } catch (error) {
     // Our integrations throw controlled messages without response bodies/tokens.

@@ -232,10 +232,10 @@ before retrying an uncertain result. Run with `--help` to view all options.
    page through its **Connections** menu. It must also retain its existing
    mailing-list permissions. The supplied page link is accepted directly:
    `https://app.notion.com/p/purduehackers/edition-1-3e3181f3b6ed80c6b392cdfb4bf9a3ef`.
-2. Visit `/admin`, sign in with an organizer/admin ID, paste the page URL, and
-   choose **Import edition**. This creates an immutable draft snapshot, not a
-   public page or a send. Changes in Notion require a fresh import. A new
-   import is a distinct edition with its own delivery history.
+2. Visit `/admin`, sign in with an organizer/admin ID, and open **Import newsletter**.
+   Paste the Notion page URL, enter an optional newsletter name, and choose
+   **Import newsletter** in the dialog. The edition starts as a draft with its
+   own delivery history and uses the Notion page title if you leave the name blank.
 3. Preview the edition and **Send test** to your own address. Test emails are
    labeled `[TEST]` and do not modify the subscriber delivery record.
 4. **Publish edition** makes the saved copy available on the website. Review
@@ -250,6 +250,12 @@ before retrying an uncertain result. Run with `--help` to view all options.
    each result. **Pause** stops after the current request. After a closed tab,
    expired sign-in, or interruption, reopen the edition and **Resume delivery**.
    Newly subscribed readers are not added to an already-started audience.
+
+Use **Save name** to rename a draft or published edition. After editing the source
+page in Notion, use **Reimport from Notion** on the saved edition to update its
+content at the same URL. The saved name, delivery history, and statistics stay
+with the edition. Edits appear on the website after its cache expires and apply
+to subsequent sends.
 
 Recipients never see the list: each email has exactly one To address and its own
 encoded unsubscribe link. Subscription GET links still require confirmation,
