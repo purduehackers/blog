@@ -31,6 +31,7 @@ import {
 import { DeliveryError, graphAccessToken, sendEmail, type InlineImage } from "./microsoft.ts";
 import { getRecipients } from "./recipients.ts";
 import { siteOrigin } from "./config.ts";
+import { newsletterMediaUrls } from "./media-urls.ts";
 
 export type DeliveryStatus =
   | "accepted"
@@ -111,7 +112,10 @@ export function messageHtml(page: ImportedPage, email: string): string {
     `<div style="margin:8px 0"><a href="${escapeHtml(`${siteOrigin()}/rate?edition=${page.id}&score=${score}&token=${signedRatingToken(page.id, email)}`)}" style="text-decoration:underline">${"🔥".repeat(score)} ${(score === 1 ? "Meh" : score === 3 ? "Solid issue" : "This was gold!")}</a></div>`
   ).join(" ");
   return emailDocument(
-    { ...page, html: trackedLinks(page.html, page.id, "email") },
+    {
+      ...page,
+      html: trackedLinks(newsletterMediaUrls(page.html, siteOrigin()), page.id, "email"),
+    },
     `<hr style="margin-top:32px"><p>How was this newsletter?</p><div style="margin:16px 0">${ratingLinks}</div><p style="font-size:13px">Click a flame rating to rate this edition.</p><p style="font-size:13px;line-height:1.6">You subscribed to the Purdue Hackers newsletter.<br><a href="${escapeHtml(url)}">Read on the website</a> · <a href="${escapeHtml(unsubscribe)}">Unsubscribe</a></p>`,
   );
 }

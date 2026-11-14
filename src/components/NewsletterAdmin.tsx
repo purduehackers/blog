@@ -18,6 +18,7 @@ import type { ImportedPage } from "../lib/admin/notion";
 import type { progress } from "../lib/admin/campaigns";
 import "../styles/newsletter-admin.css";
 import { isPreservedLayout, imageLayout } from "../lib/admin/image-layout";
+import { newsletterMediaUrls } from "../lib/admin/media-urls";
 import notionImageStyles from "../styles/notion-images.css?inline";
 
 type Progress = Awaited<ReturnType<typeof progress>>;
@@ -295,7 +296,7 @@ export default function NewsletterAdmin() {
   const preview = useMemo(
     () =>
       page
-        ? `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial,sans-serif;color:#241632;background:#faf8fc;margin:0;padding:28px;line-height:1.65;overflow-wrap:anywhere}h1{font-size:32px;line-height:1.2}img{max-width:100%}table{max-width:100%}pre{white-space:pre-wrap}${isPreservedLayout(page.html) ? "" : notionImageStyles}@media(max-width:600px){.notion-columns,.notion-columns tbody,.notion-columns tr,.notion-column{display:block!important;width:100%!important;box-sizing:border-box}}.notion-column img{max-width:100%;height:auto}</style></head><body class="notion-content"><p style="font-size:12px;color:#6b21a8;letter-spacing:2px">PURDUE HACKERS / NEWSLETTER</p><h1>${page.title.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)}</h1>${imageLayout(page.html)}</body></html>`
+        ? `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial,sans-serif;color:#241632;background:#faf8fc;margin:0;padding:28px;line-height:1.65;overflow-wrap:anywhere}h1{font-size:32px;line-height:1.2}img{max-width:100%}table{max-width:100%}pre{white-space:pre-wrap}${isPreservedLayout(page.html) ? "" : notionImageStyles}@media(max-width:600px){.notion-columns,.notion-columns tbody,.notion-columns tr,.notion-column{display:block!important;width:100%!important;box-sizing:border-box}}.notion-column img{max-width:100%;height:auto}</style></head><body class="notion-content"><p style="font-size:12px;color:#6b21a8;letter-spacing:2px">PURDUE HACKERS / NEWSLETTER</p><h1>${page.title.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)}</h1>${imageLayout(newsletterMediaUrls(page.html))}</body></html>`
         : "",
     [page?.title, page?.html],
   );

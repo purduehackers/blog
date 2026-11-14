@@ -2,7 +2,6 @@ import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { isPreservedLayout, imageLayout } from "./image-layout.ts";
 import { getNewsletterConfig } from "../notion-mailing-list.ts";
-import { siteOrigin } from "./config.ts";
 import { saveMedia } from "./store.ts";
 
 export function escapeHtml(value: string): string {
@@ -289,7 +288,7 @@ export async function importNotionPage(
         body: body.toString("base64"),
         campaignId: id,
       } satisfies StoredMedia);
-      src = `${siteOrigin()}/api/newsletter-media/${mediaId}`;
+      src = `/api/newsletter-media/${mediaId}`;
     }
     const caption = renderText(data.caption);
     return `<figure style="margin:24px 0"><img src="${escapeHtml(src)}" alt="${escapeHtml((data.caption || []).map((r) => r.plain_text || r.text?.content || "").join(""))}" style="max-width:100%;height:auto;display:block">${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`;
@@ -362,7 +361,7 @@ export async function importNotionPage(
         body: Buffer.concat(chunks).toString("base64"),
         campaignId: id,
       });
-      href = `${siteOrigin()}/api/newsletter-media/${mediaId}`;
+      href = `/api/newsletter-media/${mediaId}`;
     }
     // Email clients do not reliably play embedded video. Keep a permanent link
     // that opens the browser's player without attaching large files to mail.

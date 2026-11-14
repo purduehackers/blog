@@ -14,6 +14,7 @@ import { migrateDatabase } from "../src/lib/admin/schema.ts";
 import type { APIContext } from "astro";
 import { exchangeIdCode } from "../src/lib/admin/id-token.ts";
 import { AdminSetupError, siteOrigin } from "../src/lib/admin/config.ts";
+import { newsletterMediaUrls } from "../src/lib/admin/media-urls.ts";
 import {
   identity,
   requireAdmin,
@@ -962,6 +963,20 @@ test("Notion access errors explain how to connect an edition instead of looking 
   assert.equal(h.sends().length, 0);
 });
 
+
+test("saved media follows the rendering host for images and video links", () => {
+  const path = "/api/newsletter-media/6c7069f8-9d03-42b4-b75d-bb8f01fd1424";
+  const external = '<img src="https://example.com/photo.png">';
+  const html = `<img alt="Photo" src="http://localhost:3000${path}"><a href='${path}'>Watch video</a>${external}`;
+  assert.equal(
+    newsletterMediaUrls(html),
+    `<img alt="Photo" src="${path}"><a href='${path}'>Watch video</a>${external}`,
+  );
+  assert.equal(
+    newsletterMediaUrls(html, "https://blog.example.com"),
+    `<img alt="Photo" src="https://blog.example.com${path}"><a href='https://blog.example.com${path}'>Watch video</a>${external}`,
+  );
+});
 
 test("email embeds stored photos from localhost, deduplicates them and rejects missing media", async (t) => {
   await harness(t);

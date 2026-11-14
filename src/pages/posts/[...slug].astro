@@ -6,6 +6,7 @@ import components from "lib/components";
 import { validId } from "../../lib/admin/campaigns";
 import { getEdition } from "../../lib/admin/store";
 import { imageLayout } from "../../lib/admin/image-layout";
+import { newsletterMediaUrls } from "../../lib/admin/media-urls";
 import "../../styles/notion-images.css";
 export const prerender = false;
 const slug = Astro.params.slug || "";
@@ -35,7 +36,10 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
           "imported-post",
           page.importMode !== "notion-layout" && "notion-content",
         ]}
-        set:html={imageLayout(trackedLinks(page.html, page.id, "web"), true)}
+        set:html={imageLayout(
+          trackedLinks(newsletterMediaUrls(page.html), page.id, "web"),
+          true,
+        )}
       />
     )
   }
