@@ -1,0 +1,52 @@
+---
+// Purdue Hackers component registry: /r/astro/marquee.json.
+import "./marquee.css";
+
+type Props = {
+  text: string | string[];
+  separator?: string;
+  repeat?: number;
+  duration?: string;
+  reverse?: boolean;
+  class?: string;
+};
+
+const {
+  text,
+  separator,
+  repeat = 12,
+  duration = "60s",
+  reverse = false,
+  class: className,
+} = Astro.props;
+const items = Array.isArray(text) ? text : [text];
+---
+
+<div
+  data-reverse={reverse ? "" : undefined}
+  class:list={[
+    "ph-marquee flex w-full overflow-hidden whitespace-nowrap select-none",
+    className,
+  ]}
+  style={`--duration: ${duration}`}
+>
+  {
+    [0, 1].map((copy) => (
+      <div
+        class="ph-marquee__track flex shrink-0"
+        aria-hidden={copy === 1 ? "true" : undefined}
+      >
+        {Array.from({ length: repeat }, () =>
+          items.map((item) => (
+            <span
+              class:list={["inline-flex items-center", !separator && "pr-6"]}
+            >
+              <span>{item}</span>
+              {separator && <span class="px-3">{separator}</span>}
+            </span>
+          )),
+        )}
+      </div>
+    ))
+  }
+</div>

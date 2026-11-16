@@ -1,0 +1,28 @@
+---
+import Marquee from "./ph/Marquee.astro";
+---
+
+<div class="blog-marquee" aria-hidden="true">
+  <Marquee
+    text={["MAKE THINGS", "SHARE WHAT YOU LEARN", "BUILD TOGETHER"]}
+    separator="·"
+    repeat={12}
+    duration="180s"
+    class="h-7 items-center bg-ph-purple font-events text-sm leading-none text-ph-cream"
+  />
+</div>
+
+<style>
+  .blog-marquee :global(.ph-marquee__track) {
+    height: 100%;
+    align-items: center;
+  }
+  .blog-marquee :global(.ph-marquee__track > span) {
+    display: inline-flex;
+    height: 100%;
+    align-items: center;
+  }
+  .blog-marquee:hover :global(.ph-marquee__track) {
+    animation-play-state: paused;
+  }
+</style>

@@ -2,6 +2,76 @@
 
 where we share our magic with the world ✨💛⚡️, now with more Astro!
 
+## External blog posts
+
+To feature a post hosted on another website, add a Markdown file in
+`src/content/blog` with the usual metadata and an `externalUrl`. Use the original
+title, author, description, and publication date. No post body is needed:
+
+```yaml
+---
+title: From Tiny Seed to Towering Sequoia
+description: How Purdue Hackers changed my life.
+pubDate: 2026-05-05
+authors: ["[Jack Hogan](https://github.com/ImTheSquid.png)"]
+externalUrl: https://www.jackhogan.me/blog/from-tiny-seed-to-towering-sequoia
+---
+```
+
+The post appears in date order alongside regular blog posts. Its card shows an
+“External post” tag beside the author and opens the original article in a new
+tab. RSS also links directly to the original article. The local address
+(`/posts/from-tiny-seed-to-towering-sequoia` for this example) keeps a shareable
+preview with author attribution, a canonical link to the original, and an
+automatic redirect after three seconds. Leave out `externalUrl` for posts
+written directly on this blog. Content-file changes require a deployment.
+
+## Brand components
+
+Post cards and article headers use tokens and Astro components from
+[ph/components](https://components.purduehackers.com/). `src/components/ph`
+contains the Button, Badge, Author, and Icon primitives. Article and footer icons
+are from HackerNoon's Pixel Icon Library (CC BY 4.0), credited in the footer.
+The header retains the events site's own pixel icons. Titles use all-caps
+PixelHackers; summaries, authors, tags, and dates use PolySans. Shared author
+groups stack round photos beside the names. Dates use a compact text treatment
+inspired by the events site.
+
+Authors without a photo use the same deterministic pixel avatar generator as
+[Purdue Hackers ID](https://github.com/purduehackers/id/blob/2500796bb4d77b2de49c2a6bbb2e3d8c20d1e682/src/lib/components/pixel.ts),
+seeded by their normalized name. Write `[Author Name]()` to select a generated
+avatar instead of a generic GitHub placeholder. Real photos stay in use; broken
+or tiny (4×4 or smaller) images fall back to the generated avatar. The SVG is
+generated locally, so no ID account or extra network request is needed.
+
+Page mastheads use the brand's graph-paper texture. The navigation in
+`src/components/events` is ported from the events site's actual header, including
+its Departure Mono font, button styling, pixel theme icons, and purple scroll
+state. Only blog routing and Tailwind 3 compatibility are adapted. The grid animation stops
+when the reader prefers reduced motion. Article bodies keep a plain background
+for reading.
+
+A blog-specific marquee runs below the masthead: “Make things · Share what you
+learn · Build together.” It pauses on hover and respects reduced motion.
+Newsletter subscription buttons use the outline variant.
+
+The newest post gets the homepage feature, followed by a two-column archive
+that stacks on smaller screens. Both use the same date-ordered collection,
+including published newsletter imports. A post can optionally supply a
+`coverImage` and `coverImageAlt` in its frontmatter. Features use typography by
+default; they never select an image from the article body. Explicit cover images
+receive a grayscale, high-contrast treatment blended with the brand accent.
+
+Article pages use a centered reading column with author metadata, reading time,
+and a Copy URL control. The “On this page” panel highlights the current section
+and collapses on smaller screens. All section links share the same indentation.
+Existing image lightboxes and interactive MDX components remain in use.
+
+The upstream theme targets Tailwind 4. This blog uses Tailwind 3, so
+`src/styles/ph-theme.css` copies the upstream CSS variables and
+`tailwind.config.ts` maps the matching utility names. The existing local
+PixelHackers and PolySans fonts remain in use. No Tailwind upgrade is needed.
+
 ## Newsletter signup
 
 The form in the shared footer submits names and email addresses to the Notion

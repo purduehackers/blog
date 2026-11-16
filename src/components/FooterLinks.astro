@@ -1,0 +1,40 @@
+---
+import Icon from "./ph/Icon.astro";
+
+const links = [
+  {
+    href: "https://purduehackers.com",
+    label: "Purdue Hackers homepage",
+    icon: "home",
+  },
+  {
+    href: "https://blog.purduehackers.com/rss.xml",
+    label: "RSS feed",
+    icon: "rss",
+  },
+  { href: "https://github.com/purduehackers", label: "GitHub", icon: "github" },
+  {
+    href: "https://instagram.com/purduehackers",
+    label: "Instagram",
+    icon: "instagram",
+  },
+  { href: "https://puhack.horse/discord", label: "Discord", icon: "discord" },
+] as const;
+---
+
+<nav aria-label="Purdue Hackers links" class="flex items-center gap-2">
+  {
+    links.map(({ href, label, icon }) => (
+      <a
+        href={href}
+        aria-label={label}
+        title={label}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex size-10 items-center justify-center text-foreground transition-colors hover:text-ph-purple dark:hover:text-ph-yellow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
+        <Icon name={icon} class="!size-[22px]" />
+      </a>
+    ))
+  }
+</nav>

@@ -2,7 +2,7 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 
 import BlogPost from "layouts/BlogPost.astro";
-import components from "lib/components";
+import createArticleComponents from "lib/components";
 
 export async function getStaticPaths() {
   const posts = await getCollection(
@@ -20,7 +20,9 @@ type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
 const isExternal = !!post.data.externalUrl;
-const Content = isExternal ? null : (await post.render()).Content;
+const rendered = isExternal ? null : await post.render();
+const Content = rendered?.Content;
+const components = createArticleComponents(rendered?.headings ?? []);
 ---
 
 <BlogPost {...post.data} slug={post.slug}>

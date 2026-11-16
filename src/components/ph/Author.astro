@@ -1,0 +1,27 @@
+---
+import AuthorAvatar from "../AuthorAvatar.astro";
+
+type Props = {
+  name: string;
+  avatar?: string;
+  href?: string;
+  size?: "sm" | "md";
+  class?: string;
+};
+
+const { name, avatar, href, size = "md", class: className } = Astro.props;
+const Tag = href ? "a" : "span";
+const px = size === "sm" ? 24 : 28;
+---
+
+<Tag
+  href={href}
+  class:list={[
+    "inline-flex items-center gap-2 font-main text-sm no-underline",
+    href && "hover:underline",
+    className,
+  ]}
+>
+  <AuthorAvatar name={name} src={avatar} size={px} />
+  {name}
+</Tag>
