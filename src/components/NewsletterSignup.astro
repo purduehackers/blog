@@ -1,0 +1,140 @@
+<section
+  id="subscribe"
+  aria-labelledby="subscribe-title"
+  class="scroll-mt-12 w-full max-w-3xl mx-auto px-5 sm:px-8 pb-12 sm:pb-16"
+>
+  <div class="border-t border-black/20 dark:border-white/20 pt-8">
+    <h2
+      id="subscribe-title"
+      class="font-pixel uppercase text-2xl sm:text-3xl dark:text-yellow"
+    >
+      Stay in the loop
+    </h2>
+    <p
+      id="subscribe-description"
+      class="font-mono mt-3 text-black/70 dark:text-white/70 max-w-xl"
+    >
+      Get our monthly newsletter, full of things we're making and magic from
+      Purdue Hackers.
+    </p>
+    <form
+      action="/api/subscribe"
+      method="post"
+      data-newsletter-form
+      aria-describedby="subscribe-description"
+      class="mt-6"
+    >
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-2">
+          <label for="subscriber-name" class="font-mono font-bold">Name</label>
+          <input
+            id="subscriber-name"
+            name="name"
+            type="text"
+            autocomplete="name"
+            required
+            maxlength="100"
+            placeholder="Your name"
+            class="min-w-0 w-full rounded-sm border border-black/40 dark:border-white/40 bg-transparent px-3 py-3 font-mono placeholder:text-black/50 dark:placeholder:text-white/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="subscriber-email" class="font-mono font-bold">Email</label
+          >
+          <input
+            id="subscriber-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            maxlength="254"
+            placeholder="you@example.com"
+            class="min-w-0 w-full rounded-sm border border-black/40 dark:border-white/40 bg-transparent px-3 py-3 font-mono placeholder:text-black/50 dark:placeholder:text-white/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400"
+          />
+        </div>
+      </div>
+      <div hidden aria-hidden="true">
+        <label for="subscriber-website">Website</label>
+        <input
+          id="subscriber-website"
+          name="website"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+        />
+      </div>
+      <p class="font-mono text-sm mt-4 text-black/70 dark:text-white/70">
+        By subscribing, you agree to receive the Purdue Hackers newsletter.
+      </p>
+      <button
+        type="submit"
+        class="mt-4 min-h-12 w-full sm:w-auto rounded-sm bg-purple-700 px-5 py-3 font-pixel uppercase text-white hover:bg-purple-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400 disabled:opacity-60 disabled:cursor-wait"
+        >Subscribe</button
+      >
+      <p
+        data-newsletter-status
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        class="font-mono text-sm mt-3 min-h-6"
+      >
+      </p>
+      <noscript
+        ><p class="font-mono text-sm mt-3">
+          Please enable JavaScript to subscribe to the newsletter.
+        </p></noscript
+      >
+    </form>
+  </div>
+</section>
+
+<script>
+  document
+    .querySelectorAll<HTMLFormElement>("[data-newsletter-form]")
+    .forEach((form) => {
+      const button = form.querySelector<HTMLButtonElement>(
+        'button[type="submit"]',
+      )!;
+      const status = form.querySelector<HTMLParagraphElement>(
+        "[data-newsletter-status]",
+      )!;
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (button.disabled || !form.reportValidity()) return;
+        button.disabled = true;
+        button.textContent = "Subscribing…";
+        form.setAttribute("aria-busy", "true");
+        status.textContent = "";
+        try {
+          const fields = new FormData(form);
+          const response = await fetch("/api/subscribe", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: fields.get("name"),
+              email: fields.get("email"),
+              website: fields.get("website"),
+            }),
+            signal: AbortSignal.timeout(40000),
+          });
+          const result = await response.json();
+          if (!response.ok)
+            throw new Error(
+              result.message ||
+                "We couldn't save your signup. Please try again.",
+            );
+          status.textContent = result.message;
+          form.reset();
+        } catch (error) {
+          status.textContent =
+            error instanceof Error && error.name === "Error"
+              ? error.message
+              : "We couldn't connect. Please try again in a moment.";
+        } finally {
+          button.disabled = false;
+          button.textContent = "Subscribe";
+          form.removeAttribute("aria-busy");
+        }
+      });
+    });
+</script>

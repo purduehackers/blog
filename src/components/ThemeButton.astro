@@ -1,0 +1,72 @@
+---
+import SunIcon from "components/icons/Sun.astro";
+import MoonIcon from "components/icons/Moon.astro";
+---
+
+<button class="p-0 cursor-pointer" id="theme-selector" type="button">
+  <span class="sr-only">
+    Enable <span class="dark:hidden">light</span>
+    <span class="hidden dark:inline">dark</span> mode
+  </span>
+
+  <SunIcon class="inline dark:hidden w-[18px] h-[18px] text-inherit" />
+
+  <MoonIcon class="hidden dark:inline w-4 h-4 text-inherit -rotate-[5deg]" />
+</button>
+
+<script is:inline>
+  function themePrefSaved() {
+    return typeof localStorage !== "undefined" && localStorage.getItem("theme");
+  }
+
+  function getTheme() {
+    if (themePrefSaved()) {
+      return localStorage.getItem("theme") ?? "light";
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  }
+
+  function setTheme() {
+    if (getTheme() === "light") {
+      document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+    }
+  }
+
+  function handleToggleClick() {
+    localStorage.setItem("theme", getTheme() !== "dark" ? "dark" : "light");
+    setTheme();
+  }
+
+  function resetPreferences() {
+    localStorage.removeItem("theme");
+    setTheme();
+  }
+
+  let mediaQuery = null;
+
+  function initializeListeners() {
+    const themeSelector = document.getElementById("theme-selector");
+    if (themeSelector) {
+      themeSelector.onclick = handleToggleClick;
+      themeSelector.onauxclick = resetPreferences;
+    }
+
+    if (!mediaQuery) {
+      mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      mediaQuery.addEventListener("change", setTheme);
+    }
+  }
+
+  function mount() {
+    initializeListeners();
+    setTheme();
+  }
+
+  mount();
+  document.addEventListener("astro:after-swap", mount);
+</script>

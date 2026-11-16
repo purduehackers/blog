@@ -7,18 +7,12 @@ export const parseMarkdownLink = (link: string) => {
 };
 
 export const getOgImage = ({
-  title,
-  authors,
+  type,
+  slug,
 }: {
-  title: string;
-  authors: string[];
+  type: "blog" | "vip-newsletter";
+  slug: string;
 }) => {
-  let authorImages = "";
-  for (const author of authors) {
-    const { avatarUrl } = parseMarkdownLink(author);
-    authorImages += `&images=${encodeURIComponent(avatarUrl)}`;
-  }
-  return `https://og.purduehackers.com/${encodeURIComponent(
-    title,
-  )}.png?theme=light&md=1&fontSize=200px&caption=${authorImages}`;
+  const dir = type === "vip-newsletter" ? "vip-newsletter" : "posts";
+  return `/og/${dir}/${slug}.png`;
 };

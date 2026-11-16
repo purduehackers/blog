@@ -20,8 +20,8 @@ const ColorsDemo = () => {
   ];
 
   return (
-    <div className="mx-auto flex flex-col gap-1 border-4 border-black rounded-lg text-center w-full md:w-1/2">
-      <p className="text-2xl border-b-black border-b-2">
+    <div className="mx-auto flex flex-col gap-1 border-4 border-black dark:border-white/30 rounded-lg text-center w-full md:w-1/2">
+      <p className="text-2xl border-b-black dark:border-b-white/30 border-b-2">
         <ColoredLightningString />
       </p>
       <p className="font-mono text-xl">

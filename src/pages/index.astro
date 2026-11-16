@@ -1,21 +1,19 @@
 ---
-import { getCollection } from "astro:content";
+import { loadBlogPosts } from "../lib/blog-posts";
+export const prerender = false;
 
 import BaseHead from "components/BaseHead.astro";
 import Footer from "components/Footer.astro";
+import Nav from "components/Nav.astro";
 import PostCard from "components/PostCard.astro";
-
-import colors from "lib/colors";
 
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
-const coll = await getCollection("blog", ({ data }) => data.type === "blog");
-const posts = coll
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .map((post, i) => {
-    post.data.color = colors[(coll.length - i - 1) % colors.length];
-    return post;
-  });
+const { posts, unavailable } = await loadBlogPosts();
+Astro.response.headers.set(
+  "Cache-Control",
+  unavailable ? "no-store" : "public, max-age=60, s-maxage=60",
+);
 ---
 
 <!doctype html>
@@ -24,26 +22,50 @@ const posts = coll
     <BaseHead
       title={SITE_TITLE}
       description={SITE_DESCRIPTION}
-      image="https://og.purduehackers.com/Blog.png?theme=light&md=1&fontSize=250px&caption="
+      image="/og/blog.png"
     />
   </head>
   <body>
+    <Nav />
     <div class="min-h-screen flex flex-col">
-      <header class="bg-cyan-100 border-b-4 border-black">
+      <header
+        id="hero-sentinel"
+        class="relative overflow-hidden bg-grid-animated [--grid-size:26px] [--grid-color:rgba(0,0,0,0.06)] dark:[--grid-color:rgba(255,255,255,0.08)] border-b border-black/10 dark:border-white/10"
+      >
         <div
-          class="text-center py-16 sm:py-20 flex flex-col gap-y-4 items-center"
+          class="relative z-10 text-center px-4 pt-24 pb-16 sm:pt-32 sm:pb-24 flex flex-col gap-y-5 items-center"
         >
-          <h1 class="text-4xl sm:text-7xl sm:tracking-tight font-bold">
-            Purdue Hackers Blog
+          <h1
+            class="font-pixel uppercase text-5xl sm:text-7xl md:text-8xl leading-[1.05] dark:text-yellow"
+          >
+            Purdue Hackers <span class="text-amber-500 dark:text-purple-400"
+              >Blog</span
+            >
           </h1>
-          <h2 class="text-xl text-zinc-600 font-normal">
-            Where we share our magic with the world ✨💛⚡️
-          </h2>
+          <p
+            class="font-mono text-sm sm:text-base md:text-lg text-black/70 dark:text-white/70 max-w-xl"
+          >
+            <span class="font-pixel">{"> "}</span>
+            Where we share our magic with the world.
+          </p>
+          <a
+            href="#subscribe"
+            class="font-pixel uppercase rounded-sm bg-purple-700 text-white px-5 py-3 hover:bg-purple-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400"
+            >Subscribe to the newsletter</a
+          >
         </div>
       </header>
       <div
-        class="max-w-sm sm:max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-8 sm:py-14 px-5 sm:px-20 mx-auto"
+        class="w-full max-w-3xl flex flex-col gap-4 py-10 sm:py-16 px-5 sm:px-8 mx-auto"
       >
+        {
+          unavailable && (
+            <p role="status">
+              Recent posts are temporarily unavailable. Please try again
+              shortly.
+            </p>
+          )
+        }
         {posts.map((post) => <PostCard post={post} type="blog" />)}
       </div>
       <Footer />

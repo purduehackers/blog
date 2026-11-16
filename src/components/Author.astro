@@ -9,13 +9,14 @@ const { authorString } = Astro.props;
 const { avatarUrl, author } = parseMarkdownLink(authorString);
 ---
 
-<span class="flex flex-row gap-x-2 items-center text-lg">
+<span class="flex flex-row gap-x-2 items-center font-pixel uppercase text-xs sm:text-sm">
   <img
     src={avatarUrl}
-    width={32}
-    height={32}
+    width={28}
+    height={28}
     alt={`Avatar for ${author}`}
-    class="rounded-full"
+    class="rounded-full border border-black"
+    onerror="this.onerror=null;this.src='/logo.svg';"
   />
   {author}
 </span>

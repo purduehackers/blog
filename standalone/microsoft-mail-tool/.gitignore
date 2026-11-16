@@ -1,0 +1,5 @@
+.env
+.env.*
+!.env.example
+.mail-accounts/
+node_modules/

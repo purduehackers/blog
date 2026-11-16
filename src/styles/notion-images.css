@@ -1,0 +1,102 @@
+.notion-content figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 8px 0 !important;
+  min-width: 0;
+  text-align: center;
+}
+.notion-content figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+  border: 1px solid rgb(0 0 0 / 10%);
+}
+.notion-content figure > a {
+  display: block;
+  max-width: 100%;
+  cursor: zoom-in;
+}
+.notion-content figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  font-style: italic;
+  color: inherit;
+  opacity: 0.7;
+}
+.notion-content table.notion-gallery {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin: 24px 0;
+  overflow: visible;
+}
+.notion-content .notion-gallery > tbody,
+.notion-content .notion-gallery > tbody > tr {
+  display: contents;
+}
+.notion-content .notion-gallery-cell {
+  display: block;
+  width: auto;
+  min-width: 0;
+  padding: 0 !important;
+}
+.notion-content .notion-gallery figure {
+  margin: 0 !important;
+}
+@media (min-width: 640px) {
+  .notion-content table.notion-gallery-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .notion-content figcaption {
+    font-size: 14px;
+  }
+}
+@media (min-width: 768px) {
+  .notion-content table.notion-gallery-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .notion-content figure img {
+    width: min(100%, 50vw);
+  }
+}
+@media (min-width: 1024px) {
+  .notion-content figure img {
+    width: min(100%, 33vw);
+  }
+}
+@media (min-width: 1280px) {
+  .notion-content figure img {
+    width: min(100%, 22vw);
+  }
+}
+
+/* Source columns set the layout; newsletter rules only size and caption photos. */
+.notion-content [data-newsletter-layout="source"] figure {
+  max-width: 420px;
+  margin: 20px auto !important;
+}
+.notion-content [data-newsletter-layout="source"] figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 320px;
+  height: auto;
+  margin: 0 auto;
+}
+.notion-content table.notion-columns {
+  display: table;
+  width: 100%;
+  overflow: visible;
+}
+@media (max-width: 600px) {
+  .notion-content .notion-columns,
+  .notion-content .notion-columns > tbody,
+  .notion-content .notion-columns > tbody > tr,
+  .notion-content .notion-column {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+}
