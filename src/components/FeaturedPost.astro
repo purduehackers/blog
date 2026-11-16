@@ -1,0 +1,78 @@
+---
+import type { BlogPostSummary } from "lib/blog-posts";
+import AuthorGroup from "./AuthorGroup.astro";
+
+interface Props {
+  post: BlogPostSummary;
+}
+
+const { post } = Astro.props;
+const { data } = post;
+const isExternal = Boolean(data.externalUrl);
+const href = data.externalUrl ?? `/posts/${post.slug}`;
+const date = data.pubDate.toLocaleDateString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<section aria-label="Newest post" class="border-b border-border">
+  <a
+    href={href}
+    target={isExternal ? "_blank" : undefined}
+    rel={isExternal ? "noopener noreferrer" : undefined}
+    class:list={[
+      "group grid items-center gap-8 px-5 py-10 text-foreground no-underline sm:px-8 sm:py-16 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary",
+      { "lg:grid-cols-2 lg:gap-12": Boolean(data.coverImage) },
+    ]}
+  >
+    <div class="min-w-0 max-w-4xl">
+      <time
+        datetime={data.pubDate.toISOString()}
+        class="font-main text-sm leading-relaxed"
+      >
+        {date}
+      </time>
+      <h2
+        class:list={[
+          "mt-5 font-pixel text-4xl uppercase leading-[1.08] sm:text-5xl [overflow-wrap:anywhere] group-hover:text-primary group-focus-visible:text-primary",
+          { "lg:text-[4rem]": !data.coverImage },
+        ]}
+      >
+        {data.title}
+      </h2>
+      <p class="mt-5 max-w-2xl font-main text-lg leading-relaxed sm:text-xl">
+        {data.description}
+      </p>
+      {
+        (data.authors.length > 0 || isExternal) && (
+          <div class="mt-7">
+            <AuthorGroup
+              authors={data.authors}
+              external={isExternal}
+              size="md"
+            />
+          </div>
+        )
+      }
+      {isExternal && <span class="sr-only">Opens in a new tab</span>}
+    </div>
+    {
+      data.coverImage && (
+        <div class="overflow-hidden bg-primary">
+          <img
+            src={data.coverImage}
+            alt={data.coverImageAlt ?? ""}
+            width="800"
+            height="600"
+            fetchpriority="high"
+            decoding="async"
+            class="aspect-[4/3] w-full object-cover mix-blend-luminosity grayscale contrast-[1.1] motion-safe:transition-transform motion-safe:duration-300 motion-safe:ease-quint motion-safe:group-hover:scale-[1.02]"
+          />
+        </div>
+      )
+    }
+  </a>
+</section>

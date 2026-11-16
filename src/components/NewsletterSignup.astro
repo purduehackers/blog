@@ -1,32 +1,40 @@
+---
+import Button from "./ph/Button.astro";
+---
+
 <section
   id="subscribe"
   aria-labelledby="subscribe-title"
-  class="scroll-mt-12 w-full max-w-3xl mx-auto px-5 sm:px-8 pb-12 sm:pb-16"
+  class="mx-auto w-full max-w-7xl scroll-mt-24 px-5 pb-14 font-main text-foreground sm:px-8 sm:pb-20 lg:px-10"
 >
-  <div class="border-t border-black/20 dark:border-white/20 pt-8">
-    <h2
-      id="subscribe-title"
-      class="font-pixel uppercase text-2xl sm:text-3xl dark:text-yellow"
-    >
-      Stay in the loop
-    </h2>
-    <p
-      id="subscribe-description"
-      class="font-mono mt-3 text-black/70 dark:text-white/70 max-w-xl"
-    >
-      Get our monthly newsletter, full of things we're making and magic from
-      Purdue Hackers.
-    </p>
+  <div
+    class="grid gap-8 border-t border-border pt-10 md:grid-cols-[0.85fr_1.15fr] md:gap-14 md:pt-14 lg:gap-24"
+  >
+    <div>
+      <h2
+        id="subscribe-title"
+        class="font-pixel text-3xl uppercase leading-tight sm:text-4xl"
+      >
+        Stay in the loop
+      </h2>
+      <p
+        id="subscribe-description"
+        class="mt-4 max-w-sm text-base leading-relaxed"
+      >
+        Get our monthly newsletter, full of things we're making and magic from
+        Purdue Hackers.
+      </p>
+    </div>
     <form
       action="/api/subscribe"
       method="post"
       data-newsletter-form
       aria-describedby="subscribe-description"
-      class="mt-6"
+      class="w-full"
     >
       <div class="grid sm:grid-cols-2 gap-4">
         <div class="flex flex-col gap-2">
-          <label for="subscriber-name" class="font-mono font-bold">Name</label>
+          <label for="subscriber-name" class="text-sm font-medium">Name</label>
           <input
             id="subscriber-name"
             name="name"
@@ -35,11 +43,11 @@
             required
             maxlength="100"
             placeholder="Your name"
-            class="min-w-0 w-full rounded-sm border border-black/40 dark:border-white/40 bg-transparent px-3 py-3 font-mono placeholder:text-black/50 dark:placeholder:text-white/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400"
+            class="newsletter-input min-w-0 w-full rounded-none border bg-card px-4 py-3 text-base text-card-foreground"
           />
         </div>
         <div class="flex flex-col gap-2">
-          <label for="subscriber-email" class="font-mono font-bold">Email</label
+          <label for="subscriber-email" class="text-sm font-medium">Email</label
           >
           <input
             id="subscriber-email"
@@ -49,7 +57,7 @@
             required
             maxlength="254"
             placeholder="you@example.com"
-            class="min-w-0 w-full rounded-sm border border-black/40 dark:border-white/40 bg-transparent px-3 py-3 font-mono placeholder:text-black/50 dark:placeholder:text-white/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400"
+            class="newsletter-input min-w-0 w-full rounded-none border bg-card px-4 py-3 text-base text-card-foreground"
           />
         </div>
       </div>
@@ -63,30 +71,48 @@
           autocomplete="off"
         />
       </div>
-      <p class="font-mono text-sm mt-4 text-black/70 dark:text-white/70">
+      <p class="mt-4 text-xs leading-relaxed">
         By subscribing, you agree to receive the Purdue Hackers newsletter.
       </p>
-      <button
+      <Button
         type="submit"
-        class="mt-4 min-h-12 w-full sm:w-auto rounded-sm bg-purple-700 px-5 py-3 font-pixel uppercase text-white hover:bg-purple-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 dark:focus-visible:outline-purple-400 disabled:opacity-60 disabled:cursor-wait"
-        >Subscribe</button
+        variant="outline"
+        size="lg"
+        class="mt-5 !w-full !font-pixel !font-normal !tracking-normal disabled:cursor-wait sm:!w-auto"
+        >Subscribe</Button
       >
       <p
         data-newsletter-status
         role="status"
         aria-live="polite"
         aria-atomic="true"
-        class="font-mono text-sm mt-3 min-h-6"
+        class="mt-3 min-h-6 text-sm leading-relaxed"
       >
       </p>
       <noscript
-        ><p class="font-mono text-sm mt-3">
+        ><p class="mt-3 text-sm">
           Please enable JavaScript to subscribe to the newsletter.
         </p></noscript
       >
     </form>
   </div>
 </section>
+
+<style>
+  .newsletter-input {
+    border-color: var(--input);
+  }
+
+  .newsletter-input::placeholder {
+    color: inherit;
+    opacity: 0.5;
+  }
+
+  .newsletter-input:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+</style>
 
 <script>
   document

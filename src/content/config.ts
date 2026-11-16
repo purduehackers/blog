@@ -10,6 +10,8 @@ const blog = defineCollection({
     authors: z.array(z.string()),
     type: z.enum(["blog", "vip-newsletter"]).default("blog"),
     externalUrl: z.string().url().optional(),
+    coverImage: z.string().optional(),
+    coverImageAlt: z.string().optional(),
   }),
 });
 

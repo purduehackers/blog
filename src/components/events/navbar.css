@@ -1,0 +1,37 @@
+/* Typography and interaction styles from the Purdue Hackers events header. */
+@font-face {
+  font-family: "DepartureMono";
+  src: url("../../assets/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+#site-navbar button {
+  transition-property: transform;
+  transition-duration: 120ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+#site-navbar button:not(:disabled):active {
+  transform: scale(0.97);
+}
+#site-navbar :focus-visible {
+  outline: 2px solid var(--ph-purple);
+  outline-offset: 2px;
+}
+.dark #site-navbar :focus-visible {
+  outline-color: var(--yellow);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .events-theme-icon:hover {
+    animation: events-icon-idle 0.75s steps(1, end) 0.3s infinite;
+  }
+}
+@keyframes events-icon-idle {
+  0% {
+    transform: scale(0.9) rotate(20deg);
+  }
+  50% {
+    transform: scale(1) rotate(0deg);
+  }
+}

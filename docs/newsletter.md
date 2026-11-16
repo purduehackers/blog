@@ -26,6 +26,12 @@ Use **Save name** to rename an edition and **Reimport from Notion** to refresh i
 
 If a delivery result is uncertain, check the sender's **Sent Items** before choosing **Skip recipient** or **Retry after review**. Microsoft Graph's `202 Accepted` means Microsoft queued the message for processing.
 
+## Imported media and link statistics
+
+The blog copies Notion-hosted images and videos so they stay available after Notion's temporary URLs expire. Large videos can use a permanent public link. If an import flags an unsupported block, convert it to text, an image, or a public link and try again.
+
+Open a published edition in `/admin` to see clicks from the blog and email. Unique counts are based on browsers and can be affected by email link scanners and cleared cookies.
+
 ## Mailing list and test tools
 
 The footer signup form adds subscribers to Notion. Newsletter emails include a personalized unsubscribe link. Readers can also visit `/unsubscribe` and confirm their email address there.

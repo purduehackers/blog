@@ -8,6 +8,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 import { parseMarkdownLink } from "./utils";
+import { authorAvatarUrl } from "./id-avatar";
 
 const FONT_PATH = path.resolve(
   process.cwd(),
@@ -124,7 +125,9 @@ export async function renderPostOg(opts: PostOgOptions): Promise<Buffer> {
   const authorData = await Promise.all(
     opts.authors.map(async (a) => {
       const { author, avatarUrl } = parseMarkdownLink(a);
-      const avatar = await fetchAvatarDataUri(avatarUrl);
+      const avatar =
+        (await fetchAvatarDataUri(avatarUrl)) ??
+        (await fetchAvatarDataUri(authorAvatarUrl(author)));
       return { author, avatar };
     }),
   );

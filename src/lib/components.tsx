@@ -1,77 +1,79 @@
-// FIXME: add props and remove ts-nocheck.
-// @ts-nocheck
+import { createElement, type ComponentProps } from "react";
 
-export default {
-  h1: (props) => (
-    <h1 className="font-pixel uppercase text-3xl sm:text-4xl mt-8 mb-2">
-      {props.children}
-    </h1>
+type HeadingProps = ComponentProps<"h2">;
+type ImageProps = ComponentProps<"img">;
+
+const ArticleImage = ({
+  className = "",
+  alt = "",
+  loading = "lazy",
+  ...props
+}: ImageProps) => (
+  <a
+    href={props.src}
+    data-fancybox="post"
+    data-caption={alt || undefined}
+    className="article-image"
+  >
+    <img
+      {...props}
+      alt={alt}
+      loading={loading}
+      decoding="async"
+      className={className}
+    />
+  </a>
+);
+
+const proseComponents = {
+  p: (props: ComponentProps<"p">) => (
+    <p {...props} className={`article-paragraph ${props.className ?? ""}`} />
   ),
-  h2: (props) => (
-    <h2 className="font-pixel uppercase text-2xl sm:text-3xl mt-6 mb-2">
-      {props.children}
-    </h2>
-  ),
-  h3: (props) => (
-    <h3 className="font-pixel uppercase text-xl sm:text-2xl mt-4 mb-2">
-      {props.children}
-    </h3>
-  ),
-  a: (props) => {
+  a: ({ target, rel, ...props }: ComponentProps<"a">) => {
     const isExternal = /^https?:\/\//i.test(props.href ?? "");
     return (
       <a
-        className="text-amber-500 hover:text-amber-400 underline decoration-2 underline-offset-4 transition"
         {...props}
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noopener noreferrer" : undefined}
+        target={target ?? (isExternal ? "_blank" : undefined)}
+        rel={rel ?? (isExternal ? "noopener noreferrer" : undefined)}
       />
     );
   },
-  img: (props) => (
-    <a
-      href={props.src}
-      data-fancybox="post"
-      data-caption={props.alt || undefined}
-      className="block cursor-zoom-in"
-    >
-      <img
-        {...props}
-        className={
-          props.className ||
-          "w-full md:w-[50vw] lg:w-[33vw] xl:w-[22vw] rounded-sm border border-black/10"
-        }
-      />
-    </a>
+  img: ArticleImage,
+  WideImage: ArticleImage,
+  ul: (props: ComponentProps<"ul">) => (
+    <ul {...props} className={`article-list ${props.className ?? ""}`} />
   ),
-  WideImage: (props) => (
-    <a
-      href={props.src}
-      data-fancybox="post"
-      data-caption={props.alt || undefined}
-      className="block cursor-zoom-in"
-    >
-      <img
-        {...props}
-        className="w-full h-auto rounded-sm mx-auto border border-black/10"
-      />
-    </a>
+  ol: (props: ComponentProps<"ol">) => (
+    <ol {...props} className={`article-list ${props.className ?? ""}`} />
   ),
-  ul: (props) => (
-    <ul className="list-disc list-outside ml-6 sm:ml-0 marker:text-amber-500">
-      {props.children}
-    </ul>
+  li: (props: ComponentProps<"li">) => <li {...props} />,
+  hr: (props: ComponentProps<"hr">) => (
+    <hr {...props} className={`article-rule ${props.className ?? ""}`} />
   ),
-  ol: (props) => (
-    <ol className="list-decimal list-inside ml-6">{props.children}</ol>
-  ),
-  li: (props) => <li className="mb-2">{props.children}</li>,
-  hr: () => (
-    <hr className="border-0 border-t-2 border-purple-700 dark:border-yellow w-1/2 mx-auto my-6" />
-  ),
-  blockquote: (props) => (
-    <blockquote className="border-l-4 border-purple-700 dark:border-yellow pl-4 blockquote">
-      {props.children}
-    </blockquote>
+  blockquote: (props: ComponentProps<"blockquote">) => (
+    <blockquote
+      {...props}
+      className={`article-quote ${props.className ?? ""}`}
+    />
   ),
 };
+
+export default function createArticleComponents(headings: { depth: number }[]) {
+  // Start content at h2 whether the source begins with # or ##. Preserve IDs.
+  const shift = 2 - Math.min(...headings.map(({ depth }) => depth), 2);
+  const heading = (level: number) => (props: HeadingProps) =>
+    createElement(`h${Math.min(6, level + shift)}`, {
+      ...props,
+      "data-article-heading": "",
+    });
+  return {
+    ...proseComponents,
+    h1: heading(1),
+    h2: heading(2),
+    h3: heading(3),
+    h4: heading(4),
+    h5: heading(5),
+    h6: heading(6),
+  };
+}
