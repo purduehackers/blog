@@ -1,34 +1,73 @@
 ---
-import FooterLinks from "./FooterLinks";
+import FooterLinks from "./FooterLinks.astro";
 import NewsletterSignup from "./NewsletterSignup.astro";
+import Glider from "./icons/Glider.astro";
 ---
 
 <NewsletterSignup />
 <footer
-  class="text-center bottom-0 mt-auto w-full flex flex-col justify-center gap-y-4 py-10 px-4 bg-grid-animated [--grid-size:26px] [--grid-color:rgba(0,0,0,0.06)] dark:[--grid-color:rgba(255,255,255,0.08)] dark:text-gray-100"
+  class="mt-auto w-full border-t border-border bg-grid-animated font-main text-foreground [--grid-size:26px] [--grid-color:rgba(0,0,0,0.035)] dark:[--grid-color:rgba(255,255,255,0.035)]"
 >
-  <div class="font-pixel uppercase text-xs sm:text-sm flex flex-col items-center gap-1">
-    <span>~ Made with a secret sauce ~</span>
-    <div class="flex flex-wrap justify-center gap-x-3">
-      <a
-        href="https://github.com/purduehackers/blog"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-amber-500 hover:text-amber-400 transition"
-      >
-        Open source
-      </a>
-      <span>|</span>
-      <a
-        href="https://vercel.com?utm_source=purdue-hackers&utm_campaign=oss"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-amber-500 hover:text-amber-400 transition"
-      >
-        Powered by ▲ Vercel
-      </a>
-      <span>| © 2026</span>
+  <div class="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:px-10">
+    <div
+      class="flex flex-col gap-7 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div class="flex items-center gap-4">
+        <Glider
+          class="size-8 shrink-0 text-ph-purple dark:text-ph-yellow"
+          aria-hidden="true"
+        />
+        <div>
+          <p class="font-pixel text-xl uppercase">Purdue Hackers</p>
+          <p class="mt-1 text-sm">~ Made with a secret sauce ~</p>
+        </div>
+      </div>
+      <FooterLinks />
+    </div>
+    <div
+      class="mt-8 flex flex-col gap-4 border-t border-border pt-5 text-xs leading-relaxed sm:flex-row sm:justify-between sm:gap-8"
+    >
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <a
+          href="https://github.com/purduehackers/blog"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-link"
+        >
+          Open source
+        </a>
+        <a
+          href="https://vercel.com?utm_source=purdue-hackers&utm_campaign=oss"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-link"
+        >
+          Powered by ▲ Vercel
+        </a>
+        <span>© 2026 Purdue Hackers</span>
+      </div>
+      <p>
+        Pixel icons by <a
+          href="https://pixeliconlibrary.com"
+          class="footer-link underline underline-offset-2">HackerNoon</a
+        >
+        · <a
+          href="https://creativecommons.org/licenses/by/4.0/"
+          class="footer-link underline underline-offset-2">CC BY 4.0</a
+        >
+      </p>
     </div>
   </div>
-  <FooterLinks />
 </footer>
+
+<style>
+  .footer-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .footer-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+  }
+</style>

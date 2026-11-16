@@ -1,5 +1,6 @@
 ---
-import { parseMarkdownLink } from 'lib/utils';
+import { parseMarkdownLink } from "lib/utils";
+import BrandAuthor from "./ph/Author.astro";
 
 interface Props {
   authorString: string;
@@ -9,14 +10,4 @@ const { authorString } = Astro.props;
 const { avatarUrl, author } = parseMarkdownLink(authorString);
 ---
 
-<span class="flex flex-row gap-x-2 items-center font-pixel uppercase text-xs sm:text-sm">
-  <img
-    src={avatarUrl}
-    width={28}
-    height={28}
-    alt={`Avatar for ${author}`}
-    class="rounded-full border border-black"
-    onerror="this.onerror=null;this.src='/logo.svg';"
-  />
-  {author}
-</span>
+<BrandAuthor name={author} avatar={avatarUrl} />

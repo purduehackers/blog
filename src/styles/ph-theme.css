@@ -1,0 +1,59 @@
+/* Brand tokens copied from https://components.purduehackers.com/r/ph.css.
+ * Tailwind 3 compatibility: utilities are mapped in tailwind.config.ts;
+ * PixelHackers uses the font already bundled by this blog.
+ */
+
+:root {
+  --ph-font-sans: "PolySans", ui-sans-serif, system-ui, sans-serif;
+  --ph-font-mono: "Inconsolata", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ph-font-pixel: "PixelHackers", "Inconsolata", monospace;
+  --ph-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  --ph-black: #000000;
+  --ph-cream: #fbf7ec;
+  --ph-yellow: #fcd202;
+  --ph-purple: #7d3bff;
+  --ph-white: #ffffff;
+  --ph-pink: #efb9ff;
+  --ph-orange: #ff9300;
+  --ph-lime: #a5e209;
+  --ph-teal: #01beb2;
+  --ph-blue: #0084ff;
+  --ph-periwinkle: #7688ff;
+
+  --background: var(--ph-cream);
+  --foreground: var(--ph-black);
+  --card: var(--ph-white);
+  --card-foreground: var(--ph-black);
+  --primary: var(--ph-purple);
+  --primary-foreground: var(--ph-cream);
+  --secondary: var(--ph-yellow);
+  --secondary-foreground: var(--ph-black);
+  --accent: var(--ph-blue);
+  --accent-foreground: var(--ph-cream);
+  --muted: #efebe0;
+  --muted-foreground: var(--ph-black);
+  --border: #e2ded4;
+  --input: #c6c3ba;
+  --rule: #c6c3ba;
+  --ring: var(--ph-black);
+}
+
+.dark {
+  --background: var(--ph-black);
+  --foreground: var(--ph-white);
+  --card: #0d0d0d;
+  --card-foreground: var(--ph-white);
+  --primary: var(--ph-yellow);
+  --primary-foreground: var(--ph-black);
+  --secondary: var(--ph-pink);
+  --secondary-foreground: var(--ph-black);
+  --accent: var(--ph-pink);
+  --accent-foreground: var(--ph-black);
+  --muted: #1a1a1a;
+  --muted-foreground: #ffffffb3;
+  --border: #262626;
+  --input: #4d4d4d;
+  --rule: #4d4d4d;
+  --ring: var(--ph-white);
+}

@@ -1,8 +1,13 @@
+import { authorAvatarUrl } from "./id-avatar.ts";
+
 export const parseMarkdownLink = (link: string) => {
-  const match = /\[(.+?)\]\((https?:\/\/[a-zA-Z0-9/.(-]+?)?\)/g.exec(link);
+  const match = /^\s*\[([^\]]+)\]\((.*?)\)\s*$/.exec(link);
+  const author = (match?.[1] ?? link).trim() || "Unknown";
+  const image = match?.[2]?.trim();
   return {
-    author: match?.[1] || "Unknown",
-    avatarUrl: match?.[2] || "https://github.com/purduehackers.png",
+    author,
+    avatarUrl:
+      image && /^https?:\/\//i.test(image) ? image : authorAvatarUrl(author),
   };
 };
 

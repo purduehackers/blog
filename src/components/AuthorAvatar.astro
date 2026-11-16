@@ -1,0 +1,45 @@
+---
+import { authorAvatarUrl } from "lib/id-avatar";
+
+interface Props {
+  name: string;
+  src?: string | undefined;
+  size: number;
+}
+
+const { name, src, size } = Astro.props;
+const fallback = authorAvatarUrl(name);
+const avatar = src || fallback;
+---
+
+<img
+  src={avatar}
+  data-avatar-fallback={avatar === fallback ? undefined : fallback}
+  alt=""
+  width={size}
+  height={size}
+  loading="lazy"
+  decoding="async"
+  class="relative shrink-0 rounded-full object-cover"
+  style={`width:${size}px;height:${size}px`}
+/>
+
+<script>
+  for (const image of document.querySelectorAll<HTMLImageElement>(
+    "img[data-avatar-fallback]",
+  )) {
+    const fallback = image.dataset.avatarFallback!;
+    const useFallback = () => {
+      image.removeEventListener("error", useFallback);
+      image.removeEventListener("load", checkSize);
+      delete image.dataset.avatarFallback;
+      image.src = fallback;
+    };
+    const checkSize = () => {
+      if (image.naturalWidth <= 4 || image.naturalHeight <= 4) useFallback();
+    };
+    image.addEventListener("error", useFallback);
+    image.addEventListener("load", checkSize);
+    if (image.complete) checkSize();
+  }
+</script>

@@ -2,7 +2,7 @@
 import { trackedLinks } from "../../lib/admin/clicks";
 import { getCollection } from "astro:content";
 import BlogPost from "layouts/BlogPost.astro";
-import components from "lib/components";
+import createArticleComponents from "lib/components";
 import { validId } from "../../lib/admin/campaigns";
 import { getEdition } from "../../lib/admin/store";
 import { imageLayout } from "../../lib/admin/image-layout";
@@ -22,8 +22,9 @@ const data = post?.data ?? {
   authors: [],
   type: "blog" as const,
 };
-const Content =
-  post && !post.data.externalUrl ? (await post.render()).Content : null;
+const rendered = post && !post.data.externalUrl ? await post.render() : null;
+const Content = rendered?.Content;
+const components = createArticleComponents(rendered?.headings ?? []);
 Astro.response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
 ---
 
@@ -75,15 +76,6 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
     line-height: 1.65;
     overflow-wrap: anywhere;
   }
-  .imported-post :global(h2) {
-    font-size: 28px;
-  }
-  .imported-post :global(h3) {
-    font-size: 23px;
-  }
-  .imported-post :global(h4) {
-    font-size: 20px;
-  }
   .imported-post :global(ul) {
     list-style: disc;
     padding-left: 24px;
@@ -92,8 +84,8 @@ Astro.response.headers.set("Cache-Control", "public, max-age=60, s-maxage=60");
     list-style: decimal;
     padding-left: 24px;
   }
-  .imported-post :global(blockquote),
-  .imported-post :global(pre) {
+  .imported-post :global(blockquote[style*="#f4effa"]),
+  .imported-post :global(pre[style*="#f4effa"]) {
     color: #241632;
   }
   .imported-post :global(table:not(.notion-gallery)) {
