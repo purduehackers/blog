@@ -1,36 +1,75 @@
 ---
-import Author from "./Author.astro";
-import FormattedDate from "./FormattedDate.astro";
+import AuthorGroup from "./AuthorGroup.astro";
+import Icon from "./ph/Icon.astro";
 
 interface Props {
   authors: string[];
   pubDate: Date;
   updatedDate?: Date | undefined;
   title: string;
+  description: string;
+  external?: boolean;
 }
 
-const { authors, pubDate, updatedDate, title } = Astro.props;
+const {
+  authors,
+  pubDate,
+  updatedDate,
+  title,
+  description,
+  external = false,
+} = Astro.props;
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 ---
 
-<header class="relative overflow-hidden bg-grid-animated [--grid-size:26px] [--grid-color:rgba(0,0,0,0.06)] dark:[--grid-color:rgba(255,255,255,0.08)] border-b border-black/10 dark:border-white/10">
-  <div
-    class="container relative z-10 mx-auto pt-20 pb-12 md:pt-28 md:pb-16 flex flex-col items-start gap-y-5 px-4 sm:px-8 md:px-14"
-  >
-    <div class="bg-white dark:bg-gray-800 text-black dark:text-gray-100 border border-black dark:border-white/30 rounded-sm font-pixel uppercase text-xs sm:text-sm">
-      <FormattedDate date={pubDate} size="sm" />
-      {
-        updatedDate && (
-          <div class="last-updated-on flex items-center pl-2 gap-1 [&>time]:pl-0 border-t border-black/30 dark:border-white/20">
-            Last updated on <FormattedDate date={updatedDate} />
-          </div>
-        )
-      }
-    </div>
-    <h1 class="font-pixel uppercase text-4xl sm:text-6xl md:text-7xl leading-[1.05] sm:w-11/12 dark:text-yellow">
-      {title}
-    </h1>
-    <div class="flex flex-row gap-4 md:gap-x-5 flex-wrap w-10/12 md:max-w-2xl">
-      {authors.map((author: string) => <Author authorString={author} />)}
-    </div>
+<header class="article-header">
+  <div class="article-dates">
+    <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+    {
+      updatedDate && (
+        <span>
+          Updated{" "}
+          <time datetime={updatedDate.toISOString()}>
+            {formatDate(updatedDate)}
+          </time>
+        </span>
+      )
+    }
+  </div>
+  <h1 id="post-title" class="article-title">{title}</h1>
+  <p class="article-description">{description}</p>
+  <div class="article-byline">
+    {
+      (authors.length > 0 || external) && (
+        <AuthorGroup authors={authors} external={external} size="md" />
+      )
+    }
+    {
+      !external && (
+        <div class="article-tools">
+          <span class="article-reading-time" data-reading-time hidden>
+            <Icon name="clock" />
+            <span data-reading-time-label />
+          </span>
+          <button type="button" class="article-copy" data-copy-url hidden>
+            <span data-copy-icon>
+              <Icon name="link" />
+            </span>
+            <span data-copied-icon hidden>
+              <Icon name="check" />
+            </span>
+            <span data-copy-label aria-live="polite">
+              Copy URL
+            </span>
+          </button>
+        </div>
+      )
+    }
   </div>
 </header>
